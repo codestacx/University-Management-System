@@ -26,6 +26,20 @@ def login(request):
         return render(request,'pages/login/login.html')
 
 
+
+#sign up
+
+def signup(request):
+    if request.method=='POST':
+        email = request.POST['mail']
+        password = request.POST['password']
+        status = User.objects.create(email=email,password=password,role='candidate')
+        if(status):
+            request.session['user_logged'] = True
+            request.session['user_id'] = status.pk
+            return redirect('index')
+
+
 # Logout Controller
 def logout(request):
     del request.session['user_logged']

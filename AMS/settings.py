@@ -16,6 +16,21 @@ import os
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 
+#============================ EMAIL SETTINGS
+EMAIL_BACKEND='django.core.mail.backends.smtp.EmailBackend'
+#============================ GMAIL SETTINGS
+from candidates.Controllers.Email.email import *
+EMAIL_USE_TLS=EMAIL_USE_TLS
+EMAIL_HOST=EMAIL_HOST
+EMAIL_PORT=EMAIL_PORT
+EMAIL_HOST_USER=EMAIL_HOST_USER
+EMAIL_HOST_PASSWORD=EMAIL_HOST_PASSWORD
+#==========================================================
+
+
+
+
+
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.0/howto/deployment/checklist/
 
