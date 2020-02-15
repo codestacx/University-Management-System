@@ -19,6 +19,9 @@ urlpatterns=[
     path('register_user/',Auth.signup,name='signup'),
     path('sendemail/',sendMail.email_confirmation,name='sendmail'),
     path('verifymail',sendMail.verifyEmail,name='verifymail'),
+    path('resetpasswords/',sendMail.resetPassword,name='resetpasswords'),
+    path('confirmresetpassword/<int:user_id>',sendMail.resetPassword,name='confirmresetpassword' ),
+    path('submitresetpassword',sendMail.submitResetPassword,name='submitresetpassword'),
     path('testing/',views.testing,name='testing'),
 
 
