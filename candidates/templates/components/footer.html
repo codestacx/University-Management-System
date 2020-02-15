@@ -1,3 +1,4 @@
+{% load static %}
 
         <!-- begin::Global Config(global config for global JS sciprts) -->
         <script>
@@ -33,7 +34,6 @@
         <!-- end::Global Config -->
 
         <!--begin::Global Theme Bundle(used by all pages) -->
-        {% load static %}
             <script src="{% static '/themes/metronic/theme/default/demo1/dist/assets/plugins/global/plugins.bundle.js' %}" type="text/javascript"></script>
             <script src="{% static '/themes/metronic/theme/default/demo1/dist/assets/js/scripts.bundle.js' %}" type="text/javascript"></script>
         <!--end::Global Theme Bundle -->
@@ -46,11 +46,6 @@
 
         <!--begin::Page Scripts(used by this page) -->
             <script src="{% static '/themes/metronic/theme/default/demo1/dist/assets/js/pages/dashboard.js' %}" type="text/javascript"></script>
-{#            <?php if (isset($scripts)) {#}
-{#                foreach($scripts as $script) {#}
-{#                    echo $script . "\n";#}
-{#                }#}
-{#            } ?>#}
             <script src="./js/custom.js"></script>
         <!--end::Page Scripts -->
     </body>
