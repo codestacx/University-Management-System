@@ -21,7 +21,8 @@ urlpatterns=[
     path('verifymail',sendMail.verifyEmail,name='verifymail'),
     path('resetpasswords/',sendMail.resetPassword,name='resetpasswords'),
     path('confirmresetpassword/<int:user_id>',sendMail.resetPassword,name='confirmresetpassword' ),
-    path('submitresetpassword',sendMail.submitResetPassword,name='submitresetpassword'),
+    path('submitresetpassword',sendMail.resetPassword,name='submitresetpassword'),
+
     path('testing/',views.testing,name='testing'),
 
 

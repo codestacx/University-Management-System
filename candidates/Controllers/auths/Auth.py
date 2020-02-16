@@ -7,6 +7,7 @@ from django.contrib import messages
 from django.db import connection
 # Login Controller
 
+
 def login(request):
     if request.method=='POST':
         email = request.POST['email']
@@ -16,7 +17,7 @@ def login(request):
 
         count = User.objects.filter(email=email,password=password,role=role).count()
         if(count>0):
-            request.session['user_logged']=True
+            request.session['user_logged'] = True
             return redirect('index')
         else:
             messages.error(request,'Invalid email or password')
