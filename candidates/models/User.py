@@ -8,6 +8,7 @@ class User(models.Model):
     role       = models.CharField('role',max_length=20)
     created_at = models.DateField(default=tz.now)
     updated_at = models.DateField(default=tz.now)
+    isComplete = models.IntegerField('iscomplete', default=0)
     
     class Meta:
         app_label = 'candidates'

@@ -9,7 +9,6 @@ class CandidateProfile(models.Model):
     permanent_address   =  models.CharField('permanent_address', max_length = 255)
     phone      =  models.CharField('phone', max_length=30)
     image      =  models.ImageField('Image',upload_to='candidates/images')
-    isComplete = models.IntegerField('iscomplete' , default= 0)
     
     #forein key one-to-one User
 

@@ -17,7 +17,10 @@ def login(request):
 
         count = User.objects.filter(email=email,password=password,role=role).count()
         if(count>0):
+            u = User.objects.filter(email=email,role=role).values('id','isComplete').get()
             request.session['user_logged'] = True
+            request.session['user_id'] = u['id']
+            request.session['isComplete'] = u['isComplete']
             return redirect('index')
         else:
             messages.error(request,'Invalid email or password')
@@ -36,9 +39,8 @@ def signup(request):
         password = request.POST['password']
         status = User.objects.create(email=email,password=password,role='candidate')
         if(status):
-            request.session['user_logged'] = True
-            request.session['user_id'] = status.pk
-            return redirect('index')
+            messages.success(request, 'Registration done successfully')
+            return render(request, 'pages/login/login.html')
 
 
 # Logout Controller

@@ -1,5 +1,10 @@
-{% extends '../../base.html' %}
+{% extends "base.html" %}
 
+{% block title %}
+Dashboard
+{% endblock %}
+
+{% block body %}
 <div class="kt-grid__item kt-grid__item--fluid kt-grid kt-grid--hor kt-wrapper" id="kt_wrapper">
 	<!-- begin:: Header -->
 	<div class="kt-content  kt-grid__item kt-grid__item--fluid kt-grid kt-grid--hor" id="kt_content">
@@ -15,12 +20,33 @@
 									<h3 class="kt-callout__title">Welcome to the Online Admissions System of PUCIT</h3>
 									<p class="kt-callout__desc">
 										In case of any query you may contact us at <a href="#"> admin@yahoo.com </a>
+                                        <br>
+                                        {% if request.session.isComplete == 0 %}
+
+                                        <div class="alert alert-warning" >
+                                                Your profile is still incomplete. Please update it to use the system.
+
+
+                                            </div>
+                                            {{ '    ' }}
+                                        {% endif %}
+
 									</p>
 								</div>
+
 								<div class="kt-callout__action">
+                                    {% if request.session.isComplete != 0 %}
 									<a href="#" class="btn btn-custom btn-bold btn-upper btn-font-sm  btn-success">View
 										Admission Procedure</a>
+                                        {% else %}
+                                        <a href="#" class="btn btn-custom btn-bold btn-upper btn-font-sm  btn-success">
+										Update Profile</a>
+                                        {% endif %}
 								</div>
+
+
+
+
 							</div>
 						</div>
 					</div>
@@ -48,6 +74,7 @@
 </div>
 <!-- end:: Footer -->
 
+{% endblock %}
 </div>
 </div>
 </div>
