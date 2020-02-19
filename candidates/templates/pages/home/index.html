@@ -17,6 +17,15 @@ Dashboard
 						<div class="kt-portlet__body">
 							<div class="kt-callout__body">
 								<div class="kt-callout__content">
+                                {% if messages %}
+                                     <div class="alert alert-succes my-4">
+                                    {%  for message in messages %}
+                                        <ul>
+                                        <li> {{ message }}</li>
+                                        </ul>
+                                        {% endfor %}
+                                      </div>
+                                    {% endif %}
 									<h3 class="kt-callout__title">Welcome to the Online Admissions System of PUCIT</h3>
 									<p class="kt-callout__desc">
 										In case of any query you may contact us at <a href="#"> admin@yahoo.com </a>
@@ -39,7 +48,7 @@ Dashboard
 									<a href="#" class="btn btn-custom btn-bold btn-upper btn-font-sm  btn-success">View
 										Admission Procedure</a>
                                         {% else %}
-                                        <a href="#" class="btn btn-custom btn-bold btn-upper btn-font-sm  btn-success">
+                                        <a href="{% url 'personal-info' %}" class="btn btn-custom btn-bold btn-upper btn-font-sm  btn-success">
 										Update Profile</a>
                                         {% endif %}
 								</div>
