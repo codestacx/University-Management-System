@@ -3,9 +3,11 @@ from django.conf import settings
 from django.conf.urls.static import static
 
 from candidates import views
+
 from candidates.Controllers.auths import Auth
 from candidates.Controllers.candidates import Candidate
 from candidates.Controllers.Email import sendMail
+from candidates.Controllers.entrytest import EntryTest
 
 urlpatterns = [
     path('', Candidate.index, name='index'),
@@ -16,8 +18,8 @@ urlpatterns = [
     path('verifymail', sendMail.verifyEmail, name='verifymail'),
     path('testing/', views.testing, name='testing'),
 
-    path("entry-test-application", views.entry_test_application, name='entry_test_application'),
-    path("registeration-slip", views.registeration_slip, name='registeration_slip'),
-    path("adjust-test-schedule", views.adjust_test_schedule, name='adjust_test_schedule'),
-    path("entry-test-result", views.entry_test_result, name='entry_test_result')
+    path("entry-test-application", EntryTest.entry_test_application, name='entry_test_application'),
+    path("registeration-slip", EntryTest.registeration_slip, name='registeration_slip'),
+    path("adjust-test-schedule", EntryTest.adjust_test_schedule, name='adjust_test_schedule'),
+    path("entry-test-result", EntryTest.entry_test_result, name='entry_test_result')
 ]

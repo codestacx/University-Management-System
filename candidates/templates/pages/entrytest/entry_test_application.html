@@ -172,9 +172,9 @@
                                           <div></div>
                                           <select class="custom-select form-control">
                                               <option selected="">Open this select menu</option>
-                                              <option value="1">BS</option>
-                                              <option value="2">MPhil</option>
-                                              <option value="3">Phd</option>
+                                              {% for degree in degrees %}
+                                              <option value="{{degree.id}}">{{ degree.degree_name }}</option>
+                                              {% endfor %}
                                           </select>
                                           <span class="form-text text-muted">Please select a program that the university offers from the above list.</span>
                                       </div>
