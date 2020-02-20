@@ -5,7 +5,7 @@ from candidates.models.CandidateProfile import CandidateProfile
 def entry_test_application(request):
     context = {}
     context['degrees'] = Degree.objects.all()
-    context['current_user'] = CandidateProfile.objects.filter(id=request.session['user_id'])
+    context['current_user'] = CandidateProfile.objects.get(id=request.session['user_id'])
     return render(request, "pages/entrytest/entry_test_application.html", context=context)
 
 def registeration_slip(request):

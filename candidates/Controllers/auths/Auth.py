@@ -14,9 +14,11 @@ def login(request):
         role = 'candidate'
         #User Authentications
 
-        count = User.objects.filter(email=email,password=password,role=role).count()
-        if(count>0):
-            request.session['user_logged']=True
+        user = User.objects.get(email=email,password=password,role=role)
+        if user:
+            request.session['user_logged'] = True
+            request.session['user_id']     = user.id
+            request.session['user_email']  = user.email
             return redirect('index')
         else:
             messages.error(request,'Invalid email or password')
@@ -36,7 +38,8 @@ def signup(request):
         status = User.objects.create(email=email,password=password,role='candidate')
         if(status):
             request.session['user_logged'] = True
-            request.session['user_id'] = status.pk
+            request.session['user_id']     = status.pk
+            request.session['user_email']  = email
             return redirect('index')
 
 
