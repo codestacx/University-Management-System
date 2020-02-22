@@ -24,7 +24,7 @@ def entry_test_result(request):
     return render(request, "pages/entrytest/entry_test_result.html")
 
 def get_challan_pdf(request, name):
-    template_src = 'challan.html'
+    template_src = 'pdf_templates/challan.html'
 
     template = get_template(template_src)
     html  = template.render({'name': name})
