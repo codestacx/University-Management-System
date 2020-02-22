@@ -1,8 +1,6 @@
 from django.db import models
 from candidates.models.User import User
 
-from PIL import Image
-
 class CandidateProfile(models.Model):
     firstname  =  models.CharField('firstname',max_length=50,blank= False)
     lastname   =  models.CharField('lastname',blank=False,max_length=50)
@@ -11,6 +9,7 @@ class CandidateProfile(models.Model):
     permanent_address   =  models.CharField('permanent_address', max_length = 255)
     phone      =  models.CharField('phone', max_length=30)
     image      =  models.ImageField('Image',upload_to='candidates/')
+
 
 
     
@@ -64,19 +63,6 @@ class CandidateProfile(models.Model):
         data.permanent_address = permanent_address
         data.phone = phone
         data.save()
-
-        # status = CandidateProfile.objects.filter(candidate_id=candidate_id).update(
-        #     firstname=firstname, lastname  = lastname,
-        #     phone     = phone,
-        #     cnic      = cnic,
-        #     image     = image,
-        #     temporary_address = temporary_address,
-        #     permanent_address = permanent_address,
-        # )
-        #
-        # photo = Image.open(image)
-        # photo.save()
-
 
 
 

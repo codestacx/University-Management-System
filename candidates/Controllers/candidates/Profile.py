@@ -12,8 +12,6 @@ def personalInfo(request):
         contact   = request.POST['contact']
         cnic      = request.POST['cnic']
         image     = request.FILES['profile_avatar']
-
-
         permanent_address = request.POST['permanent_address']
         temporary_address = request.POST['temporary_address']
         isUpdate = request.POST['status']
