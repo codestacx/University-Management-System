@@ -1,6 +1,8 @@
 from django.shortcuts import render
+from candidates.models.User import User
 from candidates.models.Degree import Degree
 from candidates.models.CandidateProfile import CandidateProfile
+from candidates.models.AppliedTestCandidate import AppliedTestCandidate
 
 import io
 from reportlab.pdfgen import canvas
@@ -9,10 +11,31 @@ from django.template.loader import get_template
 from xhtml2pdf import pisa
 
 def entry_test_application(request):
-    context = {}
-    context['degrees'] = Degree.objects.all()
-    context['current_user'] = CandidateProfile.objects.get(id=request.session['user_id'])
-    return render(request, "pages/entrytest/entry_test_application.html", context=context)
+    if request.method == 'POST':
+        # only challan copy uploaded
+        if request.FILES:
+            candidate_application = AppliedTestCandidate.objects.create(
+                candidate=User.objects.get(id=request.session['user_id']),
+                paid_challan_copy=request.FILES['paid-challan-copy']
+            )
+
+            return HttpResponse(candidate_application.pk)
+        # form submitted excluding challan copy
+        else:
+            if request.POST['verification_status'] == 'on':
+                candidate_application = AppliedTestCandidate.objects.get(id=request.session['user_id'])
+                candidate_application.degree = Degree.objects.get(id=request.POST['degree'])
+                candidate_application.save()
+
+                return HttpResponse('success')
+            else:
+                return HttpResponse('failed')
+    else:
+        context = {}
+        context['degrees'] = Degree.objects.all()
+        context['current_user'] = CandidateProfile.objects.get(id=request.session['user_id'])
+        
+        return render(request, "pages/entrytest/entry_test_application.html", context=context)
 
 def registeration_slip(request):
     return render(request, "pages/entrytest/registeration_slip.html")

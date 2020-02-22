@@ -7,5 +7,5 @@ class Degree(models.Model):
     degree_level = models.CharField('degree_level', max_length=50)
 
 
-    # class Meta:
-    #     app_label = 'candidates'
+    class Meta:
+        app_label = 'candidates'
