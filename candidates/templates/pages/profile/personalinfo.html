@@ -1,0 +1,289 @@
+{% extends 'base.html' %}
+
+
+{% block body %}
+
+<div class="kt-grid__item kt-grid__item--fluid kt-grid kt-grid--ver kt-page">
+<div class="kt-grid__item kt-grid__item--fluid kt-grid kt-grid--hor kt-wrapper" id="kt_wrapper">
+<div class="kt-content  kt-grid__item kt-grid__item--fluid kt-grid kt-grid--hor" id="kt_content">
+
+    <!-- begin:: Subheader -->
+    <div class="kt-subheader   kt-grid__item" id="kt_subheader">
+        <div class="kt-container  kt-container--fluid ">
+            <div class="kt-subheader__main">
+                <h3 class="kt-subheader__title">
+                                        <button class="kt-subheader__mobile-toggle kt-subheader__mobile-toggle--left" id="kt_subheader_mobile_toggle"><span></span></button>
+
+                    Personal Information       {{ data.firstname }}                   </h3>
+
+                                <span class="kt-subheader__separator kt-hidden"></span>
+                    <div class="kt-subheader__breadcrumbs">
+
+                                                <span class="kt-subheader__breadcrumbs-separator"></span>
+
+                                            <!-- <span class="kt-subheader__breadcrumbs-link kt-subheader__breadcrumbs-link--active">Active link</span> -->
+                    </div>
+                        </div>
+            <div class="kt-subheader__toolbar">
+
+            </div>
+        </div>
+    </div>
+    <!-- end:: Subheader -->
+
+                        <!-- begin:: Content -->
+        <div class="kt-container  kt-container--fluid  kt-grid__item kt-grid__item--fluid">
+
+    <!--Begin::App-->
+    <div class="kt-grid kt-grid--desktop kt-grid--ver kt-grid--ver-desktop kt-app">
+        <!--Begin:: App Aside Mobile Toggle-->
+        <button class="kt-app__aside-close" id="kt_user_profile_aside_close">
+            <i class="la la-close"></i>
+        </button>
+        <!--End:: App Aside Mobile Toggle-->
+
+        <!--Begin:: App Aside-->
+        <div class="kt-grid__item kt-app__toggle kt-app__aside" id="kt_user_profile_aside">
+            <!--begin:: Widgets/Applications/User/Profile1-->
+    <div class="kt-portlet ">
+        <div class="kt-portlet__head  kt-portlet__head--noborder">
+            <div class="kt-portlet__head-label">
+                <h3 class="kt-portlet__head-title">
+                </h3>
+            </div>
+            <!-- 3 dots button -->
+            <div class="kt-portlet__head-toolbar">
+                <a href="#" class="btn btn-clean btn-sm btn-icon btn-icon-md" data-toggle="dropdown">
+                    <i class="flaticon-more-1"></i>
+                </a>
+                <div class="dropdown-menu dropdown-menu-right dropdown-menu-fit dropdown-menu-md">
+                    <!--begin::Nav-->
+
+    <!--end::Nav-->         </div>
+            </div>
+        </div>
+        <div class="kt-portlet__body kt-portlet__body--fit-y">
+
+
+        {% include 'components/profile-widget.html' with obj=widget  %}
+            <!--end::Widget -->
+        </div>
+    </div>
+    <!--end:: Widgets/Applications/User/Profile1-->
+        </div>
+        <!--End:: App Aside-->
+
+        <!--Begin:: App Content-->
+        <div class="kt-grid__item kt-grid__item--fluid kt-app__content">
+            <div class="row">
+                <div class="col-xl-12">
+                    <div class="kt-portlet">
+                        <div class="kt-portlet__head">
+                            <div class="kt-portlet__head-label">
+                                <h3 class="kt-portlet__head-title">Personal Information <small>update
+
+                                    your personal informaiton</small></h3>
+
+
+
+
+                            </div>
+
+                        </div>
+
+                        <form  action="{% url 'personal-info' %}"
+                               enctype="multipart/form-data"
+                               method="POST"
+                               class="kt-form kt-form--label-right"
+                               id="personalinfo_form">
+                            {% csrf_token %}
+
+                            <input type="hidden" value="{{ profile.status }}" name="status"/>
+
+                            <div class="kt-portlet__body">
+                                <div class="kt-section kt-section--first">
+                                    <div class="kt-section__body">
+                                        <div class="row">
+                                            <label class="col-xl-3"></label>
+                                            <div class="col-lg-9 col-xl-6">
+                                                <h3 class="kt-section__title kt-section__title-sm">Candidate Info:</h3>
+                                            </div>
+                                        </div>
+                                        <div class="form-group row">
+                                            <label class="col-xl-3 col-lg-3 col-form-label">Avatar</label>
+                                            <div class="col-lg-9 col-xl-6">
+                                                <div class="kt-avatar kt-avatar--outline" id="kt_user_avatar">
+                                                    <div class="kt-avatar__holder"
+                                                    style="background-image: url({{ profile.image.url}})"
+                                                    >
+
+
+                                                    </div>
+                                                    <input type="hidden" name="old_picture" value="{{ profile.image }}" />
+                                                    <label class="kt-avatar__upload"
+                                                           data-toggle="kt-tooltip" title=""
+                                                           data-original-title="Change avatar">
+                                                        <i class="fa fa-pen"></i>
+                                                        <input  type="file"
+                                                               {% if profile.status == 1 %}
+                                                                value="{{ profile.image }}"
+                                                                {% endif %}
+                                                               name="profile_avatar" accept=".png, .jpg, .jpeg">
+                                                    </label>
+                                                    <span class="kt-avatar__cancel" data-toggle="kt-tooltip" title="" data-original-title="Cancel avatar">
+                                                        <i class="fa fa-times"></i>
+                                                    </span>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group row">
+                                            <label class="col-xl-3 col-lg-3 col-form-label">First Name</label>
+                                            <div class="col-lg-9 col-xl-6">
+                                                <input class="form-control" type="text" name="firstname"
+                                                       required
+
+                                                placeholder="First Name"
+                                                       {% if profile.status == 1 %}
+                                                        value="{{ profile.fname }}"
+                                                       {% endif %}
+                                                />
+                                            </div>
+                                        </div>
+                                        <div class="form-group row">
+                                            <label class="col-xl-3 col-lg-3 col-form-label">Last Name</label>
+                                            <div class="col-lg-9 col-xl-6">
+                                                <input class="form-control" type="text" required
+                                                name="lastname" placeholder="Last Name"
+                                                        {% if profile.status == 1 %}
+                                                        value="{{ profile.lname }}"
+                                                       {% endif %}
+                                                >
+                                            </div>
+                                        </div>
+                                        <div class="form-group row">
+                                            <label class="col-xl-3 col-lg-3 col-form-label">CNIC</label>
+                                            <div class="col-lg-9 col-xl-6">
+                                                <input class="form-control" type="text" required
+                                                name="cnic" placeholder=" CNIC / BForm-ID"
+                                                        {% if profile.status == 1 %}
+                                                        value="{{ profile.cnic }}"
+                                                       {% endif %}
+                                                >
+                                                <span class="form-text text-muted">Please make sure your CNIC or BForm-ID is valid. Otherwise You won't be able for admission process</span>
+                                            </div>
+                                        </div>
+
+
+                                        <div class="form-group row">
+                                            <label class="col-xl-3 col-lg-3 col-form-label">Contact Phone</label>
+                                            <div class="col-lg-9 col-xl-6">
+                                                <div class="input-group">
+                                                    <div class="input-group-prepend"><span class="input-group-text"><i class="la la-phone"></i></span></div>
+                                                    <input type="text" required
+                                                           class="form-control" value="+35278953712"
+                                                           name="contact"
+                                                            {% if profile.status == 1 %}
+                                                        value="{{ profile.contact }}"
+                                                       {% endif %}
+                                                           placeholder="Phone" aria-describedby="basic-addon1">
+                                                </div>
+                                                <span class="form-text text-muted">We'll never share your contact with anyone else.</span>
+                                            </div>
+                                        </div>
+                                        <div class="form-group row">
+                                            <label class="col-xl-3 col-lg-3 col-form-label">Permanent Address</label>
+                                            <div class="col-lg-9 col-xl-6">
+                                                <div class="input-group">
+                                                    <div class="input-group-prepend"> </div>
+                                                    <input type="text" class="form-control"  placeholder="Permanent Address"
+                                                            {% if profile.status == 1 %}
+                                                        value="{{ profile.perm_address }}"
+                                                       {% endif %}
+                                                           name="permanent_address" required
+                                                           aria-describedby="basic-addon1">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="form-group row">
+                                            <label class="col-xl-3 col-lg-3 col-form-label">Temporary Address</label>
+                                            <div class="col-lg-9 col-xl-6">
+                                                <div class="input-group">
+                                                    <div class="input-group-prepend"> </div>
+                                                    <input type="text" class="form-control"
+                                                           required
+                                                            {% if profile.status == 1 %}
+                                                                value="{{ profile.temp_address }}"
+                                                               {% endif %}
+                                                           placeholder="Temporary Address"
+                                                           name="temporary_address"
+                                                           aria-describedby="basic-addon1">
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="kt-portlet__foot">
+                                <div class="kt-form__actions">
+                                    <div class="row">
+                                        <div class="col-lg-3 col-xl-3">
+                                        </div>
+                                        <div class="col-lg-9 col-xl-9">
+                                            <input type="submit"
+                                                   id="submit-btn"
+
+                                                   class="btn btn-success" value="submit"/>
+                                            <button type="reset" class="btn btn-secondary">Cancel</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--End:: App Content-->
+    </div>
+    <!--End::App-->
+        </div>
+    <!-- end:: Content -->              </div>
+
+</div>
+</div>
+
+
+        <!-- begin::Global Config(global config for global JS sciprts) -->
+
+        <script type="text/javascript">
+        function validateForm(e) {
+
+
+            var form = document.getElementById('personalinfo_form')
+            var submitBtn = form.querySelector('[type="submit"]')
+
+            submitBtn.disabled = true
+
+            form.addEventListener('input', function () {
+              submitBtn.disabled = !form.checkValidity()
+            })
+        {#    var elements = document.getElementById("personalinfo_form").elements;#}
+        {##}
+        {#        for (var i = 0, element; element = elements[i++];) {#}
+        {#            if (element.value === ""){#}
+        {#                alert('asdf');#}
+        {##}
+        {##}
+        {#                return false;#}
+        {##}
+        {#            }#}
+        {##}
+        {#        }#}
+        {#return true;#}
+        }
+
+        </script>
+      {% endblock %}

@@ -7,14 +7,7 @@ import json
 
 
 def testing(request):
-    email  = request.POST['email']
-    code   = request.POST['code']
-    count  = VerificationCode.objects.filter(email=email, code=code).count()
-    status = True if count > 0 else False
-    obj = {
-        "status": status
-    }
-    return HttpResponse(json.dumps(obj), content_type="application/json", status=200)
+    return render(request,'testing/testing.html')
 
 def entry_test_application(request):
     return render(request, "pages/candidate/entry_test_application.html")

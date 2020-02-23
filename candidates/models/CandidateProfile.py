@@ -8,8 +8,10 @@ class CandidateProfile(models.Model):
     temporary_address   =  models.CharField('temporary_address', max_length = 255)
     permanent_address   =  models.CharField('permanent_address', max_length = 255)
     phone      =  models.CharField('phone', max_length=30)
-    image      =  models.ImageField('Image',upload_to='candidates/images')
-    isComplete = models.IntegerField('iscomplete' , default= 0)
+    image      =  models.ImageField('Image',upload_to='candidates/')
+
+
+
     
     #forein key one-to-one User
 
@@ -18,5 +20,49 @@ class CandidateProfile(models.Model):
     class Meta:
         app_label = 'candidates'
 
+
+
     def __str__(self):
-        return f"name: {self.firstName} "
+        return (str(self.id))
+    def registerUser(firstname ,
+                lastname ,
+                phone ,
+                cnic ,
+                image ,
+                temporary_address,
+                permanent_address ,
+                candidate_id
+                ):
+        status = CandidateProfile.objects.create(
+            firstname=firstname, lastname  = lastname,
+            phone     = phone,
+            cnic      = cnic,
+            image     = image,
+            temporary_address = temporary_address,
+            permanent_address = permanent_address,
+            candidate_id = candidate_id
+        )
+
+        return status
+
+    def updateUser(firstname ,
+                lastname ,
+                phone ,
+                cnic ,
+                image ,
+                temporary_address,
+                permanent_address ,
+                candidate_id
+                ):
+
+        data = CandidateProfile.objects.get(candidate_id=candidate_id)
+        data.firstname = firstname
+        data.lastname = lastname
+        data.cnic = cnic
+        data.temporary_address = temporary_address
+        data.permanent_address = permanent_address
+        data.phone = phone
+        data.save()
+
+
+
