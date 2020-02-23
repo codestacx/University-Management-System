@@ -43,4 +43,3 @@ class Qualification(models.Model):
 
     class Meta:
         app_label = 'candidates'
-
