@@ -41,7 +41,7 @@
     <!-- begin:: Header Mobile -->
     <div id="kt_header_mobile" class="kt-header-mobile  kt-header-mobile--fixed ">
         <div class="kt-header-mobile__logo">
-            <a href="index.php">
+            <a href="#">
                 <img alt="Logo" src="{% static 'images/PUCIT-Logo.png' %}" />
             </a>
         </div>
@@ -55,10 +55,16 @@
     </div>
     <!-- end:: Header Mobile -->
 
-    {% include "components/sidebar.html" %}
+
+{#    {% if request.session.isComplete != 0 %}#}
+                {% include "components/sidebar.html" %}
+{#    {% endif %}#}
+
     {% include "components/menu-bar.html" %}
 
     {% block body %}
+
+
     {% endblock %}
 
     <!-- begin::Global Config(global config for global JS scripts) -->
