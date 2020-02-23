@@ -1,11 +1,6 @@
 from django.urls import path
-
 from candidates import views
-
-
-
 #use Auth Login Controller
-
 from candidates.Controllers.auths import Auth
 from candidates.Controllers.candidates import Candidate
 from candidates.Controllers.Email import sendMail
@@ -16,7 +11,6 @@ from django.conf import settings
 from django.conf.urls.static import static
 
 urlpatterns=[
-
     # Auth Routes
     path('',Candidate.index,name='index'),
     path('login/',Auth.login,name='login'),
@@ -29,7 +23,6 @@ urlpatterns=[
     path('submitresetpassword',sendMail.submitResetPassword,name='submitresetpassword'),
 
     # Profile routes
-
     path('personal-info', Profile.personalInfo, name='personal-info'),
     path('password-info', Profile.passwordInfo, name='password-info'),
 
@@ -39,5 +32,4 @@ urlpatterns=[
     path("adjust-test-schedule", EntryTest.adjust_test_schedule, name='adjust_test_schedule'),
     path("entry-test-result", EntryTest.entry_test_result, name='entry_test_result'),
     path("get-challan-pdf/<str:name>", EntryTest.get_challan_pdf, name='get_challan_pdf')
-
 ]

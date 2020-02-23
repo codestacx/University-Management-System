@@ -64,7 +64,6 @@ Entry Test Application
                                 </svg>
                                 <!--<i class="flaticon2-plus"></i>-->
                             </a>
-
                         </div>
                     </div>
                 </div>
@@ -139,7 +138,8 @@ Entry Test Application
                         </div>
                         <div class="kt-grid__item kt-grid__item--fluid kt-wizard-v1__wrapper">
                             <!--begin: Form Wizard Form-->
-                            <form method="post" action="{% url 'entry_test_application' %}" class="kt-form" id="kt_form">
+                            <form class="kt-form" id="kt_form" method="POST" action="{% url 'entry_test_application' %}">
+                                {% csrf_token %}
                                 <!--begin: Form Wizard Step 1-->
                                 <div class="kt-wizard-v1__content" data-ktwizard-type="step-content"
                                     data-ktwizard-state="current">
@@ -151,7 +151,7 @@ Entry Test Application
                                         <select  id="degree_select" class="custom-select form-control">
                                             <option value="-1" selected="">Open this select menu</option>
                                             {% for degree in degrees %}
-                                            <option  value="{{degree.degree_id}}">{{ degree.degree_level }}</option>
+                                                <option  value="{{degree.degree_id}}">{{ degree.degree_level }}</option>
                                             {% endfor %}
                                         </select>
                                         <span class="form-text text-muted">Please select a program that the university
@@ -195,8 +195,7 @@ Entry Test Application
                                                     Photo
                                                 </div>
                                                 <div class="kt-wizard-v1__review-content">
-                                                    <img src="{{ current_user.image.url }}" width="200px"
-                                                        height="200px" />
+                                                    <img src="{{ current_user.image.url }}" width="200px" height="200px" />
                                                 </div>
                                             </div>
                                             <div class="kt-wizard-v1__review-item">
@@ -241,8 +240,7 @@ Entry Test Application
                                                     <span
                                                         class="kt-switch kt-switch--outline kt-switch--icon kt-switch--success">
                                                         <label>
-                                                            <input type="checkbox" checked="unchecked"
-                                                                name="verification_status">
+                                                            <input type="checkbox" checked="unchecked" name="verification_status" />
                                                             <span></span>
                                                         </label>
                                                     </span>
@@ -274,8 +272,7 @@ Entry Test Application
                                                 <label class="col-form-label col-lg-3 col-sm-12">Paid Challan
                                                     Copy</label>
                                                 <div class="col-lg-4 col-md-9 col-sm-12">
-                                                    <div class="dropzone dropzone-default dropzone-success dz-clickable"
-                                                        id="kt_dropzone_3">
+                                                    <div class="dropzone dropzone-default dropzone-success dz-clickable" id="paid_challan_entrytest_dropzone">
                                                         <div class="dropzone-msg dz-message needsclick">
                                                             <h3 class="dropzone-msg-title">Drop files here or click to
                                                                 upload.</h3>
@@ -306,11 +303,11 @@ Entry Test Application
                                         data-ktwizard-type="action-prev">
                                         Previous
                                     </button>
-                                    <input type="submit"
-                                        class="btn btn-success" value="Submit"
-                                        onclick="submitResponse()"
-
-                                    />
+                                    <button
+                                        class="btn btn-success btn-md btn-tall btn-wide kt-font-bold kt-font-transform-u"
+                                        data-ktwizard-type="action-submit">
+                                        Submit
+                                    </button>
                                     <button
                                         class="btn btn-brand btn-md btn-tall btn-wide kt-font-bold kt-font-transform-u"
                                         data-ktwizard-type="action-next">
@@ -327,57 +324,8 @@ Entry Test Application
         </div>
         <!-- end:: Content -->
     </div>
-
     <!-- end:: Footer -->
 </div>
 </div>
 </div>
-
-
-<!-- end::Sticky Toolbar -->
-<!-- begin::Demo Panel -->
-<div id="kt_demo_panel" class="kt-demo-panel">
-
-    <!-- end::Demo Panel -->
-    <!--Begin:: Chat-->
-
-</div>
-
-    <script type="text/javascript">
-    function submitResponse() {
-
-        var candidate_id = {{ request.session.user_id }};
-        var e = document.getElementById("degree_select");
-        var degree_id = e.options[e.selectedIndex].value;
-
-        // if no degree is selected then do not allow the json to send submit request
-
-        if (degree_id === '-1'){
-            alert('please choose valid degree');
-            exit()
-        }
-
-
-        $.ajax({
-            type:'POST',
-            dataType:'JSON',
-            url:'{% url 'entry_test_application' %}',
-            data:{
-                'candidate_id':candidate_id,
-                csrfmiddlewaretoken:'{{ csrf_token }}',
-                'degree_id':degree_id
-            },
-            success:function (data) {
-                if(data.status === true){
-                    alert('success')
-                }
-                else{
-                    alert('error')
-                }
-            }
-        })
-
-    }
-    </script>
-    <!-- end::Chat-->
-    {% endblock %}
+{% endblock %}

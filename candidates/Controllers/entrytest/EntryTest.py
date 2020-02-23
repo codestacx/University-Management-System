@@ -1,41 +1,48 @@
 from django.shortcuts import render
+from django.http import FileResponse, HttpResponse
+from django.template.loader import get_template
+
+from candidates.models.User import User
 from candidates.models.Degree import Degree
 from candidates.models.CandidateProfile import CandidateProfile
-
+from candidates.models.AppliedTestCandidate import AppliedTestCandidate
 from candidates.models.SittingPlan import *
 from candidates.models.EntryTest import *
 
 import io
-from reportlab.pdfgen import  canvas
-from django.http import FileResponse, HttpResponse
-from django.template.loader import get_template
+from reportlab.pdfgen import canvas
 from xhtml2pdf import pisa
 import json
 
-#import AppliedCandidate Models
-from candidates.models.EntryTest import AppliedCandidate
-
 def entry_test_application(request):
     if request.method == 'POST':
+        # only challan copy uploaded
+        if request.FILES:
+            candidate_application = AppliedTestCandidate.objects.create(
+                candidate=User.objects.get(id=request.session['user_id']),
+                paid_challan_copy=request.FILES['paid-challan-copy']
+            )
 
-        candidate_id = request.POST['candidate_id']
-        degree_id = request.POST['degree_id']
+            return HttpResponse(candidate_application.pk)
+        # form submitted excluding challan copy
+        else:
+            if request.POST['verification_status'] == 'on':
+                candidate_application = AppliedTestCandidate.objects.get(candidate_id=request.session['user_id'])
+                candidate_application.degree = Degree.objects.get(id=request.POST['degree'])
+                candidate_application.save()
 
-        done = AppliedCandidate.objects.create(candidate_id=candidate_id,degree_id=degree_id,challan_status=0)
-        status = True if done else False
-        return HttpResponse(json.dumps({
-            'status':status
-        }), content_type="application/json", status=200)
-
-    context = {}
-    context['degrees'] = Degree.objects.all()
-    context['current_user'] = CandidateProfile.objects.get(candidate_id=request.session['user_id'])
-    return render(request, "pages/entrytest/entry_test_application.html", context=context)
-
+                return HttpResponse('success')
+            else:
+                return HttpResponse('failed')
+    else:
+        context = {}
+        context['degrees'] = Degree.objects.all()
+        context['current_user'] = CandidateProfile.objects.get(id=request.session['user_id'])
+        
+        return render(request, "pages/entrytest/entry_test_application.html", context=context)
 
 def registeration_slip(request):
     return render(request, "pages/entrytest/registeration_slip.html")
-
 
 def adjust_test_schedule(request):
     candidate_id = request.session['user_id']
@@ -79,16 +86,14 @@ def entry_test_result(request):
 
     return render(request, "pages/entrytest/entry_test_result.html",context=context)
 
-
 def get_challan_pdf(request, name):
-    template_src = 'challan.html'
+    template_src = 'pdf_templates/challan.html'
 
     template = get_template(template_src)
-    html = template.render({'name': name})
+    html  = template.render({'name': name})
     result = io.BytesIO()
     pdf = pisa.pisaDocument(io.BytesIO(html.encode("ISO-8859-1")), result)
-
+    
     if not pdf.err:
         return HttpResponse(result.getvalue(), content_type='application/pdf')
-
     return 'lolz'

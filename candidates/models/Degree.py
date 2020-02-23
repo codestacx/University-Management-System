@@ -2,7 +2,6 @@ from django.db import models
 from datetime import date
 from candidates.models.User import User
 
-# degree model
 
 class Degree(models.Model):
     degree_id = models.AutoField(primary_key = True)
