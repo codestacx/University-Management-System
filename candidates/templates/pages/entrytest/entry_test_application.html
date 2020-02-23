@@ -138,7 +138,7 @@ Entry Test Application
                         </div>
                         <div class="kt-grid__item kt-grid__item--fluid kt-wizard-v1__wrapper">
                             <!--begin: Form Wizard Form-->
-                            <form class="kt-form" id="kt_form" method="POST" action="{% url 'entry_test_application' %}">
+                            <form class="kt-form" enctype="multipart/form-data" id="kt_form" method="POST" action="{% url 'entry_test_application' %}">
                                 {% csrf_token %}
                                 <!--begin: Form Wizard Step 1-->
                                 <div class="kt-wizard-v1__content" data-ktwizard-type="step-content"
@@ -148,7 +148,7 @@ Entry Test Application
                                     <div class="form-group">
                                         <label>Choose Program</label>
                                         <div></div>
-                                        <select  id="degree_select" class="custom-select form-control">
+                                        <select name="degree" id="degree_select" class="custom-select form-control">
                                             <option value="-1" selected="">Open this select menu</option>
                                             {% for degree in degrees %}
                                                 <option  value="{{degree.degree_id}}">{{ degree.degree_level }}</option>

@@ -20,7 +20,7 @@ def login(request):
             request.session['user_logged'] = True
             request.session['user_id']     = user.id
             request.session['user_email']  = user.email
-            request.session['isComplete'] = u['isComplete']
+            request.session['isComplete'] = user.isComplete
             
             return redirect('index')
         else:

@@ -5,7 +5,6 @@ from django.template.loader import get_template
 from candidates.models.User import User
 from candidates.models.Degree import Degree
 from candidates.models.CandidateProfile import CandidateProfile
-from candidates.models.AppliedTestCandidate import AppliedTestCandidate
 from candidates.models.SittingPlan import *
 from candidates.models.EntryTest import *
 
@@ -18,7 +17,7 @@ def entry_test_application(request):
     if request.method == 'POST':
         # only challan copy uploaded
         if request.FILES:
-            candidate_application = AppliedTestCandidate.objects.create(
+            candidate_application = AppliedCandidate.objects.create(
                 candidate=User.objects.get(id=request.session['user_id']),
                 paid_challan_copy=request.FILES['paid-challan-copy']
             )
@@ -27,7 +26,7 @@ def entry_test_application(request):
         # form submitted excluding challan copy
         else:
             if request.POST['verification_status'] == 'on':
-                candidate_application = AppliedTestCandidate.objects.get(candidate_id=request.session['user_id'])
+                candidate_application = AppliedCandidate.objects.get(candidate_id=request.session['user_id'])
                 candidate_application.degree = Degree.objects.get(id=request.POST['degree'])
                 candidate_application.save()
 
@@ -37,7 +36,7 @@ def entry_test_application(request):
     else:
         context = {}
         context['degrees'] = Degree.objects.all()
-        context['current_user'] = CandidateProfile.objects.get(id=request.session['user_id'])
+        context['current_user'] = CandidateProfile.objects.get(candidate_id=request.session['user_id'])
         
         return render(request, "pages/entrytest/entry_test_application.html", context=context)
 
