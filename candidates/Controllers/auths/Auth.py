@@ -41,8 +41,6 @@ def signup(request):
         if(status):
             messages.success(request, 'Registration done successfully')
             return render(request, 'pages/login/login.html')
-
-
 # Logout Controller
 def logout(request):
     del request.session['user_logged']

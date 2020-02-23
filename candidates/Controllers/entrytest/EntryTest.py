@@ -42,6 +42,17 @@ def adjust_test_schedule(request):
 
     #get the info from parent table for requested candidate
 
+
+    #alternate sql query
+    '''
+        SELECT * FROM `candidates_planinfo` INNER JOIN
+    `candidates_hall` ON `candidates_hall`.`hall_id`=`candidates_planinfo`.`hall_id`
+    INNER JOIN `candidates_slot` ON `candidates_slot`.`slot_id`=`candidates_planinfo`.`slot_id`
+    INNER JOIN `candidates_appliedcandidate` ON `candidates_appliedcandidate`.`candidate_id`=`candidates_planinfo`.`candidate_id`
+    INNER JOIN `candidates_testtypes` on `candidates_testtypes`.`degree_id`=`candidates_appliedcandidate`.`degree_id`
+    WHERE `candidates_planinfo`.`candidate_id` = %s
+    '''
+
     plan_info = PlanInfo.objects.get(candidate_id = candidate_id)
 
     #using hall id & slot id fetch hall and slot info
