@@ -1,7 +1,9 @@
 from candidates.models import User
 from candidates.models import CandidateProfile
 from candidates.models import VerificationCode
-from candidates.models import Degree, DegreeCriteria, DegreeOffering, Qualification, AppliedTestCandidate, EntryTest, SittingPlan
+from candidates.models import Degree
+from candidates.models import EntryTest
+from candidates.models.WizardSession import WizardSession
 
 __all__ = ['User', 'VerificationCode','CandidateProfile', 'Degree', 'DegreeCriteria', 'DegreeOffering',
-            'Qualifications', 'AppliedTestCandidate', 'EntryTest', 'SittingPlan']
+            'Qualifications', 'AppliedTestCandidate', 'EntryTest', 'SittingPlan', 'WizardSession']
