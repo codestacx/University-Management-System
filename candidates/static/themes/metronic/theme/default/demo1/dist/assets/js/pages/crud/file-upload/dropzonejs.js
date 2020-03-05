@@ -29,8 +29,30 @@ const AdmissionsXDropzone = {
             maxFilesize: 10,
             addRemoveLinks: !0,
             acceptedFiles: "image/*,application/pdf,.psd",
+            autoProcessQueue: false,
             accept: function (e, o) {
                 "justinbieber.jpg" == e.name ? o("Naha, you don't.") : o()
+            },
+            init: function() {
+                const dzClosure = this; // Makes sure that 'this' is understood inside the functions below.
+                console.log("dz init getting called")
+                // for Dropzone to process the queue (instead of default form behavior):
+                document.querySelector("button[data-ktwizard-type='action-submit']").addEventListener("click", function(e) {
+                    // Make sure that the form isn't actually being sent.
+                    e.preventDefault();
+                    e.stopPropagation();
+                    console.log("dz handler")
+                    dzClosure.processQueue();
+                });
+        
+                //send all the form data along with the files:
+                this.on("sending", function(data, xhr, formData) {
+                    console.log("sending ...")
+                    formData.append("degree", jQuery("select[name='degree']").val());
+                    formData.append("verification_status", jQuery("input[name='verification_status']").val());
+                    
+                    window.location.href = '/'
+                });
             }
         }),
             function () {

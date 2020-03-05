@@ -7,49 +7,52 @@ from candidates.models.Degree import Degree
 from candidates.models.CandidateProfile import CandidateProfile
 from candidates.models.SittingPlan import *
 from candidates.models.EntryTest import *
+from candidates.models.WizardSession import WizardSession
 
 import io
 from reportlab.pdfgen import canvas
 from xhtml2pdf import pisa
 import json
 from django.contrib import messages
+
+
 def entry_test_application(request):
     if request.method == 'POST':
-        # only challan copy uploaded
-        if request.FILES:
+        try:
+            degree_id = Degree.objects.get(degree_id=request.POST['degree'])
+            candidate_id = User.objects.get(id=request.session['user_id'])
+        except Degree.DoesNotExist:
+            return HttpResponse('failure')
+        
+        print(request.POST)
+        if request.POST['verification_status'] == 'on':
             candidate_application = AppliedCandidate.objects.create(
-                candidate=User.objects.get(id=request.session['user_id']),
-                paid_challan_copy=request.FILES['paid-challan-copy']
+                candidate=candidate_id,
+                paid_challan_copy=request.FILES['paid-challan-copy'],
+                degree=degree_id
             )
 
             return HttpResponse(candidate_application.pk)
-        # form submitted excluding challan copy
         else:
-            if request.POST['verification_status'] == 'on':
-                candidate_application = AppliedCandidate.objects.get(candidate_id=request.session['user_id'])
-                candidate_application.degree = Degree.objects.get(id=request.POST['degree'])
-                candidate_application.save()
-
-                return HttpResponse('success')
-            else:
-                return HttpResponse('failed')
+            return HttpResponse('failed')
     else:
         context = {}
         context['degrees'] = Degree.objects.raw("SELECT * FROM `candidates_degree` GROUP BY degree_level")
         context['current_user'] = CandidateProfile.objects.get(candidate_id=request.session['user_id'])
-        
+
         return render(request, "pages/entrytest/entry_test_application.html", context=context)
+
 
 def registeration_slip(request):
     return render(request, "pages/entrytest/registeration_slip.html")
 
+
 def adjust_test_schedule(request):
     candidate_id = request.session['user_id']
 
-    #get the info from parent table for requested candidate
-
+    # get the info from parent table for requested candidate
     try:
-        plan_info = PlanInfo.objects.get(candidate_id = candidate_id)
+        plan_info = PlanInfo.objects.get(candidate_id=candidate_id)
     except PlanInfo.DoesNotExist:
         messages.error(request, 'You plan is not yet updated')
         return render(request, "pages/entrytest/adjust_test_schedule.html", {'status': 0})
@@ -68,10 +71,6 @@ def adjust_test_schedule(request):
     WHERE `candidates_planinfo`.`candidate_id` = %s
     '''
 
-
-
-
-
     context={
         'plan_info':plan_info,
         'hall_info':hall_info,
@@ -80,8 +79,7 @@ def adjust_test_schedule(request):
         'status':1
     }
 
-
-    return render(request, "pages/entrytest/adjust_test_schedule.html",context=context)
+    return render(request, "pages/entrytest/adjust_test_schedule.html", context=context)
 
 
 def entry_test_result(request):
@@ -101,16 +99,57 @@ def entry_test_result(request):
         'status':1
     }
 
-    return render(request, "pages/entrytest/entry_test_result.html",context=context)
+    return render(request, "pages/entrytest/entry_test_result.html", context=context)
+
 
 def get_challan_pdf(request, name):
     template_src = 'pdf_templates/challan.html'
 
     template = get_template(template_src)
-    html  = template.render({'name': name})
+    html = template.render({'name': name})
     result = io.BytesIO()
     pdf = pisa.pisaDocument(io.BytesIO(html.encode("ISO-8859-1")), result)
-    
+
     if not pdf.err:
         return HttpResponse(result.getvalue(), content_type='application/pdf')
     return 'lolz'
+
+
+def wizard_session(request):
+    if request.method == 'GET':
+        if request.GET.get('degree', '') != '':
+            ws = WizardSession.objects.filter(user_id=request.session['user_id'])
+            if not ws:
+                data = [{"degree": int(request.GET.get('degree', ''))}]
+                data = json.dumps(data)
+                x = WizardSession.objects.create(user_id=request.session['user_id'], data=data)
+                return HttpResponse(json.dumps(x))
+            else:
+                ws = WizardSession.objects.get(user_id=request.session['user_id'])
+                data = json.loads(ws.data)
+                data['degree'] = int(request.GET.get('degree', ''))
+                ws.data = json.dumps(data)
+                ws.save()
+                return HttpResponse(ws.data)
+        elif request.GET.get('verification_status', '') != '':
+            ws = WizardSession.objects.filter(user_id=request.session['user_id'])
+            if not ws:
+                data = [{"verification_status": request.GET.get('verification_status', '')}]
+                data = json.dumps(data)
+                x = WizardSession.objects.create(user_id=request.session['user_id'], data=data)
+                return HttpResponse(json.dumps(x))
+            else:
+                ws = WizardSession.objects.get(user_id=request.session['user_id'])
+                data = json.loads(ws.data)
+                data['verification_status'] = request.GET.get('verification_status', '')
+                ws.data = json.dumps(data)
+                ws.save()
+                return HttpResponse(ws.data)
+        else:
+            ws = WizardSession.objects.filter(user_id=request.session['user_id']).exists()
+            
+            if not ws:
+                return HttpResponse(json.dumps("")) # nothing found
+            else:
+                ws = WizardSession.objects.get(user_id=request.session['user_id'])
+                return HttpResponse(ws.data)
