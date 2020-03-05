@@ -156,21 +156,28 @@
                                         </span>
                                     </li>
                                     <li class="kt-menu__item " aria-haspopup="true">
-                                        <a href="admissions-application-wizard.php" class="kt-menu__link ">
+                                        <a href="{% url 'apply_admission' %}" class="kt-menu__link ">
                                         <i class="kt-menu__link-bullet kt-menu__link-bullet--dot">
                                         <span></span>
                                         </i>
                                         <span class="kt-menu__link-text">Apply For Admissions</span>
                                         </a>
                                     </li>
+
+                                     <li class="kt-menu__item " aria-haspopup="true">
+                                        <a href="{% url 'get_challan' %}" class="kt-menu__link ">
+                                        <i class="kt-menu__link-bullet kt-menu__link-bullet--dot"><span></span></i>
+                                        <span class="kt-menu__link-text">Challan</span>
+                                        </a>
+                                    </li>
                                     <li class="kt-menu__item " aria-haspopup="true">
-                                        <a href="./view-merit-list-status.php" class="kt-menu__link ">
+                                        <a href="{% url 'merit_list_status' %}" class="kt-menu__link ">
                                         <i class="kt-menu__link-bullet kt-menu__link-bullet--dot"><span></span></i>
                                         <span class="kt-menu__link-text">View My Merit List Status</span>
                                         </a>
                                     </li>
                                     <li class="kt-menu__item " aria-haspopup="true">
-                                        <a href="./finalize-admissions.php" class="kt-menu__link">
+                                        <a href="{% url 'admission_status' %}" class="kt-menu__link">
                                         <i class="kt-menu__link-bullet kt-menu__link-bullet--dot">
                                         <span></span>
                                         </i>

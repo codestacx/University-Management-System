@@ -9,31 +9,7 @@
 {% block body %}
 <div class="kt-grid__item kt-grid__item--fluid kt-grid kt-grid--hor kt-wrapper" id="kt_wrapper">
         <!-- begin:: Header -->
-        <div class="kt-content  kt-grid__item kt-grid__item--fluid kt-grid kt-grid--hor" id="kt_content">
-            <!-- begin:: Subheader -->
-            <div class="kt-subheader   kt-grid__item" id="kt_subheader">
-                <div class="kt-container  kt-container--fluid ">
-                    <div class="kt-subheader__main">
-                        <h3 class="kt-subheader__title">
-                            Callout                            
-                        </h3>
-                        <span class="kt-subheader__separator kt-hidden"></span>
-                        <div class="kt-subheader__breadcrumbs">
-                            <a href="#" class="kt-subheader__breadcrumbs-home"><i class="flaticon2-shelter"></i></a>
-                            <span class="kt-subheader__breadcrumbs-separator"></span>
-                            <a href="#" class="kt-subheader__breadcrumbs-link">
-                            Components                        </a>
-                            <span class="kt-subheader__breadcrumbs-separator"></span>
-                            <a href="#" class="kt-subheader__breadcrumbs-link">
-                            Custom                        </a>
-                            <span class="kt-subheader__breadcrumbs-separator"></span>
-                            <a href="#" class="kt-subheader__breadcrumbs-link">
-                            Callout                        </a>
-                            <!-- <span class="kt-subheader__breadcrumbs-link kt-subheader__breadcrumbs-link--active">Active link</span> -->
-                        </div>
-                    </div>
-                </div>
-            </div>
+
             <!-- end:: Subheader -->
             <!-- begin:: Content -->
             <div class="kt-container  kt-container--fluid  kt-grid__item kt-grid__item--fluid">
@@ -45,6 +21,7 @@
                                      <div class="kt-portlet__body kt-portlet__body--fit">
                                             <!--begin: Datatable -->
                                             <div class="kt-datatable kt-datatable--default kt-datatable--brand kt-datatable--loaded">
+                                                {% if status != 0 %}
                                                 <table class="kt-datatable__table" id="html_table" style="display: block;" width="100%">
                                                     <thead class="kt-datatable__head">
                                                         <tr class="kt-datatable__row" style="left: 0px;">
@@ -70,6 +47,12 @@
                                                         </tr>
                                                     </tbody>
                                                 </table>
+                                                {% else %}
+
+                                                <div class="alert alert-warning">
+                                                Your result is not yet uploaded
+                                                </div>
+                                                {% endif %}
                                             </div>
                                             <!--end: Datatable -->
                                          <div class="kt-callout__content">
