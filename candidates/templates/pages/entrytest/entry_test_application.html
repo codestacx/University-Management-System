@@ -18,10 +18,10 @@ Entry Test Application
     makeChallanPDF('{{current_user.firstname}} {{current_user.lastname}}', 'challan-form-canvas')
 
     $(document).ready(function () {
+        // wizard session handling
         const degreeField = $('select[name=degree')
         const verificationStatusField = $('input[name=verification_status]')
 
-        // get wizard session
         $.get('/wizard-session', function (response) {
             const data = JSON.parse(response)
 
@@ -42,8 +42,6 @@ Entry Test Application
             $.get('/wizard-session?degree=' + degreeField.val(), function (response) {
                 console.log(response)
             })
-
-            $('#selected-program').html(degreeField.find('option:selected').text())
         })
 
         verificationStatusField.on('input change', function (e) {
@@ -197,7 +195,7 @@ Entry Test Application
                                                 <div class="kt-wizard-v1__review-title">
                                                     Selected Program
                                                 </div>
-                                                <div class="kt-wizard-v1__review-content" id="selected-program">
+                                                <div class="kt-wizard-v1__review-content" id="degree_val">
                                                     Bachelors
                                                 </div>
                                             </div>
@@ -268,7 +266,7 @@ Entry Test Application
                                                     <span
                                                         class="kt-switch kt-switch--outline kt-switch--icon kt-switch--success">
                                                         <label>
-                                                            <input type="checkbox" name="verification_status" />
+                                                            <input type="checkbox" name="verification_status" required />
                                                             <span></span>
                                                         </label>
                                                     </span>
