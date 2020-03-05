@@ -13,6 +13,7 @@ import io
 from reportlab.pdfgen import canvas
 from xhtml2pdf import pisa
 import json
+from django.contrib import messages
 
 
 def entry_test_application(request):
@@ -36,9 +37,8 @@ def entry_test_application(request):
             return HttpResponse('failed')
     else:
         context = {}
-        context['degrees'] = Degree.objects.all()
-        context['current_user'] = CandidateProfile.objects.get(
-            candidate_id=request.session['user_id'])
+        context['degrees'] = Degree.objects.raw("SELECT * FROM `candidates_degree` GROUP BY degree_level")
+        context['current_user'] = CandidateProfile.objects.get(candidate_id=request.session['user_id'])
 
         return render(request, "pages/entrytest/entry_test_application.html", context=context)
 
@@ -51,37 +51,52 @@ def adjust_test_schedule(request):
     candidate_id = request.session['user_id']
 
     # get the info from parent table for requested candidate
-
-    plan_info = PlanInfo.objects.get(candidate_id=candidate_id)
-
-    # using hall id & slot id fetch hall and slot info
+    try:
+        plan_info = PlanInfo.objects.get(candidate_id=candidate_id)
+    except PlanInfo.DoesNotExist:
+        messages.error(request, 'You plan is not yet updated')
+        return render(request, "pages/entrytest/adjust_test_schedule.html", {'status': 0})
 
     hall_info = Hall.objects.get(hall_id=plan_info.hall_id)
-
     slot_info = Slot.objects.get(slot_id=plan_info.slot_id)
+    test_info = TestTypes.objects.get(degree_id=(AppliedCandidate.objects.get(candidate_id=candidate_id).degree_id))
 
-    test_info = TestTypes.objects.get(degree_id=(
-        AppliedCandidate.objects.get(candidate_id=candidate_id).degree_id))
+    #alternate sql query
+    '''
+        SELECT * FROM `candidates_planinfo` INNER JOIN
+    `candidates_hall` ON `candidates_hall`.`hall_id`=`candidates_planinfo`.`hall_id`
+    INNER JOIN `candidates_slot` ON `candidates_slot`.`slot_id`=`candidates_planinfo`.`slot_id`
+    INNER JOIN `candidates_appliedcandidate` ON `candidates_appliedcandidate`.`candidate_id`=`candidates_planinfo`.`candidate_id`
+    INNER JOIN `candidates_testtypes` on `candidates_testtypes`.`degree_id`=`candidates_appliedcandidate`.`degree_id`
+    WHERE `candidates_planinfo`.`candidate_id` = %s
+    '''
 
-    context = {
-        'plan_info': plan_info,
-        'hall_info': hall_info,
-        'slot_info': slot_info,
-        'test_info': test_info
+    context={
+        'plan_info':plan_info,
+        'hall_info':hall_info,
+        'slot_info':slot_info,
+        'test_info':test_info,
+        'status':1
     }
 
     return render(request, "pages/entrytest/adjust_test_schedule.html", context=context)
 
 
 def entry_test_result(request):
-    candidate_id = request.session['user_id']
+    user_id = request.session['user_id']
 
+    try:
+        EntryTestResult.objects.get(candidate_id = user_id)
+    except EntryTestResult.DoesNotExist:
+        return render(request,"pages/entrytest/entry_test_result.html",{'status':0})
     data = EntryTestResult.objects.raw("SELECT * FROM `candidates_entrytestresult` INNER JOIN `candidates_testtypes` "
-                                       "on `candidates_testtypes`.`test_id`=`candidates_entrytestresult`.`test_id` INNER JOIN  `candidates_degree` "
-                                       "ON `candidates_degree`.`degree_id` = `candidates_testtypes`.`degree_id` WHERE `candidates_entrytestresult`.`candidate_id`=%s limit 1", [candidate_id])
+    "on `candidates_testtypes`.`test_id`=`candidates_entrytestresult`.`test_id` INNER JOIN  `candidates_degree` "
+    "ON `candidates_degree`.`degree_id` = `candidates_testtypes`.`degree_id` WHERE `candidates_entrytestresult`.`candidate_id`=%s limit 1",[user_id])
 
-    context = {
-        'context': data[0]
+
+    context ={
+        'context':data[0],
+        'status':1
     }
 
     return render(request, "pages/entrytest/entry_test_result.html", context=context)

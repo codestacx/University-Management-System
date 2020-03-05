@@ -1,0 +1,82 @@
+{% load static %}
+
+  <script src="{% static 'js/jquery.js' %}"></script>
+
+
+    <link rel="stylesheet" href="{% static 'css/glyphicon.css' %}" />
+  <div class="col-sm-12">
+
+   <br />
+   <h4 align="center">Enter Priority Details</h4>
+   <br />
+
+    <div class="table-repsonsive">
+     <span id="error"></span>
+     <table class="table table-bordered" id="item_table">
+      <tr>
+
+        <th>Select Priority</th>
+       <th>Select  Program</th>
+       <th><button type="button" name="add" class="btn btn-success btn-sm add">
+           <span class="glyphicon glyphicon-plus"></span></button></th>
+      </tr>
+         <tr>
+              <td>
+                  <select name="priority_unit[]" class="form-control priority_unit">
+                      <option value=""> Select Priority </option>
+                      {% for i in priorities %}
+
+                          <option value="{{ i }}">{{ i }}</option>
+
+                      {% endfor %}
+                  </select>
+              </td>
+
+                <td>
+                    <select name="program_unit[]" class="form-control program_unit">
+                        <option value="">Select Program</option>
+                        {% for degree in degrees %}
+                        <option value="{{ degree.name }}">{{ degree.name }}</option>
+                        {% endfor %}
+                    </select>
+                </td>
+            <td>
+                <button type="button" name="remove" class="btn btn-danger btn-sm remove">
+                    <span class="glyphicon glyphicon-minus"></span>
+                </button></td></tr>
+         </tr>
+     </table>
+
+    </div>
+
+  </div>
+
+
+<script>
+$(document).ready(function() {
+
+    $(document).on('click', '.add', function () {
+        var html = '';
+        html += '<tr>';
+        html += '<td><select name="priority_unit[]" class="form-control priority_unit"><option value="">Select Unit</option>' +
+            '' +
+            '{% for i in priorities %}\n'+
+                '\n'+
+                '                          <option value="{{ i }}">{{ i }}</option>\n'+
+                '\n'+
+                '                      {% endfor %} </select></td>';
+
+        html += '<td><select name="program_unit[]" class="form-control program_unit"><option value="">' +
+            'Select Unit</option>{% for degree in degrees %}\n'+
+                '                        <option value="{{  degree.name }}">{{ degree.name }}</option>\n'+
+                '                        {% endfor %}</select></td>';
+        html += '<td><button type="button" name="remove" class="btn btn-danger btn-sm remove"><span class="glyphicon glyphicon-minus"></span></button></td></tr>';
+        $('#item_table').append(html);
+    });
+
+    $(document).on('click', '.remove', function () {
+        $(this).closest('tr').remove();
+    });
+
+});
+</script>

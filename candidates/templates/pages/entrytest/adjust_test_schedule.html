@@ -5,8 +5,21 @@
 {% endblock %}
 
 {% block body %}
+
+
+
 <div class="modal fade" id="kt_modal_5" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" style="display: none;" aria-hidden="true">
         <div class="modal-dialog modal-sm" role="document">
+               {% if messages %}
+
+                {% for message in messages %}
+                <div class="alert alert-danger">
+                {{ message }}
+                </div>
+
+                    {% endfor %}
+            {% endif %}
+
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="exampleModalLabel">Request for your new Plan</h5>
@@ -63,7 +76,9 @@
                             <div class="kt-portlet__body">
                                 <div class="kt-callout__body">
                                     <div class="kt-callout__content">
+                                         {% if status != 0 %}
                                         <h3 class="kt-callout__title">Current Plan</h3>
+
                                         <p class="kt-callout__desc">
                                             Below is your current sitting plan ! In order to change the sitting plan click on the request button.
                                         </p>
@@ -71,6 +86,8 @@
                                         <div class="kt-portlet__body kt-portlet__body--fit">
                                             <!--begin: Datatable -->
                                             <div class="kt-datatable kt-datatable--default kt-datatable--brand kt-datatable--loaded">
+
+
                                                 <table class="kt-datatable__table" id="html_table" style="display: block;" width="100%">
                                                     <thead class="kt-datatable__head">
                                                         <tr class="kt-datatable__row" style="left: 0px;">
@@ -114,6 +131,12 @@
                                                         </tr>
                                                     </tbody>
                                                 </table>
+                                                {% else %}
+
+                                                <div class="alert alert-warning">
+                                                    Wait your plan will be updated soon
+                                                </div>
+                                                {% endif %}
                                             </div>
                                             <!--end: Datatable -->
                                         </div>

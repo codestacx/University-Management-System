@@ -5,10 +5,9 @@ from datetime import date
 from candidates.models.User import User
 #model that hold the information -> applied candidate & degree in which he/she applied
 class AppliedCandidate(models.Model):
-    applied_id = models.AutoField(primary_key=True)
-    candidate = models.ForeignKey(User,on_delete=models.CASCADE)
-    degree = models.ForeignKey(Degree,on_delete=models.CASCADE)
-    paid_challan_copy = models.ImageField('image', upload_to='candidates/uploads/paid_challans')
+    candidate = models.ForeignKey('User', on_delete=models.CASCADE)
+    degree = models.ForeignKey('Degree', null=True, on_delete=models.CASCADE)
+    paid_challan_copy = models.ImageField('Image', upload_to='candidates/uploads/paid_challans')
     challan_status = models.IntegerField(default=1)
 
     class Meta:

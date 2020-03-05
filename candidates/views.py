@@ -3,14 +3,14 @@ from django.template import RequestContext
 from candidates.Controllers.Email import sendMail
 from candidates.models.VerificationCode import VerificationCode
 import json
+import array
+from candidates.models.PriorityDegree import *
+from django.shortcuts import render
 
 
 def testing(request):
-    email  = request.POST['email']
-    code   = request.POST['code']
-    count  = VerificationCode.objects.filter(email=email, code=code).count()
-    status = True if count > 0 else False
-    obj = {
-        "status": status
-    }
-    return HttpResponse(json.dumps(obj), content_type="application/json", status=200)
+    degrees = PrioriyDegree.objects.all()
+    priorities = []
+    for i in range(1, 13):
+        priorities.append(i)
+    return render(request,'testing/testing.html',{'degrees':degrees,'priorities':priorities})

@@ -343,6 +343,54 @@ Entry Test Application
     </div>
     <!-- end:: Footer -->
 </div>
-</div>
-</div>
+
+
 {% endblock %}
+
+
+
+<!-- end::Sticky Toolbar -->
+<!-- begin::Demo Panel -->
+<div id="kt_demo_panel" class="kt-demo-panel">
+
+</div>
+
+    <script type="text/javascript">
+    function submitResponse() {
+
+        var candidate_id = {{ request.session.user_id }};
+        var e = document.getElementById("degree_select");
+        var degree_id = e.options[e.selectedIndex].value;
+
+        // if no degree is selected then do not allow the json to send submit request
+
+        if (degree_id === '-1'){
+            alert('please choose valid degree');
+            exit()
+        }
+
+
+        $.ajax({
+            type:'POST',
+            dataType:'JSON',
+            url:'{% url 'entry_test_application' %}',
+            data:{
+                'candidate_id':candidate_id,
+                csrfmiddlewaretoken:'{{ csrf_token }}',
+                'degree_id':degree_id
+            },
+            success:function (data) {
+                if(data.status === true){
+                    alert('success')
+                }
+                else{
+                    alert('error')
+                }
+            }
+        })
+
+    }
+    </script>
+    <!-- end::Chat-->
+    {% endblock %}
+>>>>>>> atif

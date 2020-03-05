@@ -1,4 +1,4 @@
-from django.shortcuts import render,redirect
+from django.shortcuts import render,redirect,get_object_or_404
 from django.http import HttpResponse
 #import all models
 from candidates.models.User import User
@@ -15,18 +15,17 @@ def login(request):
         role = 'candidate'
         #User Authentications
 
-        user = User.objects.get(email=email,password=password,role=role)
-        if user:
+        try:
+            user = User.objects.get(email=email,password=password,role=role)
             request.session['user_logged'] = True
-            request.session['user_id']     = user.id
-            request.session['user_email']  = user.email
+            request.session['user_id'] = user.id
+            request.session['user_email'] = user.email
             request.session['isComplete'] = user.isComplete
-            
-            return redirect('index')
-        else:
-            messages.error(request,'Invalid email or password')
-            return render(request,'pages/login/login.html')
 
+            return redirect('index')
+        except User.DoesNotExist:
+            messages.error(request, 'Invalid email or password')
+            return render(request, 'pages/login/login.html')
     else:
         return render(request,'pages/login/login.html')
 
@@ -46,8 +45,6 @@ def signup(request):
 
             messages.success(request, 'Registration done successfully')
             return render(request, 'pages/login/login.html')
-
-
 # Logout Controller
 def logout(request):
     del request.session['user_logged']

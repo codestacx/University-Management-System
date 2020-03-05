@@ -1,0 +1,42 @@
+<div class="form-group">
+                            <label>Matric/O-level Institution</label>
+                            <input name="matric_institute" type="text" class="form-control" aria-describedby="emailHelp" placeholder="Enter Matric Institution">
+                            <span class="form-text text-muted">The institution you completed matric from.</span>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Passing Year</label>
+                            <input name="matric_py" type="date" class="form-control" aria-describedby="emailHelp" placeholder="Enter Matric Institution">
+                            <span class="form-text text-muted">The date you completed above degree</span>
+                        </div>
+
+                        <div class="form-group">
+
+                            <input type="hidden" name="degree_id" value="{{ degree_id }}"/>
+                            <input type="hidden" name="degree_level" value="{{  degree_level  }}"/>
+
+                            <label>Matric Marks</label>
+                            <input name="matric_obtained_marks" type="number" class="form-control" aria-describedby="emailHelp" placeholder="Enter obtained marks">
+                            <span class="form-text text-muted">Total marks obtained in matric (9th + 10th).</span>
+                            <input name="matric_total_marks" type="number" class="form-control" aria-describedby="emailHelp" placeholder="Total marks">
+                            <span class="form-text text-muted">Total marks </span>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Intermediate/A-level Institution</label>
+                            <input  name="inter_institute" type="text" class="form-control" aria-describedby="emailHelp" placeholder="Enter Intermediate Institution">
+                            <span class="form-text text-muted">The institution you completed Intermediate/A-levels from.</span>
+                        </div>
+                        <div class="form-group">
+                            <label>Passing Year</label>
+                            <input name="inter_py" type="date" class="form-control" aria-describedby="emailHelp" placeholder="Enter Matric Institution">
+                            <span class="form-text text-muted">The date you completed above degree</span>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Intermediate/A-level Marks</label>
+                            <input name="inter_obtained_marks" type="number" class="form-control" aria-describedby="emailHelp" placeholder="Enter intermediate marks">
+                            <span class="form-text text-muted">Total marks obtained in Intermediate (Part I + II).</span>
+                            <input name="inter_total_marks" type="number" class="form-control" aria-describedby="emailHelp" placeholder="Total marks">
+                            <span class="form-text text-muted">Total marks </span>
+                        </div>
