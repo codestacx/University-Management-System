@@ -3,7 +3,8 @@ from django.http import HttpResponse
 from candidates.models.CandidateProfile import CandidateProfile
 from candidates.models.User import  User
 from django.contrib import messages
-import var_dump
+
+
 def personalInfo(request):
     user_id = request.session['user_id']
     if request.method  == 'POST':

@@ -33,7 +33,7 @@ urlpatterns=[
     path("adjust-test-schedule", EntryTest.adjust_test_schedule, name='adjust_test_schedule'),
     path("entry-test-result", EntryTest.entry_test_result, name='entry_test_result'),
     path("get-challan-pdf/<str:name>", EntryTest.get_challan_pdf, name='get_challan_pdf'),
-    path("wizard-session", EntryTest.wizard_session, name='wizard_session')
+    path("wizard-session", EntryTest.wizard_session, name='wizard_session'),
 
     #admission routes
     path('apply-admission',Admission.index,name='apply_admission'),
