@@ -50,16 +50,24 @@ def adjust_test_schedule(request):
 
     try:
         plan_info = PlanInfo.objects.get(candidate_id = candidate_id)
-        hall_info = Hall.objects.get(hall_id=plan_info.hall_id)
-
-        slot_info = Slot.objects.get(slot_id=plan_info.slot_id)
-
-        test_info = TestTypes.objects.get(degree_id=(AppliedCandidate.objects.get(candidate_id=candidate_id).degree_id))
     except PlanInfo.DoesNotExist:
-        messages.error(request,'You plan is not yet updated')
-        return render(request,"pages/entrytest/adjust_test_schedule.html",{'status':0})
+        messages.error(request, 'You plan is not yet updated')
+        return render(request, "pages/entrytest/adjust_test_schedule.html", {'status': 0})
 
-    #using hall id & slot id fetch hall and slot info
+    hall_info = Hall.objects.get(hall_id=plan_info.hall_id)
+    slot_info = Slot.objects.get(slot_id=plan_info.slot_id)
+    test_info = TestTypes.objects.get(degree_id=(AppliedCandidate.objects.get(candidate_id=candidate_id).degree_id))
+
+    #alternate sql query
+    '''
+        SELECT * FROM `candidates_planinfo` INNER JOIN
+    `candidates_hall` ON `candidates_hall`.`hall_id`=`candidates_planinfo`.`hall_id`
+    INNER JOIN `candidates_slot` ON `candidates_slot`.`slot_id`=`candidates_planinfo`.`slot_id`
+    INNER JOIN `candidates_appliedcandidate` ON `candidates_appliedcandidate`.`candidate_id`=`candidates_planinfo`.`candidate_id`
+    INNER JOIN `candidates_testtypes` on `candidates_testtypes`.`degree_id`=`candidates_appliedcandidate`.`degree_id`
+    WHERE `candidates_planinfo`.`candidate_id` = %s
+    '''
+
 
 
 
