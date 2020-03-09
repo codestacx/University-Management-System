@@ -60,20 +60,20 @@ def generate_sitting_plan(request):
 
     for slot in slots:
         for hall in halls:
-            plan = PlanInfo.objects.filter(slot=slot.slot_id, hall=hall.hall_id)
+            seats = PlanInfo.objects.filter(slot=slot.slot_id, hall=hall.hall_id)
             last_seat_number = None
 
             # no entry for this (slot, hall)
-            if len(plan) == 0:
+            if len(seats) == 0:
                 last_seat_number = 0
             else:
-                last_seat_number = plan.reverse()[0].seat_number
+                last_seat_number = seats.reverse()[0].seat_number
 
-            if len(plan) < slot.seat_limits:
+            if len(seats) < slot.seat_limits:
                 x = PlanInfo.objects.create(candidate=candidate, slot=slot, hall=hall, seat_number=last_seat_number+1)
                 return HttpResponse(f"Entered with seat number: {last_seat_number+1}")
     
-    return HttpResponse("Something went wrong")
+    return HttpResponse("Something went wrong. Probably no space left for u.")
 
 
 def registeration_slip(request):
