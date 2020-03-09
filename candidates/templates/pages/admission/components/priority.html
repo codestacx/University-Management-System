@@ -25,7 +25,7 @@
             <tbody>
                 <tr>
                     <td>
-                        <select name="priority_unit[]" class="form-control priority_unit">
+                        <select name="priority_unit[]" class="form-control priority_unit" required>
                             <option value=""> Select Priority </option>
                             {% for i in priorities %}
 
@@ -36,7 +36,7 @@
                     </td>
 
                     <td>
-                        <select name="program_unit[]" class="form-control program_unit">
+                        <select name="program_unit[]" class="form-control program_unit" required>
                             <option value="">Select Program</option>
                             {% for degree in degrees %}
                             <option value="{{ degree.name }}">{{ degree.name }}</option>
@@ -47,7 +47,6 @@
                         <button type="button" name="remove" class="btn btn-danger btn-sm remove">
                             <span class="glyphicon glyphicon-minus"></span>
                         </button></td>
-                </tr>
                 </tr>
             </tbody>
         </table>

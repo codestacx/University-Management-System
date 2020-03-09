@@ -33,7 +33,7 @@ def email_confirmation(request):
             html_message = render_to_string('email/email.html', {'code': code})
             plain_message = strip_tags(html_message)
             from_email = settings.EMAIL_HOST_USER
-            to_email = ['atif.bhatti1947@gmail.com']
+            to_email = [email]
             count = send_mail(subject, plain_message, from_email, to_email, html_message=html_message)
             #count=1
             msg = "confirmation code sent to your email" if count> 0 else "Something goes wrong ! try again with another email"
