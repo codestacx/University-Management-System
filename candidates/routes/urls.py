@@ -34,6 +34,7 @@ urlpatterns=[
     path("entry-test-result", EntryTest.entry_test_result, name='entry_test_result'),
     path("get-challan-pdf/<str:name>", EntryTest.get_challan_pdf, name='get_challan_pdf'),
     path("wizard-session", EntryTest.wizard_session, name='wizard_session'),
+    path("sitting-plan", EntryTest.generate_sitting_plan, name='sitting_plan'),
 
     #admission routes
     path('apply-admission',Admission.index,name='apply_admission'),
