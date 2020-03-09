@@ -4,6 +4,7 @@ from candidates.models.PriorityDegree import *
 from candidates.models.EntryTest import *
 from candidates.models.Degree import *
 from candidates.models.CandidateProfile import *
+from candidates.models.MeritList import *
 from django.contrib import messages
 import string
 def index(request):
@@ -117,7 +118,11 @@ def index(request):
             )
 
 
+
         status = Qualification.objects.bulk_create(objects)
+        #make an entry in merit list model with status pending
+        MeritList.objects.create(candidate_id = user_id)
+
         return HttpResponse(str(len(objects)))
     try:
         degree_id = AppliedCandidate.objects.get(candidate_id=user_id).degree_id
@@ -158,9 +163,33 @@ def getChallan(request):
         return render(request,'pages/admission/challan.html')
 
 def finalizeAdmission(request):
-    return render(request,'pages/admission/finalize-admission.html')
+    user_id = request.session['user_id']
+    data = MeritList.objects.get(candidate_id=user_id)
+    return render(request, 'pages/admission/finalize-admission.html',{'data':data})
+
 
 def meritListStatus(request):
-    return render(request,'pages/admission/merit-list-status.html')
+    user_id = request.session['user_id']
+
+    try:
+        merit_data = MeritList.objects.get(candidate_id=user_id)
+        count = SelectedMeritPrograms.objects.filter(meritlist_id = merit_data.id).count()
+        if count > 0:
+            programs_data = SelectedMeritPrograms.objects.get(meritlist_id = merit_data.id,program_status = 0)
+            program = PrioriyDegree.objects.get(id =programs_data.selected_program_id)
+            return render(request,'pages/admission/merit-list-status.html',{'program':program,'status':1})
+            #name appeared
+        else:
+             return render(request,'pages/admission/merit-list-status.html',{'status':0})
+    except MeritList.DoesNotExist:
+        return render(request, 'pages/admission/merit-list-status.html',{'status':-1})
+
+
+
+    if data.selection_status == 0:
+        return render(request, 'pages/admission/merit-list-status.html',{'data':data})
+    else:
+        return render(request, 'pages/admission/merit-list-status.html')
+    #return render(request,'pages/admission/merit-list-status.html')
 
 

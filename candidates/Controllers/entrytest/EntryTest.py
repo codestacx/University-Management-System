@@ -29,7 +29,6 @@ def entry_test_application(request):
                 candidate_application = AppliedCandidate.objects.get(candidate_id=request.session['user_id'])
                 candidate_application.degree = Degree.objects.get(id=request.POST['degree'])
                 candidate_application.save()
-
                 return HttpResponse('success')
             else:
                 return HttpResponse('failed')
@@ -39,6 +38,13 @@ def entry_test_application(request):
         context['current_user'] = CandidateProfile.objects.get(candidate_id=request.session['user_id'])
         
         return render(request, "pages/entrytest/entry_test_application.html", context=context)
+
+def upload_challan(request):
+    user_id = request.session['user_id']
+    context = {}
+    context['current_user'] = CandidateProfile.objects.get(candidate_id=user_id)
+    return render(request,'pages/entrytest/upload-challan.html',context=context)
+
 
 def registeration_slip(request):
     return render(request, "pages/entrytest/registeration_slip.html")

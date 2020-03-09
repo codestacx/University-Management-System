@@ -4,6 +4,7 @@ from candidates.models import VerificationCode
 from candidates.models import Degree
 from candidates.models import EntryTest
 from candidates.models import PriorityDegree
+from candidates.models import MeritList
 
 __all__ = ['User', 'VerificationCode','CandidateProfile', 'Degree',
-             'EntryTest','PriorityDegree']
+             'EntryTest','PriorityDegree','MeritList']
