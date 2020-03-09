@@ -11,46 +11,30 @@ Admission Application
     type="text/javascript"></script>
 
 <script type="text/javascript">
-    function handlePriority() {
-        priorities = []
-        priority = {}
-        var count = 0;
 
-        // get priority values
-        $('.priority_unit').each(function () {
-
-            index = $(this).val()
-            priorities.push(index)
-
-            count = count + 1;
-        });
-
-        var index = 0
-        $('.program_unit').each(function () {
-
-            priority[priorities[index]] = $(this).val()
-            console.log($(this).val())
-            index += 1
+    $(document).ready(function () {
+        $('.add, select, #nextbtn').on('click input change', function () {
+            handlePriority()
         })
+    })
 
-        console.log(priorities)
-        console.log(priority)
+    function handlePriority() {
+        const items = $('#item_table tbody tr')
+        const priorities = items.find('.priority_unit').toArray().map(p => p.value)
+        const programs = items.find('.program_unit').toArray().map(p => p.value)
 
         var html = '';
 
-        for (const [key, value] of Object.entries(priority)) {
-            //console.log(key, value)
+        for (var i = 0; i < items.length; i++) {
             html += '<tr>';
 
-            html += '<th scope="row">' + key + '</th>'
-            html += '<td>' + value + '</td>'
+            html += '<th scope="row">' + priorities[i] + '</th>'
+            html += '<td>' + programs[i] + '</td>'
 
-
-            //{ #html += '<td data-field='OrderID' class='kt - datatable__cell'><span style='width: 112px; '>' + key + '</span></td>'# }
-            //{ # html += '<td>' + key + '</td><td>' + value + '</td></tr>'; # }
             html += '</tr>';
         }
-        $('#priority_table').append(html);
+        //$('#priority_table')
+        $('#priority_table tbody').html(html);
     }
 </script>
 {% endblock %}
@@ -200,7 +184,6 @@ Admission Application
                                     </div>
                                 </div>
 
-
                                 <!--begin: Form Wizard Step 3-->
                                 <div class="kt-wizard-v1__content" data-ktwizard-type="step-content">
 
@@ -223,14 +206,11 @@ Admission Application
                                             <table class="table table-striped col-8" id="priority_table">
                                                 <thead>
                                                     <tr>
-                                                        <th scope="col">priority</th>
+                                                        <th scope="col">Priority</th>
                                                         <th scope="col">Program</th>
-
                                                     </tr>
                                                 </thead>
                                                 <tbody>
-
-
                                                 </tbody>
                                             </table>
                                             <!-- ending table -->
@@ -242,7 +222,7 @@ Admission Application
                                                     <span
                                                         class="kt-switch kt-switch--outline kt-switch--icon kt-switch--success">
                                                         <label>
-                                                            <input type="checkbox" name="verification_status">
+                                                            <input type="checkbox" name="verification_status" required>
                                                             <span></span>
                                                         </label>
                                                     </span>

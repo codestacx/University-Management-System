@@ -55,8 +55,22 @@ var KTWizard1 = function () {
                             toFill.innerText = $(item).val()
                     }
                 })
+
+                // check if any duplicate values exist (specific for admissions wizard)
+                if ($('#items_table')) {
+                    if (duplicatesExist()) {
+                        ktwizard1.stop()
+
+                        KTUtil.scrollTop(), swal.fire({
+                            title: "",
+                            text: "There are some duplicate entries in your selection. Please remove them.",
+                            type: "error",
+                            confirmButtonClass: "btn btn-secondary"
+                        })
+                    }
+                }
             }), ktwizard1.on("beforePrev", function (e) {
-                !0 !== r.form() && e.stop()
+                /*!0 !== r.form() && e.stop()*/
             }), ktwizard1.on("change", function (e) {
                 setTimeout(function () {
                     KTUtil.scrollTop()
@@ -96,6 +110,14 @@ var KTWizard1 = function () {
         }
     }
 }();
+
+function duplicatesExist() {
+    const items = $('#item_table tbody tr')
+    const priorities = items.find('.priority_unit').toArray().map(p => p.value)
+    const programs = items.find('.program_unit').toArray().map(p => p.value)
+
+    return (new Set(priorities)).size !== priorities.length || (new Set(programs)).size !== programs.length
+}
 
 $(document).ready(function () {
     KTWizard1.init()
