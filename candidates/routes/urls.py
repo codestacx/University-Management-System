@@ -34,15 +34,14 @@ urlpatterns=[
     path("adjust-test-schedule", EntryTest.adjust_test_schedule, name='adjust_test_schedule'),
     path("entry-test-result", EntryTest.entry_test_result, name='entry_test_result'),
     path("get-challan-pdf/<str:name>", EntryTest.get_challan_pdf, name='get_challan_pdf'),
+    path("wizard-session", EntryTest.wizard_session, name='wizard_session'),
 
     #admission routes
-
     path('apply-admission',Admission.index,name='apply_admission'),
     path('get-challan',Admission.getChallan,name='get_challan'),
     path('merit-list-status',Admission.meritListStatus,name='merit_list_status'),
     path('admission-status',Admission.finalizeAdmission,name='admission_status'),
+    
     #testing
     path('testing',views.testing,name='testing')
-
-
 ]

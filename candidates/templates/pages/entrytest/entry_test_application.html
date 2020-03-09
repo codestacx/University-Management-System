@@ -7,16 +7,50 @@ Entry Test Application
 {% endblock %}
 
 {% block scripts %}
-    <script src="{% static 'themes/metronic/theme/default/demo1/dist/assets/js/pages/custom/wizard/wizard-1.js' %}"
-        type="text/javascript"></script>
-    <script src="{% static 'themes/metronic/theme/default/demo1/dist/assets/js/pages/crud/file-upload/dropzonejs.js' %}"
-        type="text/javascript"></script>
-    <script src="{% static 'js/pdf.js' %}" type="text/javascript"></script>
-    <script src="{% static 'js/custom.js' %}" type="text/javascript"></script>
+<script src="{% static 'themes/metronic/theme/default/demo1/dist/assets/js/pages/custom/wizard/wizard-1.js' %}"
+    type="text/javascript"></script>
+<script src="{% static 'themes/metronic/theme/default/demo1/dist/assets/js/pages/crud/file-upload/dropzonejs.js' %}"
+    type="text/javascript"></script>
+<script src="{% static 'js/pdf.js' %}" type="text/javascript"></script>
+<script src="{% static 'js/custom.js' %}" type="text/javascript"></script>
 
-    <script>
-        makeChallanPDF('{{current_user.firstname}} {{current_user.lastname}}', 'challan-form-canvas')
-    </script>
+<script>
+    makeChallanPDF('{{current_user.firstname}} {{current_user.lastname}}', 'challan-form-canvas')
+
+    $(document).ready(function () {
+        // wizard session handling
+        const degreeField = $('select[name=degree')
+        const verificationStatusField = $('input[name=verification_status]')
+
+        $.get('/wizard-session', function (response) {
+            const data = JSON.parse(response)
+
+            // parse session and fill form values, if any. AND
+            // set user to where they should be on the wizard
+            if (data.verification_status && data.degree) {
+                verificationStatusField.attr('checked', data.verification_status)
+                degreeField.val(data.degree)
+                ktwizard1.goTo(3)
+            } else if (data.degree) {
+                degreeField.val(data.degree)
+                ktwizard1.goTo(2)
+            }
+        })
+
+        // listen for form value changes and save session
+        degreeField.on('input change', function (e) {
+            $.get('/wizard-session?degree=' + degreeField.val(), function (response) {
+                console.log(response)
+            })
+        })
+
+        verificationStatusField.on('input change', function (e) {
+            $.get('/wizard-session?verification_status=' + verificationStatusField.is(':checked'), function (response) {
+                console.log(response)
+            })
+        })
+    })
+</script>
 {% endblock %}
 
 {% block body %}
@@ -113,6 +147,7 @@ Entry Test Application
                                         </div>
                                     </div>
 
+
                                     <div class="kt-wizard-v1__nav-item" data-ktwizard-type="step">
                                         <div class="kt-wizard-v1__nav-body">
                                             <div class="kt-wizard-v1__nav-icon">
@@ -120,16 +155,16 @@ Entry Test Application
                                             </div>
                                             <div class="kt-wizard-v1__nav-label">
                                                 5. Done
-                                            </div>
-                                        </div>
-                                    </div>
+
+
                                 </div>
                             </div>
                             <!--end: Form Wizard Nav -->
                         </div>
                         <div class="kt-grid__item kt-grid__item--fluid kt-wizard-v1__wrapper">
                             <!--begin: Form Wizard Form-->
-                            <form class="kt-form" enctype="multipart/form-data" id="kt_form" method="POST" action="{% url 'entry_test_application' %}">
+                            <form class="kt-form" enctype="multipart/form-data" id="kt_form" method="POST"
+                                action="{% url 'entry_test_application' %}">
                                 {% csrf_token %}
                                 <!--begin: Form Wizard Step 1-->
                                 <div class="kt-wizard-v1__content" data-ktwizard-type="step-content"
@@ -138,11 +173,11 @@ Entry Test Application
                                         Test For</div>
                                     <div class="form-group">
                                         <label>Choose Program</label>
-                                        <div></div>
-                                        <select name="degree" id="degree_select" class="custom-select form-control">
+                                        <select name="degree" id="degree_select" class="custom-select form-control"
+                                            required>
                                             <option value="-1" selected="">Open this select menu</option>
                                             {% for degree in degrees %}
-                                                <option  value="{{degree.degree_id}}">{{ degree.degree_level }}</option>
+                                            <option value="{{degree.degree_id}}">{{ degree.degree_level }}</option>
                                             {% endfor %}
                                         </select>
                                         <span class="form-text text-muted">Please select a program that the university
@@ -161,7 +196,7 @@ Entry Test Application
                                                 <div class="kt-wizard-v1__review-title">
                                                     Selected Program
                                                 </div>
-                                                <div class="kt-wizard-v1__review-content">
+                                                <div class="kt-wizard-v1__review-content" id="degree_val">
                                                     Bachelors
                                                 </div>
                                             </div>
@@ -186,7 +221,8 @@ Entry Test Application
                                                     Photo
                                                 </div>
                                                 <div class="kt-wizard-v1__review-content">
-                                                    <img src="{{ current_user.image.url }}" width="200px" height="200px" />
+                                                    <img src="{{ current_user.image.url }}" width="200px"
+                                                        height="200px" />
                                                 </div>
                                             </div>
                                             <div class="kt-wizard-v1__review-item">
@@ -231,7 +267,7 @@ Entry Test Application
                                                     <span
                                                         class="kt-switch kt-switch--outline kt-switch--icon kt-switch--success">
                                                         <label>
-                                                            <input type="checkbox" checked="unchecked" name="verification_status" />
+                                                            <input type="checkbox" name="verification_status" required />
                                                             <span></span>
                                                         </label>
                                                     </span>
@@ -253,6 +289,7 @@ Entry Test Application
                                     </div>
                                 </div>
 
+
                                 <!--begin: Form Wizard Step 5-->
                                 <div class="kt-wizard-v1__content" data-ktwizard-type="step-content">
                                     <div class="kt-heading kt-heading--md">Now Just Wait While We Verify Your Payment
@@ -262,7 +299,7 @@ Entry Test Application
                                             to download and print your registration slip from the left sidebar.</p>
                                     </div>
                                 </div>
-                                <!--end: Form Wizard Step 5-->
+
                                 <!--begin: Form Actions -->
                                 <div class="kt-form__actions">
                                     <button
@@ -293,6 +330,11 @@ Entry Test Application
     </div>
     <!-- end:: Footer -->
 </div>
+
+        </div>
+    </div>
+</div>
+
 
 
 
@@ -341,6 +383,5 @@ Entry Test Application
 
     }
     </script>
-    <!-- end::Chat-->
-    {% endblock %}
 
+{% endblock %}
