@@ -92,7 +92,7 @@
 
 
         <div class="kt-notification__custom kt-space-between">
-            <a href="{% url 'logout' %}"  class="btn btn-label btn-label-brand btn-sm btn-bold">Sign Out</a>    </div>
+            <a href=" {% if request.session.admin_logged %}  {% url 'admin_logout' %} {% else %} {% url 'logout' %} {% endif %}"  class="btn btn-label btn-label-brand btn-sm btn-bold">Sign Out</a>    </div>
     </div>
     <!--end: Navigation -->
         </div>

@@ -1,0 +1,173 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block title %}
+Admission Application
+{% endblock %}
+
+{% block scripts %}
+<script src="{% static '/themes/metronic/theme/default/demo1/dist/assets/js/pages/custom/wizard/wizard-1.js' %}"
+    type="text/javascript"></script>
+
+<script type="text/javascript">
+
+    $(document).ready(function () {
+        $('.add, select, #nextbtn').on('click input change', function () {
+            handlePriority()
+        })
+    })
+
+    function handlePriority() {
+        const items = $('#item_table tbody tr')
+        const priorities = items.find('.priority_unit').toArray().map(p => p.value)
+        const programs = items.find('.program_unit').toArray().map(p => p.value)
+
+        var html = '';
+
+        for (var i = 0; i < items.length; i++) {
+            html += '<tr>';
+
+            html += '<th scope="row">' + priorities[i] + '</th>'
+            html += '<td>' + programs[i] + '</td>'
+
+            html += '</tr>';
+        }
+        //$('#priority_table')
+        $('#priority_table tbody').html(html);
+    }
+</script>
+{% endblock %}
+
+{% block body %}
+<div class="kt-grid__item kt-grid__item--fluid kt-grid kt-grid--hor kt-wrapper" id="kt_wrapper">
+
+    <div class="kt-content  kt-grid__item kt-grid__item--fluid kt-grid kt-grid--hor" id="kt_content">
+
+        <!-- begin:: Subheader -->
+        <div class="kt-subheader   kt-grid__item" id="kt_subheader">
+            <div class="kt-container  kt-container--fluid ">
+                <div class="kt-subheader__main">
+
+
+                    <span class="kt-subheader__separator kt-hidden"></span>
+
+                </div>
+
+            </div>
+        </div>
+        <!-- end:: Subheader -->
+
+        <!-- begin:: Content -->
+        <div class="kt-container  kt-container--fluid  kt-grid__item kt-grid__item--fluid">
+
+
+                <div class="kt-portlet">
+			<div class="kt-portlet__head">
+				<div class="kt-portlet__head-label">
+					<h3 class="kt-portlet__head-title">
+						Entry Test Challans
+					</h3>
+				</div>
+			</div>
+			<!--begin::Form-->
+			<form class="kt-form">
+				<div class="kt-portlet__body">
+					<div class="kt-section kt-section--first">
+						<div class="form-group">
+							<label>Registration ID:</label>
+							<input type="text" id="studentid" class="form-control col-sm-6" placeholder="Enter Student Registration ID">
+							<span class="form-text text-muted">Please enter assigned registration ID of Candidate</span>
+						</div>
+
+                        <div id="showcase" class="form-group">
+
+                            Challan will be show here
+
+                        </div>
+                        <div class="form-group">
+
+							<input type="button" id="nextbtn" onclick="submitform()" class="btn btn-sm btn-success" value="Next"/>
+
+						</div>
+
+
+		            </div>
+	            </div>
+	            <div id="buttons" style="display: none" class="kt-portlet__foot">
+					<div class="kt-form__actions">
+						<button onclick="approve()" type="reset" class="btn btn-primary">Approve</button>
+						<button type="reset" class="btn btn-secondary">Reject</button>
+					</div>
+				</div>
+			</form>
+			<!--end::Form-->
+		</div>
+
+            <div class="kt-portlet">
+                <div class="kt-portlet__body kt-portlet__body--fit">
+                      {% if messages %}
+                            {% for message in messages %}
+
+                                <div class="alert alert-info">
+                                {{ message }}
+                                </div>
+                                {% endfor %}
+                            {% endif %}
+
+                </div>
+
+            </div>
+        </div>
+        <!-- end:: Content -->
+    </div>
+    <!-- end:: Footer -->
+</div>
+    <script>
+
+    function submitform() {
+
+        var id = document.getElementById('studentid').value
+        $.ajax({
+            type:'POST',
+            dataType:'json',
+            url:'verify_echallan',
+            data:{
+                'id':id,
+                'action':0,
+                csrfmiddlewaretoken:'{{ csrf_token }}'
+
+            },
+            success:function (data) {
+               var img = document.createElement("img");
+               img.src = "Capture.PNG"
+                document.getElementById('nextbtn').style.display='none'
+                document.getElementById('buttons').style.display='block'
+               document.getElementById('showcase').innerHTML = "<img src='https://avatars1.githubusercontent.com/u/46080087?v=4' />";
+
+            }
+        })
+    }
+
+    function approve() {
+
+        var id = document.getElementById('studentid').value
+        $.ajax({
+            type:'POST',
+            dataType:'json',
+            url:'verify_echallan',
+            data:{
+                'id':id,
+                'action':1,
+                csrfmiddlewaretoken:'{{ csrf_token }}'
+
+            },
+            success:function (data) {
+
+                alert(data.message)
+
+            }
+        })
+    }
+    </script>
+{% endblock %}
