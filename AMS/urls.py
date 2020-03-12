@@ -7,6 +7,7 @@ from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 
 urlpatterns = [
     path('', include('candidates.routes.urls')),
+    path('admin/',include('admin.routes.urls')),
 ]
 
 if settings.DEBUG:

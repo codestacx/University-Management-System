@@ -39,13 +39,11 @@ def signup(request):
         password = request.POST['password']
         status = User.objects.create(email=email,password=password,role='candidate')
         if (status):
-            request.session['user_logged'] = True
-            request.session['user_id']     = status.pk
-            request.session['user_email']  = email
-
             messages.success(request, 'Registration done successfully')
             return render(request, 'pages/login/login.html')
 # Logout Controller
 def logout(request):
     del request.session['user_logged']
+    del request.session['user_id']
+    del request.session['user_email']
     return redirect('login')

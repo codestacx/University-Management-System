@@ -24,8 +24,6 @@ def entry_test_application(request):
             candidate_id = User.objects.get(id=request.session['user_id'])
         except Degree.DoesNotExist:
             return HttpResponse('failure')
-
-        print(request.POST)
         if request.POST['verification_status'] == 'on':
             candidate_application = AppliedCandidate.objects.create(
                 candidate=candidate_id,
@@ -35,7 +33,14 @@ def entry_test_application(request):
 
             return HttpResponse(candidate_application.pk)
         else:
-            return HttpResponse('failed')
+            if request.POST['verification_status'] == 'on':
+                candidate_application = AppliedCandidate.objects.get(candidate_id=request.session['user_id'])
+                candidate_application.degree = Degree.objects.get(id=request.POST['degree'])
+                candidate_application.save()
+                return HttpResponse('success')
+            else:
+                return HttpResponse('failed')
+
     else:
         context = {}
         context['degrees'] = Degree.objects.raw(
@@ -145,6 +150,7 @@ def get_challan_pdf(request, name):
         return HttpResponse(result.getvalue(), content_type='application/pdf')
     return 'lolz'
 
+
 def upload_challan(request):
     user_id = request.session['user_id']
     if request.method == 'POST':
@@ -161,6 +167,7 @@ def upload_challan(request):
         except CandidateProfile.DoesNotExist:
             messages.error(request, 'No challan available')
             return render(request, 'pages/entrytest/challan.html')
+
 
 def wizard_session(request):
     if request.method == 'GET':
