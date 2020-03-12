@@ -15,7 +15,7 @@ def index(request):
                 'email':email,
                 'id':status.id
             }
-            return redirect('home')
+            return redirect('admin_home')
         except User.DoesNotExist:
             return HttpResponse('failed')
     return render(request,'auths/login.html')

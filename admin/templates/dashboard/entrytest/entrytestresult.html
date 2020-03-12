@@ -3,19 +3,60 @@
 {% load static %}
 
 {% block title %}
-Admission Application
+Entry Test Result
 {% endblock %}
 
 {% block scripts %}
 <script src="{% static '/themes/metronic/theme/default/demo1/dist/assets/js/pages/custom/wizard/wizard-1.js' %}"
     type="text/javascript"></script>
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
 <script>
+
 fetchall()
 </script>
 
 {% endblock %}
 
 {% block body %}
+
+
+
+    <div class="modal fade" id="myModal">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+
+        <!-- Modal Header -->
+        <div class="modal-header">
+          <h4 class="modal-title">Mark Result</h4>
+
+        </div>
+
+        <!-- Modal body -->
+        <div class="modal-body">
+
+                 <input type="hidden" class="form-control"  name="candidateid" id="candidateid"/>
+                  <input type="hidden" class="form-control"  name="testid" id="testid"/>
+                 <input type="text" class="form-control" placeholder="Obtained Marks" name="obtainedmarks" id="obtainedmarks"/>
+                 <div class="modal-footer">
+
+                  <button type="submit" onclick="submitdata()" class="btn btn-primary">Submit</button>
+                  <button type="button" id="closebtn" class="btn btn-danger" data-dismiss="modal">Close</button>
+                </div>
+
+        </div>
+
+        <!-- Modal footer -->
+
+
+      </div>
+    </div>
+  </div>
+
+
+
 <div class="kt-grid__item kt-grid__item--fluid kt-grid kt-grid--hor kt-wrapper" id="kt_wrapper">
 
     <div class="kt-content  kt-grid__item kt-grid__item--fluid kt-grid kt-grid--hor" id="kt_content">
@@ -43,7 +84,7 @@ fetchall()
 			<div class="kt-portlet__head">
 				<div class="kt-portlet__head-label">
 					<h3 class="kt-portlet__head-title">
-						Entry Test Challans
+						Entry Test Result
 
 
 					</h3>
@@ -57,14 +98,21 @@ fetchall()
 			<!--begin::Form-->
 			<form class="kt-form">
 				<div class="kt-portlet__body">
-					<div class="kt-section kt-section--first">
-						<div class="form-group">
+					<div  class="kt-section kt-section--first">
+						<div class="form-group ">
 							<label>Registration ID:</label>
-							<input type="text" id="studentid" class="form-control col-sm-6" placeholder="Enter Student Registration ID">
+							<input type="text" id="student_id" class="form-control col-sm-6" placeholder="Enter Student Registration ID">
 							<span class="form-text text-muted">Please enter assigned registration ID of Candidate</span>
 						</div>
+                        <input type="hidden" id="test_id" class="form-control col-sm-6" />
 
-                        <div id="showcase" class="form-group">
+                        <div style="display: none;" id="marks"  class="form-group">
+                            	<label>Obtained Marks :</label>
+							<input type="text" id="obtained_marks" class="form-control col-sm-6" placeholder="Enter Obtained Marks">
+							<span class="form-text text-muted">Please enter obtained marks in test</span>
+                        </div>
+
+                        <div id="showcase" class="form-group " >
 
 
 
@@ -81,13 +129,9 @@ fetchall()
 	            <div id="buttons"  class="kt-portlet__foot">
 					<div class="kt-form__actions">
 
-						<button id="approve"  style="display: none"  type="reset"  onclick="approverec();" class="btn btn-primary">Approve</button>
+						<button id="approve"  style="display: none"  type="reset"  onclick="submitdata(true)" class="btn btn-primary">Submit</button>
 					</div>
-                    <div class="kt-form__actions">
-                        <hr/>
-                        						<button type="reset"  style="display: none"  id="reject" onclick="rejectrec();" class="btn btn-secondary">Reject</button>
 
-                    </div>
                     <div class="kt-form__actions">
                         <hr/><button type="reset"  style="display: none" onclick="reload()" id="cancel"  class="btn btn-warning">Cancel</button>
 
@@ -104,10 +148,12 @@ fetchall()
 						  	<thead class="thead-light">
 						    	<tr>
 						      		<th>Candidate ID</th>
+
 						      		<th>Full Name</th>
 						      		<th>CNIC</th>
-						      		<th>Status</th>
-                                    <th>Challan</th>
+						      		<th>Program</th>
+                                    <th>Total Marks</th>
+                                    <th> Action </th>
 						    	</tr>
 						  	</thead>
 						  	<tbody id="tbody">
@@ -140,53 +186,102 @@ fetchall()
     <script>
 
 
+    function submitdata(check=false){
+        if(check !== true){
+             var element = document.getElementById('closebtn');
+        element.click()
+             var marks = document.getElementById('obtainedmarks').value
+        var id = document.getElementById('candidateid').value;
+        var testid = document.getElementById('testid').value
+        }
+        else{
+            var marks = document.getElementById('obtained_marks').value;
+            var id = document.getElementById('student_id').value;
+            var testid=document.getElementById('test_id').value;
+        }
+
+
+
+
+        $.ajax({
+            type:'POST',
+            url:'markresult',
+            dataType:'json',
+            data:{
+                'candidate_id':id,
+                'testid':testid,
+                'marks':marks,
+                'action':1,
+                csrfmiddlewaretoken:'{{ csrf_token }}'
+            },
+
+            success:function (data) {
+                if(data.status === true){
+                    alert('result marked successfully')
+                    reset()
+
+                }
+                else{
+                    alert('soomething goes wrong')
+                }
+            }
+        })
+
+    }
     function viewInfo(candidate_id) {
             document.getElementById('studentid').value = candidate_id
         submitform()
     }
 
     function reset(){
-        document.getElementById('studentid').value='';
+        document.getElementById('student_id').value='';
          document.getElementById('cancel').style.display='none';
         document.getElementById('approve').style.display='none';
-        document.getElementById('reject').style.display='none';
+  document.getElementById('marks').style.display='none';
         document.getElementById('nextbtn').style.display='block'
         document.getElementById('showcase').innerHTML=''
 
     }
     function submitform() {
 
-        var id = document.getElementById('studentid').value
+        var id = document.getElementById('student_id').value
         $.ajax({
             type:'POST',
             dataType:'json',
-            url:'verify_echallan',
+            url:'markresult',
             data:{
-                'id':id,
+                'candidate_id':id,
                 'action':0,
                 csrfmiddlewaretoken:'{{ csrf_token }}'
 
             },
             success:function (data) {
-               var img = document.createElement("img");
+
                document.getElementById('showcase').innerHTML=''
-               img.src = "Capture.PNG"
-                if (data.status === 1 ){
-                                document.getElementById('reject').style.display='block'
+
+                if (data.status === 2 ){
+
                     document.getElementById('approve').style.display='none'
-                    document.getElementById('showcase').innerHTML = '<div class="alert alert-danger"> Already Approved</div>'
+                    document.getElementById('marks').style.display='none'
+                    document.getElementById('showcase').innerHTML = '<div class="alert alert-danger"> Already Marked</div>'
                 }
                 else if (data.status === -1){
                     document.getElementById('showcase').innerHTML = '<div class="alert alert-danger"> No candidate found</div>'
                     return;
                 }
-                else{
-                            document.getElementById('approve').style.display='block'
-                             document.getElementById('reject').style.display='block'
+                else if(data.status === -2){
+                     document.getElementById('showcase').innerHTML = '<div class="alert alert-danger"> Candidate has not paid challan </div>'
+                    return;
+                }
+
+                else if (data.status ===0){
+                            document.getElementById('approve').style.display='block';
+                            document.getElementById('test_id').value = data.testid;
+                    document.getElementById('marks').style.display='block'
+
                 }
                 document.getElementById('cancel').style.display='block'
                 document.getElementById('nextbtn').style.display='none'
-                document.getElementById('showcase').innerHTML += "<img src='https://avatars1.githubusercontent.com/u/46080087?v=4' />";
 
             }
         })
@@ -217,36 +312,16 @@ fetchall()
         })
     }
 
-    function rejectrec() {
-         var id = document.getElementById('studentid').value
-        $.ajax({
-            type:'POST',
-            dataType:'json',
-            url:'verify_echallan',
-            data:{
-                'id':id,
-                'action':2,
-                csrfmiddlewaretoken:'{{ csrf_token }}'
 
-            },
-            success:function (data) {
-
-                alert(data.message)
-                reset()
-                fetchall()
-
-            }
-        })
-    }
 
     function fetchall() {
          document.getElementById('tbody').innerHTML=''
         $.ajax({
             type:'POST',
 
-            url:'verify_echallan',
+            url:'entrytestresult',
             data:{
-                'action':3,
+
                 csrfmiddlewaretoken:'{{ csrf_token }}'
 
             },
@@ -257,22 +332,21 @@ fetchall()
 
                 html = ''
                 for(var i=0;i<data.length;i++){
-                    var id = data[i].candidate_id
+                    var id = data[i].candidate_id;
+                    var testid = data[i].testid
                    html+='<tr>';
                    html+='<td>'+data[i].candidate_id+'</td>';
                    html+='<td>'+data[i].name+'</td>';
                    html+='<td>'+data[i].cnic+'</td>';
-                   html+='<td>';
-                   if(data[i].challan_status ===1){
-                       html+='Approved';
-                   }
-                   else{
-                       html+='Pending';
-                   }
-
-                   btn = "<button type='button' onclick='viewInfo("+id+")' class='btn btn-info btn-sm'>View</button>";
+                    html+='<td>'+data[i].program+'</td>';
+                     html+='<td>'+data[i].totalmarks+'</td>';
+                      btn = "<button type='button' onclick='setCandidateId("+id+","+testid+")' id='markresult' data-toggle='modal' data-target='#myModal' class='btn btn-info btn-sm'>Add Result</button>";
 
                    html+='<td>'+btn+'</td>';
+                   html+='<td>';
+
+
+
                    html+='</tr>';
 
                 }
@@ -285,6 +359,10 @@ fetchall()
     }
 
 
+function setCandidateId(id,testid) {
+   document.getElementById('candidateid').value = id;
+   document.getElementById('testid').value = testid
+}
     function  reload() {
         location.reload()
     }
