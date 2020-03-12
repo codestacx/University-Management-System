@@ -16,6 +16,7 @@ import json
 from django.contrib import messages
 
 
+# TODO: if already applied dont insert, show an error
 def entry_test_application(request):
     if request.method == 'POST':
         try:
@@ -28,12 +29,9 @@ def entry_test_application(request):
         if request.POST['verification_status'] == 'on':
             candidate_application = AppliedCandidate.objects.create(
                 candidate=candidate_id,
-                paid_challan_copy=request.FILES['paid-challan-copy'],
+                paid_challan_copy=None,
                 degree=degree_id
             )
-
-            # generate sitting plane
-            generate_sitting_plan()
 
             return HttpResponse(candidate_application.pk)
         else:
@@ -147,6 +145,22 @@ def get_challan_pdf(request, name):
         return HttpResponse(result.getvalue(), content_type='application/pdf')
     return 'lolz'
 
+def upload_challan(request):
+    user_id = request.session['user_id']
+    if request.method == 'POST':
+
+        if request.FILES:
+            obj = AppliedCandidate.objects.get(candidate_id=user_id)
+            obj.paid_challan_copy = request.FILES['paid-challan-copy']
+            obj.save()
+            return HttpResponse('saved')
+    elif request.method == 'GET':
+        try:
+            user = CandidateProfile.objects.get(candidate_id=user_id)
+            return render(request, 'pages/entrytest/challan.html', {'user': user})
+        except CandidateProfile.DoesNotExist:
+            messages.error(request, 'No challan available')
+            return render(request, 'pages/entrytest/challan.html')
 
 def wizard_session(request):
     if request.method == 'GET':

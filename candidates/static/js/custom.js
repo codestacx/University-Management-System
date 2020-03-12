@@ -1,9 +1,3 @@
-$('.sortable').sortable();
-
-$('#sortable1, #sortable2').sortable({
-    connectWith: '.connected'
-});
-
 function makeChallanPDF(name, canvasID) {
     var url = `http://localhost:8000/get-challan-pdf/${name}`;
 
