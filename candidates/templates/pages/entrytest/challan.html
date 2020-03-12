@@ -3,7 +3,7 @@
 {% load static %}
 
 {% block title %}
-Admission Challan
+Entry Test Challan
 {% endblock %}
 
 {% block scripts %}
@@ -11,11 +11,11 @@ Admission Challan
     type="text/javascript"></script>
 <script>
     KTUtil.ready(function () {
-        AdmissionsXDropzone.init("#paid_challan_admission_dropzone", "/upload-challan-admission")
+        AdmissionsXDropzone.init("#paid_challan_entrytest_dropzone", "/upload-challan-entrytest")
     })
 </script>
 {% endblock %}
 
 {% block body %}
-{% include 'pages/generic-challan-upload.html' with dropzone_id="paid_challan_admission_dropzone" %}
+{% include 'pages/generic-challan-upload.html' with dropzone_id="paid_challan_entrytest_dropzone" %}
 {% endblock %}
