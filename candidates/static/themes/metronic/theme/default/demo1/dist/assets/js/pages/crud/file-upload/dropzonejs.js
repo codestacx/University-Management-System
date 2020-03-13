@@ -1,6 +1,6 @@
 "use strict";
 const AdmissionsXDropzone = {
-    init: function (dz_id) {
+    init: function (dz_id, submitURL) {
         $("#kt_dropzone_1").dropzone({
             url: "https://keenthemes.com/scripts/void.php",
             paramName: "file",
@@ -19,7 +19,7 @@ const AdmissionsXDropzone = {
             accept: function (e, o) {
                 "justinbieber.jpg" == e.name ? o("Naha, you don't.") : o()
             }
-        }), $(dz_id, submitURL).dropzone({
+        }), $(dz_id).dropzone({
             url: submitURL,
             paramName: "paid-challan-copy",
             headers: {
