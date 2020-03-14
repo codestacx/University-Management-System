@@ -23,6 +23,7 @@ urlpatterns = [
     #verify entry test challan
     path('echallan',ChallanController.entryTestChallan,name='echallan'),
     path('verify_echallan',ChallanController.verifyEntryTestChallan,name='verify_echallan'),
+    path('entrytest-challan-rejection-reason', ChallanController.entrytest_challan_rejection_reason, name='entrytest_challan_rejection_reason'),
     
     #entry test result
     path('entrytestresult',EntryTestController.result,name='entrytestresult'),
