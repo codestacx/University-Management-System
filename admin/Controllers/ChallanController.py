@@ -2,6 +2,7 @@ from django.http import HttpResponse,JsonResponse
 from django.shortcuts import render,redirect
 from candidates.models.EntryTest import *
 from candidates.models.CandidateProfile import CandidateProfile
+from candidates.models.Rejection import Rejection
 from django.core import serializers
 import json
 
@@ -68,7 +69,15 @@ def verifyEntryTestChallan(request):
 
 def entrytest_challan_rejection_reason(request):
     if request.method == 'POST':
-        print(request.POST)
-        return HttpResponse('saved')
+        if Rejection.objects.filter(candidate_id=request.POST['candidate_id'], category='entrytest').exists():
+            rejection = Rejection.objects.get(candidate_id=request.POST['candidate_id'], category='entrytest')
+            rejection.reason = request.POST['reason']
+            rejection.save()
+            return HttpResponse('saved')
+        else:
+            rejection = Rejection.objects.create(candidate_id=request.POST['candidate_id'], reason=request.POST['reason'], category='entrytest')
+            rejection.save()
+            return HttpResponse('saved')
+        return HttpResponse('something went wrong')
     else:
         return HttpResponse('Only POST supported')
