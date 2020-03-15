@@ -340,7 +340,7 @@ fetchall()
                    html+='<td>'+data[i].cnic+'</td>';
                     html+='<td>'+data[i].program+'</td>';
                      html+='<td>'+data[i].totalmarks+'</td>';
-                      btn = "<button type='button' onclick='setCandidateId("+id+","+testid+")' id='markresult' data-toggle='modal' data-target='#myModal' class='btn btn-info btn-sm'>Add Result</button>";
+                      btn = "<button type='button' onclick='setCandidateId("+id+","+testid+")' id='markresult'  class='btn btn-info btn-sm'>Add Result</button>";
 
                    html+='<td>'+btn+'</td>';
                    html+='<td>';
@@ -360,6 +360,42 @@ fetchall()
 
 
 function setCandidateId(id,testid) {
+        //check if the result is already marked
+        $.ajax({
+            type:'POST',
+            dataType:'json',
+            url:'markresult',
+            data:{
+                'candidate_id':id,
+                'action':0,
+                csrfmiddlewaretoken:'{{ csrf_token }}'
+
+            },
+            success:function (data) {
+                if (data.status === 2 ){
+                    alert('already marked')
+                }
+                else {
+
+                    var btn = document.createElement("BUTTON",);
+
+                    btn.setAttribute('data-toggle','modal');
+                    btn.setAttribute('data-target','#myModal');
+                    btn.setAttribute("style","display:none");
+                    btn.setAttribute('id','secretbtn')
+                    btn.addEventListener('click',(e)=>{
+                        e.preventDefault()
+                    })
+
+                    document.getElementById('showcase').appendChild(btn)
+                    document.getElementById('secretbtn').click()
+
+
+                    //btn.click()
+
+                }
+            }
+        })
    document.getElementById('candidateid').value = id;
    document.getElementById('testid').value = testid
 }

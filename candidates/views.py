@@ -5,12 +5,19 @@ from candidates.models.VerificationCode import VerificationCode
 import json
 import array
 from candidates.models.PriorityDegree import *
+from candidates.models.CandidateProfile import CandidateProfile
 from django.shortcuts import render
-
-
+from candidates.models.Degree import *
+from django.core import serializers
 def testing(request):
-    degrees = PrioriyDegree.objects.all()
-    priorities = []
-    for i in range(1, 13):
-        priorities.append(i)
-    return render(request,'testing/testing.html',{'degrees':degrees,'priorities':priorities})
+    #objectQuerySet = CandidateProfile.objects.filter(candidate_id=1)
+    objectQuerySet = Qualification.objects.raw("SELECT * FROM `candidates_qualification`"
+"LEFT JOIN `candidates_degreecriteria` ON `candidates_degreecriteria`.`degree_criteria_id` = `candidates_qualification`.`criteria_id`"
+"WHERE `candidates_qualification`.`candidate_id` =1")
+
+
+    data = serializers.serialize('json', list(objectQuerySet))
+    return HttpResponse((data))
+    # data = Qualification.objects.raw("SELECT * FROM `candidates_qualification` WHERE `candidates_qualification`.`candidate_id` =1")
+    #
+    # return HttpResponse({"data":list(json.dumps(data))})
