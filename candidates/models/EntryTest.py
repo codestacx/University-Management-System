@@ -8,7 +8,7 @@ class AppliedCandidate(models.Model):
     candidate = models.ForeignKey('User', on_delete=models.CASCADE)
     degree = models.ForeignKey('Degree', null=True, on_delete=models.CASCADE)
     paid_challan_copy = models.ImageField('Image', upload_to='candidates/uploads/paid_challans')
-    challan_status = models.IntegerField(default=1)
+    challan_status = models.IntegerField(default=0)
 
     class Meta:
         app_label = 'candidates'

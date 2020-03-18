@@ -180,6 +180,10 @@ fetchall()
                     document.getElementById('showcase').innerHTML = '<div class="alert alert-danger"> No candidate found</div>'
                     return;
                 }
+                else if (data.status === -2){
+                    document.getElementById('showcase').innerHTML = '<div class="alert alert-danger"> Candidate has not yet uploaded challan </div>'
+                    return;
+                }
                 else{
                             document.getElementById('approve').style.display='block'
                              document.getElementById('reject').style.display='block'

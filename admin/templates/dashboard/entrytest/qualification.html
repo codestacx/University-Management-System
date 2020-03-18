@@ -142,8 +142,33 @@ fetchall()
     <script>
 
 
+    function populateTable(data){
+        html =''
+         html += '<div class="kt-section"><div class="kt-section__content"><table class="table"> <thead class="thead-light">'
+		 html+= '<tr><th>Degree</th><th>Institute</th> <th>Total Marks</th> <th>Obtained Marks</th></tr> </thead><tbody>';
+
+        for(var i=0;i<data.length;i++){
+             var id = data[i].candidate_id
+                   html+='<tr>';
+
+                   html+='<td>'+data[i].requirement+'</td>';
+                   html+='<td>'+data[i].institute+'</td>';
+                    html+='<td>'+data[i].totalmarks+'</td>';
+                     html+='<td>'+data[i].obtained+'</td>';
+                   {#html+='<td>';#}
+                   {##}
+                   {#btn = "<button type='button' onclick='viewInfo("+id+")' class='btn btn-info btn-sm'>View</button>";#}
+                   {##}
+                   {#html+='<td>'+btn+'</td>';#}
+                   html+='</tr>';
+        }
+
+        html +='</tbody></table> </div> </div>';
+        document.getElementById('showcase').innerHTML=html
+    }
+
     function viewInfo(candidate_id) {
-            document.getElementById('studentid').value = candidate_id
+        document.getElementById('studentid').value = candidate_id
         submitform()
     }
 
@@ -162,7 +187,7 @@ fetchall()
         $.ajax({
             type:'POST',
             dataType:'json',
-            url:'verify_adchallan',
+            url:'verify_qualification',
             data:{
                 'id':id,
                 'action':0,
@@ -173,8 +198,8 @@ fetchall()
                var img = document.createElement("img");
                document.getElementById('showcase').innerHTML=''
                img.src = "Capture.PNG"
-                if (data.status === 1 ){
-                                document.getElementById('reject').style.display='block'
+                if ( data.status === 1 ){
+                    document.getElementById('reject').style.display='block'
                     document.getElementById('approve').style.display='none'
                     document.getElementById('showcase').innerHTML = '<div class="alert alert-danger"> Already Approved</div>'
                 }
@@ -182,8 +207,16 @@ fetchall()
                     document.getElementById('showcase').innerHTML = '<div class="alert alert-danger"> No candidate found</div>'
                     return;
                 }
+                else if(data.status == -2){
+                   document.getElementById('showcase').innerHTML = '<div class="alert alert-danger"> Unpaid Admission Chalan</div>'
+                    return;
+                }
                 else{
-                            document.getElementById('approve').style.display='block'
+                            console.log(data.result)
+                            console.log(data.image)
+                            populateTable(data.result)
+
+                             document.getElementById('approve').style.display='block'
                              document.getElementById('reject').style.display='block'
                 }
                 document.getElementById('cancel').style.display='block'
@@ -202,7 +235,7 @@ fetchall()
         $.ajax({
             type:'POST',
             dataType:'json',
-            url:'verify_adchallan',
+            url:'verify_qualification',
             data:{
                 'id':id,
                 'action':1,
@@ -224,7 +257,7 @@ fetchall()
         $.ajax({
             type:'POST',
             dataType:'json',
-            url:'verify_adchallan',
+            url:'verify_qualification',
             data:{
                 'id':id,
                 'action':2,
@@ -245,7 +278,7 @@ fetchall()
          document.getElementById('tbody').innerHTML=''
         $.ajax({
             type:'POST',
-
+            dataType:'json',
             url:'verify_qualification',
             data:{
                 'action':3,

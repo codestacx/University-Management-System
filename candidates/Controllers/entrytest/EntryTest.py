@@ -79,63 +79,102 @@ def generate_sitting_plan(request):
     return HttpResponse("Something went wrong. Probably no space left for u.")
 
 
+def checkForNext(step,candidate_id):
+    obj = {}
+    try:
+        result = AppliedCandidate.objects.get(candidate_id =candidate_id)
+        #check if he has uploaded challan
+        if result.paid_challan_copy == '':
+            obj['status'] = 0
+            obj['message'] ='Please upload Paid Challan copy'
+        if result.challan_status == 0:
+            obj['status'] = 1;
+            obj['message'] = 'Your challan is still pending. Wait untill it gets approved'
+        else:
+            obj['status'] =2
+            obj['message']='Challan has been approved successfully'
+    except AppliedCandidate.DoesNotExist:
+        obj['status'] = -1
+        obj['message'] = 'Please Apply first for entry test'
+    #check if challan uploaded and approved
+    return (obj)
+
+
+
 def registeration_slip(request):
-    return render(request, "pages/entrytest/registeration_slip.html")
+    user_id = request.session['user_id']
+    obj = checkForNext(0,user_id)
+    return render(request, "pages/entrytest/registeration_slip.html",{'obj':obj,'list':[1,0,-1]})
 
 
 def adjust_test_schedule(request):
     candidate_id = request.session['user_id']
 
-    # get the info from parent table for requested candidate
-    try:
-        plan_info = PlanInfo.objects.get(candidate_id=candidate_id)
-    except PlanInfo.DoesNotExist:
-        messages.error(request, 'You plan is not yet updated')
-        return render(request, "pages/entrytest/adjust_test_schedule.html", {'status': 0})
+    user_id = request.session['user_id']
+    obj = checkForNext(0, user_id)
+    if obj['status'] ==2:
+        #challan is approved get plan info
+        # get the info from parent table for requested candidate
+        try:
+            plan_info = PlanInfo.objects.get(candidate_id=candidate_id)
+            #return HttpResponse('working')
+            print('worki')
+            hall_info = Hall.objects.get(hall_id=plan_info.hall_id)
+            slot_info = Slot.objects.get(slot_id=plan_info.slot_id)
+            test_info = TestTypes.objects.get(degree_id=(
+                AppliedCandidate.objects.get(candidate_id=candidate_id).degree_id))
 
-    hall_info = Hall.objects.get(hall_id=plan_info.hall_id)
-    slot_info = Slot.objects.get(slot_id=plan_info.slot_id)
-    test_info = TestTypes.objects.get(degree_id=(
-        AppliedCandidate.objects.get(candidate_id=candidate_id).degree_id))
+            # alternate sql query
+            '''
+                SELECT * FROM `candidates_planinfo` INNER JOIN
+            `candidates_hall` ON `candidates_hall`.`hall_id`=`candidates_planinfo`.`hall_id`
+            INNER JOIN `candidates_slot` ON `candidates_slot`.`slot_id`=`candidates_planinfo`.`slot_id`
+            INNER JOIN `candidates_appliedcandidate` ON `candidates_appliedcandidate`.`candidate_id`=`candidates_planinfo`.`candidate_id`
+            INNER JOIN `candidates_testtypes` on `candidates_testtypes`.`degree_id`=`candidates_appliedcandidate`.`degree_id`
+            WHERE `candidates_planinfo`.`candidate_id` = %s
+            '''
 
-    # alternate sql query
-    '''
-        SELECT * FROM `candidates_planinfo` INNER JOIN
-    `candidates_hall` ON `candidates_hall`.`hall_id`=`candidates_planinfo`.`hall_id`
-    INNER JOIN `candidates_slot` ON `candidates_slot`.`slot_id`=`candidates_planinfo`.`slot_id`
-    INNER JOIN `candidates_appliedcandidate` ON `candidates_appliedcandidate`.`candidate_id`=`candidates_planinfo`.`candidate_id`
-    INNER JOIN `candidates_testtypes` on `candidates_testtypes`.`degree_id`=`candidates_appliedcandidate`.`degree_id`
-    WHERE `candidates_planinfo`.`candidate_id` = %s
-    '''
+            context = {
+                'plan_info': plan_info,
+                'hall_info': hall_info,
+                'slot_info': slot_info,
+                'test_info': test_info,
+                'obj':obj
+            }
+            return render(request, "pages/entrytest/adjust_test_schedule.html", context=context)
+        except PlanInfo.DoesNotExist:
+            obj['status'] = 3
+            obj['message'] = 'Your plan is not yet uploaded'
+            return render(request, "pages/entrytest/adjust_test_schedule.html", {'obj': obj})
 
-    context = {
-        'plan_info': plan_info,
-        'hall_info': hall_info,
-        'slot_info': slot_info,
-        'test_info': test_info,
-        'status': 1
-    }
-
-    return render(request, "pages/entrytest/adjust_test_schedule.html", context=context)
+    else:
+        return render(request, "pages/entrytest/adjust_test_schedule.html", {'obj': obj})
 
 
 def entry_test_result(request):
     user_id = request.session['user_id']
+    user_id = request.session['user_id']
+    obj = checkForNext(0, user_id)
+    if obj['status'] == 2:
+        try:
+            EntryTestResult.objects.get(candidate_id=user_id)
 
-    try:
-        EntryTestResult.objects.get(candidate_id=user_id)
-    except EntryTestResult.DoesNotExist:
-        return render(request, "pages/entrytest/entry_test_result.html", {'status': 0})
-    data = EntryTestResult.objects.raw("SELECT * FROM `candidates_entrytestresult` INNER JOIN `candidates_testtypes` "
-                                       "on `candidates_testtypes`.`test_id`=`candidates_entrytestresult`.`test_id` INNER JOIN  `candidates_degree` "
-                                       "ON `candidates_degree`.`degree_id` = `candidates_testtypes`.`degree_id` WHERE `candidates_entrytestresult`.`candidate_id`=%s limit 1", [user_id])
+            data = EntryTestResult.objects.raw("SELECT * FROM `candidates_entrytestresult` INNER JOIN `candidates_testtypes` "
+                                               "on `candidates_testtypes`.`test_id`=`candidates_entrytestresult`.`test_id` INNER JOIN  `candidates_degree` "
+                                               "ON `candidates_degree`.`degree_id` = `candidates_testtypes`.`degree_id` WHERE `candidates_entrytestresult`.`candidate_id`=%s limit 1", [user_id])
 
-    context = {
-        'context': data[0],
-        'status': 1
-    }
+            context = {
+                'context': data[0],
+                'obj':obj
+            }
+            return render(request, "pages/entrytest/entry_test_result.html", context=context)
+        except EntryTestResult.DoesNotExist:
+            obj['status'] =3
+            obj['message'] = 'Your result is not yet uploaded'
+            return render(request, "pages/entrytest/entry_test_result.html", {'obj': obj})
+    else:
+        return render(request, "pages/entrytest/entry_test_result.html", {'obj': obj})
 
-    return render(request, "pages/entrytest/entry_test_result.html", context=context)
 
 
 def get_challan_pdf(request, name):

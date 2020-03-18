@@ -20,6 +20,14 @@ def verifyEntryTestChallan(request):
             }
             try:
                 data = AppliedCandidate.objects.get(candidate_id=id)
+
+                #check if the user has uploaded challan
+
+                if data.paid_challan_copy == '':
+                    return HttpResponse(json.dumps({
+                        'status':-2
+                    }),content_type="application/json", status=200)
+
                 obj = {
                     'challan': str(data.paid_challan_copy),
                     'status': data.challan_status
@@ -51,7 +59,7 @@ def verifyEntryTestChallan(request):
             objects = []
             queryset = AppliedCandidate.objects.raw(
         "SELECT  `candidates_appliedcandidate`.`id` , `candidates_appliedcandidate`.`candidate_id` , `candidates_candidateprofile`.`firstname` as firstname,  `candidates_candidateprofile`.`lastname` as lastname,`candidates_candidateprofile`.`cnic` as cnic,`candidates_appliedcandidate`.`paid_challan_copy` as paid_challan_copy,`candidates_appliedcandidate`.`challan_status` as challan_status FROM `candidates_appliedcandidate` INNER JOIN `candidates_candidateprofile` ON "
-  "`candidates_appliedcandidate`.`candidate_id` = `candidates_candidateprofile`.`candidate_id`")
+  "`candidates_appliedcandidate`.`candidate_id` = `candidates_candidateprofile`.`candidate_id` WHERE `candidates_appliedcandidate`.`paid_challan_copy` != '' ")
             for row in queryset:
                 obj ={}
                 obj['id'] = row.id;

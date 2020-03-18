@@ -109,11 +109,17 @@ def index(request):
             )
 
         status = Qualification.objects.bulk_create(objects)
+        QualificationStatus.objects.create(candidate_id = user_id)
         #make an entry in merit list model with status pending
         MeritList.objects.create(candidate_id = user_id)
 
         return HttpResponse(str(len(objects)))
     try:
+
+        count = EntryTestResult.objects.filter(candidate_id = request.session['user_id']).count()
+        if count == 0:
+            return render(request,'pages/admission/admission-application.html',{'status':-1})
+
         degree_id = AppliedCandidate.objects.get(
             candidate_id=user_id).degree_id
         degree_level = Degree.objects.get(degree_id=degree_id).degree_level
@@ -128,7 +134,8 @@ def index(request):
                        'degree_level': degree_level,
                        'degree_criteria': degree_criteria,
                        'degrees': degrees, 'priorities': priorities,
-                       'current_user': CandidateProfile.objects.get(candidate_id=user_id)
+                       'current_user': CandidateProfile.objects.get(candidate_id=user_id),
+                       'status':0
                        })
     except AppliedCandidate.DoesNotExist:
         return HttpResponse("no result found")
@@ -146,10 +153,12 @@ def upload_challan(request):
         try:
             status = DegreePriorities.objects.get(candidate_id=user_id)
             user = CandidateProfile.objects.get(candidate_id=user_id)
-            return render(request, 'pages/admission/challan.html', {'context': status, 'user': user})
+
+            return render(request, 'pages/admission/challan.html', {'context': status, 'user': user,'status':1})
         except DegreePriorities.DoesNotExist:
+
             messages.error(request, 'No challan available')
-            return render(request, 'pages/admission/challan.html')
+            return render(request, 'pages/admission/challan.html',{'status':-1})
 
 
 def finalizeAdmission(request):
