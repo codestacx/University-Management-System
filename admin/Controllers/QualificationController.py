@@ -1,12 +1,16 @@
 from django.http import HttpResponse,JsonResponse
 from django.shortcuts import render,redirect
+from django.core import serializers
+from django.core.serializers.json import DjangoJSONEncoder
 from candidates.models.EntryTest import *
 from candidates.models.CandidateProfile import CandidateProfile
 from candidates.models.PriorityDegree import *
 from candidates.models.Degree import *
-from django.core import serializers
+from admin.Controllers.AuthController import require_login
 import json
-from django.core.serializers.json import DjangoJSONEncoder
+
+
+@require_login
 def index(request):
     return render(request,'dashboard/entrytest/qualification.html')
 

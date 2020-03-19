@@ -1,7 +1,8 @@
-from django.shortcuts import render,redirect
+from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from candidates.models.User import User
-from candidates.models.CandidateProfile import CandidateProfile
+from functools import wraps
+
 
 def index(request):
     if request.method == 'POST':
@@ -9,26 +10,35 @@ def index(request):
         password = request.POST['password']
         role = 'admin'
         try:
-            status = User.objects.get(email = email,password=password,role=role)
+            status = User.objects.get(
+                email=email, password=password, role=role)
             request.session['admin_logged'] = True
             request.session['admin_data'] = {
-                'email':email,
-                'id':status.id
+                'email': email,
+                'id': status.id
             }
-            return redirect('admin_home')
+
+            if request.POST.get('next') is not '':
+                return redirect(request.POST['next'])
+            return redirect('verify_candidate_profile')
         except User.DoesNotExist:
             return HttpResponse('failed')
-    return render(request,'auths/login.html')
+    elif request.method == 'GET':
+        next = request.GET.get('next', '')
+        return render(request, 'auths/login.html', { 'next': next })
 
-def home(request):
-    if request.session['admin_logged']:
-        candidates = CandidateProfile.objects.all()
-        return render(request, 'dashboard/candidates/index.html',{'candidates':candidates})
-    else:
-        return render(request,'auths/login.html')
 
 def logout(request):
-
     del request.session['admin_logged']
     del request.session['admin_data']
-    return render(request,'auths/login.html')
+    return redirect('admin_login')
+
+
+# Decorator for requiring authentication
+def require_login(f):
+    @wraps(f)
+    def decorated_function(request, *args, **kwargs):
+        if request.session.get('admin_logged') is None:
+            return redirect(f'login?next={request.path}')
+        return f(request, *args, **kwargs)
+    return decorated_function
