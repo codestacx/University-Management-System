@@ -24,7 +24,7 @@ urlpatterns = [
     #verify entry test challan
     path('echallan',ChallanController.entryTestChallan,name='echallan'),
     path('verify_echallan',ChallanController.verifyEntryTestChallan,name='verify_echallan'),
-    path('entrytest-challan-rejection-reason', ChallanController.entrytest_challan_rejection_reason, name='entrytest_challan_rejection_reason'),
+    path('entrytest-challan-rejection-reason', CandidateController.rejection_reason, name='entrytest_challan_rejection_reason'),
     
     #entry test result
     path('entrytestresult',EntryTestController.result,name='entrytestresult'),
@@ -32,6 +32,7 @@ urlpatterns = [
     #admission challan
     path('admission_challan',ChallanController.admissionChallan,name='admission_challan'),
     path('verify_adchallan', ChallanController.verifyAdmissionChallan, name='verify_adchallan'),
+    path('admission-challan-rejection-reason', CandidateController.rejection_reason, name='admission_challan_rejection_reason'),
     #qualification
     path('qualification',QualificationController.index,name='qualification'),
     path('verify_qualification', QualificationController.verifyQualification, name='verify_qualification'),
