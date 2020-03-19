@@ -1,11 +1,19 @@
 from django.http import HttpResponse
-from django.shortcuts import render,redirect
+from django.shortcuts import render, redirect
+from candidates.models.CandidateProfile import CandidateProfile
 from candidates.models.User import User
 from candidates.models.Rejection import Rejection
+from admin.Controllers.AuthController import require_login
 
-def removeStudent(request):
-    id = request.POST['id']
-    return HttpResponse(str(id))
+@require_login
+def verify_candidate_profile(request):
+    if request.method == 'POST':
+        id = request.POST['id']
+        return HttpResponse(str(id))
+    elif request.method == 'GET':
+        candidates = CandidateProfile.objects.all()
+        return render(request, 'dashboard/candidates/index.html', {'candidates':candidates})
+
 
 def rejection_reason(request):
     if request.method == 'POST':

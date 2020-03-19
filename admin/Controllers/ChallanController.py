@@ -1,12 +1,14 @@
 from django.http import HttpResponse,JsonResponse
 from django.shortcuts import render,redirect
+from django.core import serializers
 from candidates.models.EntryTest import *
 from candidates.models.CandidateProfile import CandidateProfile
 from candidates.models.PriorityDegree import *
-from django.core import serializers
+from admin.Controllers.AuthController import require_login
 import json
 
 
+@require_login
 def entryTestChallan(request):
     return render(request,'dashboard/entrytest/verify_entrytest_challans.html')
 
@@ -74,6 +76,7 @@ def verifyEntryTestChallan(request):
     return HttpResponse('working')
 
 
+@require_login
 def admissionChallan(request):
     return render(request, 'dashboard/entrytest/verify_admission_challans.html')
 
@@ -132,7 +135,7 @@ def verifyAdmissionChallan(request):
     "INNER JOIN `candidates_candidateprofile` ON `candidates_appliedcandidate`.`candidate_id` = `candidates_candidateprofile`.`candidate_id`")
             for row in queryset:
                 obj ={}
-                obj['id'] = row.priority_id;
+                obj['id'] = row.priority_id
                 obj['candidate_id'] = row.candidate_id
                 obj['cnic'] = row.cnic
                 obj['name'] = str(row.firstname) + ' ' + str(row.lastname)

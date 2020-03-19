@@ -19,7 +19,7 @@ Candidates List
 <script src="{% static 'themes/metronic/theme/default/demo1/dist/assets/js/scripts.bundle.js' %}"
     type="text/javascript"></script>
 <script>
-    function removeStudent(id) {
+    function rejectCandidate(id) {
         Swal.fire({
             title: 'Confirm Deletion',
             text: `Candidate with ID ${id} will be deleted. Are you sure?`,
@@ -33,13 +33,13 @@ Candidates List
                 $.ajax({
                     type: 'POST',
                     dataType: 'JSON',
-                    url: '{% url "remove_student" %}',
+                    url: '{% url "verify_candidate_profile" %}',
                     data: {
                         'id': id,
                         csrfmiddlewaretoken: '{{ csrf_token }}'
                     },
                     success: function (data) {
-                        Swal.fire("Deleted!", `Candidate with ID ${data} has been deleted.`, "success")
+                        Swal.fire("Deleted!", `Candidate with ID ${data} has been rejected.`, "success")
                     }
                 })
             }
@@ -123,8 +123,8 @@ Candidates List
                                 <td>{{ candidate.cnic }}</td>
                                 <td>{{ candidate.phone }}</td>
                                 <td>
-                                    <button onclick="(function(e) {removeStudent({{ candidate.candidate_id }})})()"
-                                        class="btn btn-danger">Delete</button>
+                                    <button onclick="(function(e) {rejectCandidate({{ candidate.candidate_id }})})()"
+                                        class="btn btn-danger">Reject</button>
                                 </td>
                             </tr>
 

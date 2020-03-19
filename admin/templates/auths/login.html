@@ -93,8 +93,9 @@ div#notes {
 						<h3 class="kt-login__title">Sign In</h3>
 
 					</div>
-					<form class="kt-form" method="post" action="{% url 'adminlogin' %}">
+					<form class="kt-form" method="post" action="{% url 'admin_login' %}">
                         {% csrf_token %}
+                        <input type='hidden' name='next' value='{{ next }}' />
 						<div class="input-group">
 							<input class="form-control" type="text" placeholder="Email" name="email" required autocomplete="off">
 						</div>

@@ -1,7 +1,11 @@
 from django.http import HttpResponse
 from django.shortcuts import render,redirect
 from candidates.models.EntryTest import *
+from admin.Controllers.AuthController import require_login
 import json
+
+
+@require_login
 def result(request):
     if request.method == 'POST':
         queryset = AppliedCandidate.objects.raw(
@@ -16,7 +20,7 @@ def result(request):
         objects = []
         for row in queryset:
             obj = {}
-            obj['id'] = row.id;
+            obj['id'] = row.id
             obj['candidate_id'] = row.candidate_id
             obj['cnic'] = row.cnic
             obj['name'] = str(row.firstname) + ' ' + str(row.lastname)
@@ -65,7 +69,4 @@ def uploadResult(request):
             else:
                 obj['status'] = False
             return HttpResponse(json.dumps(obj),content_type='application/json',status=200)
-
-
-
     return HttpResponse('page not available')
