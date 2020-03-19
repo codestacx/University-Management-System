@@ -10,12 +10,10 @@
 
         <!--begin::Fonts -->
         <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700|Roboto:300,400,500,600,700">
-
-        <!-- Used by Wizard -->
-        <link href="{% static 'themes/metronic/theme/default/demo1/dist/assets/css/pages/wizard/wizard-1.css' %}" rel="stylesheet" type="text/css" />
         
         <!--begin::Page Vendors Styles(used by this page) -->
         <link href="{% static 'themes/metronic/theme/default/demo1/dist/assets/plugins/custom/fullcalendar/fullcalendar.bundle.css' %}" rel="stylesheet" type="text/css" />
+        {% block styles %}{% endblock %}
         <!--end::Page Vendors Styles -->
         
         <!--begin::Global Theme Styles(used by all pages) -->
