@@ -7,221 +7,42 @@ Entry Test Result
 {% endblock %}
 
 {% block scripts %}
-<script src="{% static '/themes/metronic/theme/default/demo1/dist/assets/js/pages/custom/wizard/wizard-1.js' %}"
-    type="text/javascript"></script>
-
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
 <script>
-
-fetchall()
-</script>
-
-{% endblock %}
-
-{% block body %}
-
-
-
-    <div class="modal fade" id="myModal">
-    <div class="modal-dialog modal-dialog-centered">
-      <div class="modal-content">
-
-        <!-- Modal Header -->
-        <div class="modal-header">
-          <h4 class="modal-title">Mark Result</h4>
-
-        </div>
-
-        <!-- Modal body -->
-        <div class="modal-body">
-
-                 <input type="hidden" class="form-control"  name="candidateid" id="candidateid"/>
-                  <input type="hidden" class="form-control"  name="testid" id="testid"/>
-                 <input type="text" class="form-control" placeholder="Obtained Marks" name="obtainedmarks" id="obtainedmarks"/>
-                 <div class="modal-footer">
-
-                  <button type="submit" onclick="submitdata()" class="btn btn-primary">Submit</button>
-                  <button type="button" id="closebtn" class="btn btn-danger" data-dismiss="modal">Close</button>
-                </div>
-
-        </div>
-
-        <!-- Modal footer -->
-
-
-      </div>
-    </div>
-  </div>
-
-
-
-<div class="kt-grid__item kt-grid__item--fluid kt-grid kt-grid--hor kt-wrapper" id="kt_wrapper">
-
-    <div class="kt-content  kt-grid__item kt-grid__item--fluid kt-grid kt-grid--hor" id="kt_content">
-
-        <!-- begin:: Subheader -->
-        <div class="kt-subheader   kt-grid__item" id="kt_subheader">
-            <div class="kt-container  kt-container--fluid ">
-                <div class="kt-subheader__main">
-
-
-                    <span class="kt-subheader__separator kt-hidden"></span>
-
-                </div>
-
-            </div>
-        </div>
-        <!-- end:: Subheader -->
-
-        <!-- begin:: Content -->
-        <div class="kt-container  kt-container--fluid  kt-grid__item kt-grid__item--fluid">
-
-      
-
-                <div class="kt-portlet">
-			<div class="kt-portlet__head">
-				<div class="kt-portlet__head-label">
-					<h3 class="kt-portlet__head-title">
-						Entry Test Result
-
-
-					</h3>
-                     <hr/>
-
-				</div>
-                <div  style="float:right;">
-
-                      </div>
-			</div>
-			<!--begin::Form-->
-			<form class="kt-form">
-				<div class="kt-portlet__body">
-					<div  class="kt-section kt-section--first">
-						<div class="form-group ">
-							<label>Registration ID:</label>
-							<input type="text" id="student_id" class="form-control col-sm-6" placeholder="Enter Student Registration ID">
-							<span class="form-text text-muted">Please enter assigned registration ID of Candidate</span>
-						</div>
-                        <input type="hidden" id="test_id" class="form-control col-sm-6" />
-
-                        <div style="display: none;" id="marks"  class="form-group">
-                            	<label>Obtained Marks :</label>
-							<input type="text" id="obtained_marks" class="form-control col-sm-6" placeholder="Enter Obtained Marks">
-							<span class="form-text text-muted">Please enter obtained marks in test</span>
-                        </div>
-
-                        <div id="showcase" class="form-group " >
-
-
-
-                        </div>
-                        <div class="form-group">
-
-							<input type="button" id="nextbtn" onclick="submitform()" class="btn btn-sm btn-success" value="Next"/>
-
-						</div>
-
-
-		            </div>
-	            </div>
-	            <div id="buttons"  class="kt-portlet__foot">
-					<div class="kt-form__actions">
-
-						<button id="approve"  style="display: none"  type="reset"  onclick="submitdata(true)" class="btn btn-primary">Submit</button>
-					</div>
-
-                    <div class="kt-form__actions">
-                        <hr/><button type="reset"  style="display: none" onclick="reload()" id="cancel"  class="btn btn-warning">Cancel</button>
-
-                    </div>
-				</div>
-			</form>
-			<!--end::Form-->
-		</div>
-
-        <div class="kt-section">
-
-					<div class="kt-section__content">
-						<table class="table">
-						  	<thead class="thead-light">
-						    	<tr>
-						      		<th>Candidate ID</th>
-
-						      		<th>Full Name</th>
-						      		<th>CNIC</th>
-						      		<th>Program</th>
-                                    <th>Total Marks</th>
-                                    <th> Action </th>
-						    	</tr>
-						  	</thead>
-						  	<tbody id="tbody">
-
-						  	</tbody>
-						</table>
-					</div>
-				</div>
-            <div class="kt-portlet">
-
-                <div class="kt-portlet__body kt-portlet__body--fit">
-
-                      {% if messages %}
-                            {% for message in messages %}
-
-                                <div class="alert alert-info">
-                                {{ message }}
-                                </div>
-                                {% endfor %}
-                            {% endif %}
-
-                </div>
-
-            </div>
-        </div>
-        <!-- end:: Content -->
-    </div>
-    <!-- end:: Footer -->
-</div>
-    <script>
-
-
-    function submitdata(check=false){
-        if(check !== true){
-             var element = document.getElementById('closebtn');
-        element.click()
-             var marks = document.getElementById('obtainedmarks').value
-        var id = document.getElementById('candidateid').value;
-        var testid = document.getElementById('testid').value
+    function submitdata(check = false) {
+        if (check !== true) {
+            var element = document.getElementById('closebtn');
+            element.click()
+            var marks = document.getElementById('obtainedmarks').value
+            var id = document.getElementById('candidateid').value;
+            var testid = document.getElementById('testid').value
         }
-        else{
+        else {
             var marks = document.getElementById('obtained_marks').value;
             var id = document.getElementById('student_id').value;
-            var testid=document.getElementById('test_id').value;
+            var testid = document.getElementById('test_id').value;
         }
 
-
-
-
         $.ajax({
-            type:'POST',
-            url:'markresult',
-            dataType:'json',
-            data:{
-                'candidate_id':id,
-                'testid':testid,
-                'marks':marks,
-                'action':1,
-                csrfmiddlewaretoken:'{{ csrf_token }}'
+            type: 'POST',
+            url: 'markresult',
+            dataType: 'json',
+            data: {
+                'candidate_id': id,
+                'testid': testid,
+                'marks': marks,
+                'action': 1,
+                csrfmiddlewaretoken: '{{ csrf_token }}'
             },
 
-            success:function (data) {
-                if(data.status === true){
+            success: function (data) {
+                if (data.status === true) {
                     alert('result marked successfully')
                     reset()
-
                 }
-                else{
+                else {
                     alert('soomething goes wrong')
                 }
             }
@@ -229,178 +50,261 @@ fetchall()
 
     }
     function viewInfo(candidate_id) {
-            document.getElementById('studentid').value = candidate_id
+        document.getElementById('studentid').value = candidate_id
         submitform()
     }
 
-    function reset(){
-        document.getElementById('student_id').value='';
-         document.getElementById('cancel').style.display='none';
-        document.getElementById('approve').style.display='none';
-  document.getElementById('marks').style.display='none';
-        document.getElementById('nextbtn').style.display='block'
-        document.getElementById('showcase').innerHTML=''
+    function reset() {
+        document.getElementById('student_id').value = '';
+        document.getElementById('cancel').style.display = 'none';
+        document.getElementById('approve').style.display = 'none';
+        document.getElementById('marks').style.display = 'none';
+        document.getElementById('nextbtn').style.display = 'block'
+        document.getElementById('showcase').innerHTML = ''
 
     }
     function submitform() {
-
         var id = document.getElementById('student_id').value
         $.ajax({
-            type:'POST',
-            dataType:'json',
-            url:'markresult',
-            data:{
-                'candidate_id':id,
-                'action':0,
-                csrfmiddlewaretoken:'{{ csrf_token }}'
-
+            type: 'POST',
+            dataType: 'json',
+            url: 'markresult',
+            data: {
+                'candidate_id': id,
+                'action': 0,
+                csrfmiddlewaretoken: '{{ csrf_token }}'
             },
-            success:function (data) {
-
-               document.getElementById('showcase').innerHTML=''
-
-                if (data.status === 2 ){
-
-                    document.getElementById('approve').style.display='none'
-                    document.getElementById('marks').style.display='none'
+            success: function (data) {
+                document.getElementById('showcase').innerHTML = ''
+                if (data.status === 2) {
+                    document.getElementById('approve').style.display = 'none'
+                    document.getElementById('marks').style.display = 'none'
                     document.getElementById('showcase').innerHTML = '<div class="alert alert-danger"> Already Marked</div>'
                 }
-                else if (data.status === -1){
+                else if (data.status === -1) {
                     document.getElementById('showcase').innerHTML = '<div class="alert alert-danger"> No candidate found</div>'
                     return;
                 }
-                else if(data.status === -2){
-                     document.getElementById('showcase').innerHTML = '<div class="alert alert-danger"> Candidate has not paid challan </div>'
+                else if (data.status === -2) {
+                    document.getElementById('showcase').innerHTML = '<div class="alert alert-danger"> Candidate has not paid challan </div>'
                     return;
                 }
-
-                else if (data.status ===0){
-                            document.getElementById('approve').style.display='block';
-                            document.getElementById('test_id').value = data.testid;
-                    document.getElementById('marks').style.display='block'
+                else if (data.status === 0) {
+                    document.getElementById('approve').style.display = 'block';
+                    document.getElementById('test_id').value = data.testid;
+                    document.getElementById('marks').style.display = 'block'
 
                 }
-                document.getElementById('cancel').style.display='block'
-                document.getElementById('nextbtn').style.display='none'
-
+                document.getElementById('cancel').style.display = 'block'
+                document.getElementById('nextbtn').style.display = 'none'
             }
         })
     }
 
     function approverec() {
-
-
-
         var id = document.getElementById('studentid').value
         $.ajax({
-            type:'POST',
-            dataType:'json',
-            url:'verify_echallan',
-            data:{
-                'id':id,
-                'action':1,
-                csrfmiddlewaretoken:'{{ csrf_token }}'
-
+            type: 'POST',
+            dataType: 'json',
+            url: 'verify_echallan',
+            data: {
+                'id': id,
+                'action': 1,
+                csrfmiddlewaretoken: '{{ csrf_token }}'
             },
-            success:function (data) {
-
+            success: function (data) {
                 alert(data.message)
                 reset()
                 fetchall()
-
             }
         })
     }
-
-
 
     function fetchall() {
-         document.getElementById('tbody').innerHTML=''
+        document.getElementById('tbody').innerHTML = ''
         $.ajax({
-            type:'POST',
-
-            url:'entrytestresult',
-            data:{
-
-                csrfmiddlewaretoken:'{{ csrf_token }}'
-
+            type: 'POST',
+            url: 'entrytestresult',
+            data: {
+                csrfmiddlewaretoken: '{{ csrf_token }}'
             },
-            success:function (data) {
-
-
-              console.log(data);
+            success: function (data) {
+                console.log(data);
 
                 html = ''
-                for(var i=0;i<data.length;i++){
+                for (var i = 0; i < data.length; i++) {
                     var id = data[i].candidate_id;
                     var testid = data[i].testid
-                   html+='<tr>';
-                   html+='<td>'+data[i].candidate_id+'</td>';
-                   html+='<td>'+data[i].name+'</td>';
-                   html+='<td>'+data[i].cnic+'</td>';
-                    html+='<td>'+data[i].program+'</td>';
-                     html+='<td>'+data[i].totalmarks+'</td>';
-                      btn = "<button type='button' onclick='setCandidateId("+id+","+testid+")' id='markresult'  class='btn btn-info btn-sm'>Add Result</button>";
+                    html += '<tr>';
+                    html += '<td>' + data[i].candidate_id + '</td>';
+                    html += '<td>' + data[i].name + '</td>';
+                    html += '<td>' + data[i].cnic + '</td>';
+                    html += '<td>' + data[i].program + '</td>';
+                    html += '<td>' + data[i].totalmarks + '</td>';
+                    btn = "<button type='button' onclick='setCandidateId(" + id + "," + testid + ")' id='markresult' data-toggle='modal' data-target='#myModal' class='btn btn-info btn-sm'>Add Result</button>";
 
-                   html+='<td>'+btn+'</td>';
-                   html+='<td>';
-
-
-
-                   html+='</tr>';
+                    html += '<td>' + btn + '</td>';
+                    html += '<td>';
+                    html += '</tr>';
 
                 }
-                document.getElementById('tbody').innerHTML+=html
-
-
-
+                document.getElementById('tbody').innerHTML += html
             }
         })
     }
 
-
-function setCandidateId(id,testid) {
-        //check if the result is already marked
-        $.ajax({
-            type:'POST',
-            dataType:'json',
-            url:'markresult',
-            data:{
-                'candidate_id':id,
-                'action':0,
-                csrfmiddlewaretoken:'{{ csrf_token }}'
-
-            },
-            success:function (data) {
-                if (data.status === 2 ){
-                    alert('already marked')
-                }
-                else {
-
-                    var btn = document.createElement("BUTTON",);
-
-                    btn.setAttribute('data-toggle','modal');
-                    btn.setAttribute('data-target','#myModal');
-                    btn.setAttribute("style","display:none");
-                    btn.setAttribute('id','secretbtn')
-                    btn.addEventListener('click',(e)=>{
-                        e.preventDefault()
-                    })
-
-                    document.getElementById('showcase').appendChild(btn)
-                    document.getElementById('secretbtn').click()
-
-
-                    //btn.click()
-
-                }
-            }
-        })
-   document.getElementById('candidateid').value = id;
-   document.getElementById('testid').value = testid
-}
-    function  reload() {
+    function setCandidateId(id, testid) {
+        document.getElementById('candidateid').value = id;
+        document.getElementById('testid').value = testid
+    }
+    function reload() {
         location.reload()
     }
-    </script>
+</script>
+<script>
+    fetchall()
+</script>
+
+{% endblock %}
+
+{% block body %}
+<div class="modal fade" id="myModal">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+
+            <!-- Modal Header -->
+            <div class="modal-header">
+                <h4 class="modal-title">Mark Result</h4>
+            </div>
+
+            <!-- Modal body -->
+            <div class="modal-body">
+                <input type="hidden" class="form-control" name="candidateid" id="candidateid" />
+                <input type="hidden" class="form-control" name="testid" id="testid" />
+                <input type="text" class="form-control" placeholder="Obtained Marks" name="obtainedmarks"
+                    id="obtainedmarks" />
+                <div class="modal-footer">
+
+                    <button type="submit" onclick="submitdata()" class="btn btn-primary">Submit</button>
+                    <button type="button" id="closebtn" class="btn btn-danger" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+            <!-- Modal footer -->
+        </div>
+    </div>
+</div>
+
+<div class="kt-grid__item kt-grid__item--fluid kt-grid kt-grid--hor kt-wrapper" id="kt_wrapper">
+
+    <div class="kt-content  kt-grid__item kt-grid__item--fluid kt-grid kt-grid--hor" id="kt_content">
+        <!-- begin:: Subheader -->
+        <div class="kt-subheader   kt-grid__item" id="kt_subheader">
+            <div class="kt-container  kt-container--fluid ">
+                <div class="kt-subheader__main">
+                    <span class="kt-subheader__separator kt-hidden"></span>
+                </div>
+            </div>
+        </div>
+        <!-- end:: Subheader -->
+
+        <!-- begin:: Content -->
+        <div class="kt-container  kt-container--fluid  kt-grid__item kt-grid__item--fluid">
+            <div class="kt-portlet">
+                <div class="kt-portlet__head">
+                    <div class="kt-portlet__head-label">
+                        <h3 class="kt-portlet__head-title">
+                            Entry Test Result
+                        </h3>
+                        <hr />
+
+                    </div>
+                    <div style="float:right;">
+
+                    </div>
+                </div>
+                <!--begin::Form-->
+                <form class="kt-form">
+                    <div class="kt-portlet__body">
+                        <div class="kt-section kt-section--first">
+                            <div class="form-group ">
+                                <label>Registration ID:</label>
+                                <input type="text" id="student_id" class="form-control col-sm-6"
+                                    placeholder="Enter Student Registration ID">
+                                <span class="form-text text-muted">Please enter assigned registration ID of
+                                    Candidate</span>
+                            </div>
+                            <input type="hidden" id="test_id" class="form-control col-sm-6" />
+
+                            <div style="display: none;" id="marks" class="form-group">
+                                <label>Obtained Marks :</label>
+                                <input type="text" id="obtained_marks" class="form-control col-sm-6"
+                                    placeholder="Enter Obtained Marks">
+                                <span class="form-text text-muted">Please enter obtained marks in test</span>
+                            </div>
+
+                            <div id="showcase" class="form-group ">
+
+                            </div>
+                            <div class="form-group">
+                                <input type="button" id="nextbtn" onclick="submitform()" class="btn btn-sm btn-success"
+                                    value="Next" />
+                            </div>
+                        </div>
+                    </div>
+                    <div id="buttons" class="kt-portlet__foot">
+                        <div class="kt-form__actions">
+
+                            <button id="approve" style="display: none" type="reset" onclick="submitdata(true)"
+                                class="btn btn-primary">Submit</button>
+                        </div>
+
+                        <div class="kt-form__actions">
+                            <hr /><button type="reset" style="display: none" onclick="reload()" id="cancel"
+                                class="btn btn-warning">Cancel</button>
+
+                        </div>
+                    </div>
+                </form>
+                <!--end::Form-->
+            </div>
+
+            <div class="kt-section">
+
+                <div class="kt-section__content">
+                    <table class="table">
+                        <thead class="thead-light">
+                            <tr>
+                                <th>Candidate ID</th>
+                                <th>Full Name</th>
+                                <th>CNIC</th>
+                                <th>Program</th>
+                                <th>Total Marks</th>
+                                <th> Action </th>
+                            </tr>
+                        </thead>
+                        <tbody id="tbody">
+
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="kt-portlet">
+
+                <div class="kt-portlet__body kt-portlet__body--fit">
+
+                    {% if messages %}
+                    {% for message in messages %}
+
+                    <div class="alert alert-info">
+                        {{ message }}
+                    </div>
+                    {% endfor %}
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        <!-- end:: Content -->
+    </div>
+    <!-- end:: Footer -->
+</div>
 {% endblock %}

@@ -15,11 +15,17 @@ urlpatterns = [
 
     #hall
     path('upload_hall',SittingPlan.uploadHall,name="upload_hall"),
+    path('get-halls', SittingPlan.get_halls, name='get_halls'),
+
     #slots
     path('upload_slot',SittingPlan.uploadSlot,name='upload_slot'),
+    path('get-slots', SittingPlan.get_slots, name='get_slots'),
+    
     #verify entry test challan
     path('echallan',ChallanController.entryTestChallan,name='echallan'),
     path('verify_echallan',ChallanController.verifyEntryTestChallan,name='verify_echallan'),
+    path('entrytest-challan-rejection-reason', ChallanController.entrytest_challan_rejection_reason, name='entrytest_challan_rejection_reason'),
+    
     #entry test result
     path('entrytestresult',EntryTestController.result,name='entrytestresult'),
     path('markresult',EntryTestController.uploadResult,name='markresult'),

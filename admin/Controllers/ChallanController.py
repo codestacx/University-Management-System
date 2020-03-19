@@ -2,11 +2,15 @@ from django.http import HttpResponse,JsonResponse
 from django.shortcuts import render,redirect
 from candidates.models.EntryTest import *
 from candidates.models.CandidateProfile import CandidateProfile
+from candidates.models.Rejection import Rejection
 from candidates.models.PriorityDegree import *
 from django.core import serializers
 import json
+
+
 def entryTestChallan(request):
     return render(request,'dashboard/entrytest/verifychallan.html')
+
 def verifyEntryTestChallan(request):
     if request.method == 'POST':
 
@@ -62,7 +66,7 @@ def verifyEntryTestChallan(request):
   "`candidates_appliedcandidate`.`candidate_id` = `candidates_candidateprofile`.`candidate_id` WHERE `candidates_appliedcandidate`.`paid_challan_copy` != '' ")
             for row in queryset:
                 obj ={}
-                obj['id'] = row.id;
+                obj['id'] = row.id
                 obj['candidate_id'] = row.candidate_id
                 obj['cnic'] = row.cnic
                 obj['name'] = str(row.firstname) + ' ' + str(row.lastname)
@@ -72,8 +76,26 @@ def verifyEntryTestChallan(request):
             return HttpResponse(json.dumps(objects),content_type='application/json',status=200)
     return HttpResponse('working')
 
+
+def entrytest_challan_rejection_reason(request):
+    if request.method == 'POST':
+        if Rejection.objects.filter(candidate_id=request.POST['candidate_id'], category='entrytest').exists():
+            rejection = Rejection.objects.get(candidate_id=request.POST['candidate_id'], category='entrytest')
+            rejection.reason = request.POST['reason']
+            rejection.save()
+            return HttpResponse('saved')
+        else:
+            rejection = Rejection.objects.create(candidate_id=request.POST['candidate_id'], reason=request.POST['reason'], category='entrytest')
+            rejection.save()
+            return HttpResponse('saved')
+        return HttpResponse('something went wrong')
+    else:
+        return HttpResponse('Only POST supported')
+
+
 def admissionChallan(request):
     return render(request, 'dashboard/entrytest/admissionchallan.html')
+
 
 def verifyAdmissionChallan(request):
     if request.method == 'POST':
