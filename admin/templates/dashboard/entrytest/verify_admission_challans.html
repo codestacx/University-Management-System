@@ -3,12 +3,13 @@
 {% load static %}
 
 {% block title %}
-Verify Paid Challans
+Verify Paid Challans | Admissions
 {% endblock %}
 
 {% block scripts %}
 <script>
     let viewing_candidate = -1
+    const ENDPOINT = 'verify_adchallan'
 
     function viewInfo(candidate_id) {
         viewing_candidate = candidate_id
@@ -30,7 +31,7 @@ Verify Paid Challans
         $.ajax({
             type: 'POST',
             dataType: 'json',
-            url: 'verify_echallan',
+            url: ENDPOINT,
             data: {
                 'id': id,
                 'action': 0,
@@ -73,7 +74,7 @@ Verify Paid Challans
         $.ajax({
             type: 'POST',
             dataType: 'json',
-            url: 'verify_echallan',
+            url: ENDPOINT,
             data: {
                 'id': viewing_candidate,
                 'action': actionId,
@@ -105,9 +106,10 @@ Verify Paid Challans
             cancelButtonColor: '#d33',
             confirmButtonText: 'Submit',
             preConfirm: (reason) => {
-                $.post('{% url "entrytest_challan_rejection_reason" %}', {
+                $.post('{% url "admission_challan_rejection_reason" %}', {
                     csrfmiddlewaretoken: '{{ csrf_token }}',
                     reason: reason,
+                    category: 'admission_challan',
                     candidate_id: viewing_candidate
                 }, function (response) {
                     console.log(response)
@@ -124,7 +126,7 @@ Verify Paid Challans
         document.getElementById('tbody').innerHTML = ''
         $.ajax({
             type: 'POST',
-            url: 'verify_echallan',
+            url: ENDPOINT,
             data: {
                 'action': 3,
                 csrfmiddlewaretoken: '{{ csrf_token }}'
@@ -170,15 +172,6 @@ Verify Paid Challans
 {% block body %}
 <div class="kt-grid__item kt-grid__item--fluid kt-grid kt-grid--hor kt-wrapper" id="kt_wrapper">
     <div class="kt-content  kt-grid__item kt-grid__item--fluid kt-grid kt-grid--hor" id="kt_content">
-        <!-- begin:: Subheader -->
-        <div class="kt-subheader   kt-grid__item" id="kt_subheader">
-            <div class="kt-container  kt-container--fluid ">
-                <div class="kt-subheader__main">
-                    <span class="kt-subheader__separator kt-hidden"></span>
-                </div>
-            </div>
-        </div>
-        <!-- end:: Subheader -->
 
         <!-- begin:: Content -->
         <div class="kt-container  kt-container--fluid  kt-grid__item kt-grid__item--fluid">
@@ -186,7 +179,7 @@ Verify Paid Challans
                 <div class="kt-portlet__head">
                     <div class="kt-portlet__head-label">
                         <h3 class="kt-portlet__head-title">
-                            Entry Test Challans
+                            Admission Challans
                         </h3>
                         <hr />
 
@@ -240,9 +233,8 @@ Verify Paid Challans
                 <!--end::Form-->
             </div>
 
-            <div class="kt-section">
-
-                <div class="kt-section__content">
+            <div class="kt-portlet">
+                <div class="kt-portlet__body">
                     <table class="table">
                         <thead class="thead-light">
                             <tr>
@@ -253,9 +245,7 @@ Verify Paid Challans
                                 <th>Challan</th>
                             </tr>
                         </thead>
-                        <tbody id="tbody">
-
-                        </tbody>
+                        <tbody id="tbody"></tbody>
                     </table>
                 </div>
             </div>
