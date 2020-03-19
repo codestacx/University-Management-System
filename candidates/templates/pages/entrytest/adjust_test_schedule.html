@@ -76,7 +76,7 @@
                             <div class="kt-portlet__body">
                                 <div class="kt-callout__body">
                                     <div class="kt-callout__content">
-                                         {% if status != 0 %}
+                                         {% if obj.status == 2 %}
                                         <h3 class="kt-callout__title">Current Plan</h3>
 
                                         <p class="kt-callout__desc">
@@ -134,7 +134,7 @@
                                                 {% else %}
 
                                                 <div class="alert alert-warning">
-                                                    Wait your plan will be updated soon
+                                                    {{ obj.message }}
                                                 </div>
                                                 {% endif %}
                                             </div>

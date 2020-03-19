@@ -21,7 +21,7 @@
                                      <div class="kt-portlet__body kt-portlet__body--fit">
                                             <!--begin: Datatable -->
                                             <div class="kt-datatable kt-datatable--default kt-datatable--brand kt-datatable--loaded">
-                                                {% if status != 0 %}
+                                                {% if obj.status == 2 %}
                                                 <table class="kt-datatable__table" id="html_table" style="display: block;" width="100%">
                                                     <thead class="kt-datatable__head">
                                                         <tr class="kt-datatable__row" style="left: 0px;">
@@ -50,7 +50,7 @@
                                                 {% else %}
 
                                                 <div class="alert alert-warning">
-                                                Your result is not yet uploaded
+                                                {{ obj.message }}
                                                 </div>
                                                 {% endif %}
                                             </div>

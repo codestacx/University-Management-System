@@ -50,6 +50,10 @@ Verify Paid Challans
                     document.getElementById('showcase').innerHTML = '<div class="alert alert-danger">No candidate found</div>'
                     return;
                 }
+                else if (data.status === -2){
+                    document.getElementById('showcase').innerHTML = '<div class="alert alert-danger"> Candidate has not yet uploaded challan </div>'
+                    return;
+                }
                 else {
                     document.getElementById('approve').style.display = 'block'
                     document.getElementById('reject').style.display = 'block'
@@ -256,9 +260,7 @@ Verify Paid Challans
                 </div>
             </div>
             <div class="kt-portlet">
-
                 <div class="kt-portlet__body kt-portlet__body--fit">
-
                     {% if messages %}
                     {% for message in messages %}
 
@@ -267,9 +269,7 @@ Verify Paid Challans
                     </div>
                     {% endfor %}
                     {% endif %}
-
                 </div>
-
             </div>
         </div>
         <!-- end:: Content -->

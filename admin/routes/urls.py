@@ -4,6 +4,7 @@ from admin.Controllers import CandidateController
 from admin.Controllers import SittingPlan
 from admin.Controllers import ChallanController
 from admin.Controllers import EntryTestController
+from admin.Controllers import QualificationController
 urlpatterns = [
     path('',AuthController.index,name='adminlogin'),
     path('home',AuthController.home,name='admin_home'),
@@ -28,4 +29,10 @@ urlpatterns = [
     #entry test result
     path('entrytestresult',EntryTestController.result,name='entrytestresult'),
     path('markresult',EntryTestController.uploadResult,name='markresult'),
+    #admission challan
+    path('admission_challan',ChallanController.admissionChallan,name='admission_challan'),
+    path('verify_adchallan', ChallanController.verifyAdmissionChallan, name='verify_adchallan'),
+    #qualification
+    path('qualification',QualificationController.index,name='qualification'),
+    path('verify_qualification', QualificationController.verifyQualification, name='verify_qualification'),
 ]

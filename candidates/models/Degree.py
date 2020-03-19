@@ -43,3 +43,8 @@ class Qualification(models.Model):
 
     class Meta:
         app_label = 'candidates'
+
+class QualificationStatus(models.Model):
+    candidate = models.ForeignKey(User, on_delete=models.CASCADE)
+    status = models.IntegerField(default=0)
+

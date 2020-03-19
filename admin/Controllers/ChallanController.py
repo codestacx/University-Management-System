@@ -3,6 +3,7 @@ from django.shortcuts import render,redirect
 from candidates.models.EntryTest import *
 from candidates.models.CandidateProfile import CandidateProfile
 from candidates.models.Rejection import Rejection
+from candidates.models.PriorityDegree import *
 from django.core import serializers
 import json
 
@@ -23,6 +24,14 @@ def verifyEntryTestChallan(request):
             }
             try:
                 data = AppliedCandidate.objects.get(candidate_id=id)
+
+                #check if the user has uploaded challan
+
+                if data.paid_challan_copy == '':
+                    return HttpResponse(json.dumps({
+                        'status':-2
+                    }),content_type="application/json", status=200)
+
                 obj = {
                     'challan': str(data.paid_challan_copy),
                     'status': data.challan_status
@@ -54,7 +63,7 @@ def verifyEntryTestChallan(request):
             objects = []
             queryset = AppliedCandidate.objects.raw(
         "SELECT  `candidates_appliedcandidate`.`id` , `candidates_appliedcandidate`.`candidate_id` , `candidates_candidateprofile`.`firstname` as firstname,  `candidates_candidateprofile`.`lastname` as lastname,`candidates_candidateprofile`.`cnic` as cnic,`candidates_appliedcandidate`.`paid_challan_copy` as paid_challan_copy,`candidates_appliedcandidate`.`challan_status` as challan_status FROM `candidates_appliedcandidate` INNER JOIN `candidates_candidateprofile` ON "
-  "`candidates_appliedcandidate`.`candidate_id` = `candidates_candidateprofile`.`candidate_id`")
+  "`candidates_appliedcandidate`.`candidate_id` = `candidates_candidateprofile`.`candidate_id` WHERE `candidates_appliedcandidate`.`paid_challan_copy` != '' ")
             for row in queryset:
                 obj ={}
                 obj['id'] = row.id
@@ -66,6 +75,7 @@ def verifyEntryTestChallan(request):
                 objects.append(obj)
             return HttpResponse(json.dumps(objects),content_type='application/json',status=200)
     return HttpResponse('working')
+
 
 def entrytest_challan_rejection_reason(request):
     if request.method == 'POST':
@@ -81,3 +91,72 @@ def entrytest_challan_rejection_reason(request):
         return HttpResponse('something went wrong')
     else:
         return HttpResponse('Only POST supported')
+
+
+def admissionChallan(request):
+    return render(request, 'dashboard/entrytest/admissionchallan.html')
+
+
+def verifyAdmissionChallan(request):
+    if request.method == 'POST':
+
+        action = request.POST['action']
+
+        if action == '0':
+            id = request.POST['id']
+            obj = {
+                'challan': None,
+                'status': None
+            }
+            try:
+                data = DegreePriorities.objects.get(candidate_id=id)
+                obj = {
+                    'challan': str(data.priority_form),
+                    'status': data.form_status
+                }
+            except DegreePriorities.DoesNotExist:
+                obj['status'] = -1
+            return HttpResponse(json.dumps(obj), content_type="application/json", status=200)
+        elif action == '1':
+            id = request.POST['id']
+            status = DegreePriorities.objects.filter(candidate_id=id).update(form_status = 1)
+            if status:
+                msg = "Challan Approved Successfully"
+            else:
+                msg = "Sorry something goes wrong ..."
+            return HttpResponse(json.dumps({
+                'message': msg
+            }), content_type='application/json', status=200)
+        elif action == '2':
+            id = request.POST['id']
+            status = DegreePriorities.objects.filter(candidate_id=id).update(form_status=0)
+            if status:
+                msg = "Challan Rejected Successfully"
+            else:
+                msg = "Sorry something goes wrong ..."
+            return HttpResponse(json.dumps({
+                'message': msg
+            }), content_type='application/json', status=200)
+        elif action == '3':
+            objects = []
+
+            queryset = DegreePriorities.objects.raw(
+        "SELECT `candidates_degreepriorities`.`priority_id` , `candidates_degreepriorities`.`candidate_id` ,"
+        "`candidates_degreepriorities`.`priority_form` as paid_challan_copy,"
+        "`candidates_degreepriorities`.`form_status`  as challan_status, "
+        "`candidates_candidateprofile`.`firstname` as firstname,  `candidates_candidateprofile`.`lastname` as lastname,"
+        "`candidates_candidateprofile`.`cnic` as cnic FROM `candidates_degreepriorities`"
+        " INNER JOIN"
+    "`candidates_appliedcandidate` ON `candidates_appliedcandidate`.`candidate_id` = `candidates_degreepriorities`.`candidate_id`"
+    "INNER JOIN `candidates_candidateprofile` ON `candidates_appliedcandidate`.`candidate_id` = `candidates_candidateprofile`.`candidate_id`")
+            for row in queryset:
+                obj ={}
+                obj['id'] = row.priority_id;
+                obj['candidate_id'] = row.candidate_id
+                obj['cnic'] = row.cnic
+                obj['name'] = str(row.firstname) + ' ' + str(row.lastname)
+                obj['challan_status'] = row.challan_status
+                obj['upload_challan_copy'] = str(row.paid_challan_copy)
+                objects.append(obj)
+            return HttpResponse(json.dumps(objects),content_type='application/json',status=200)
+    return HttpResponse('working')

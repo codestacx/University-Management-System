@@ -1,5 +1,5 @@
-{% extends "base.html" %}
 
+{% extends 'base.html' %}
 {% load static %}
 
 {% block title %}
@@ -17,5 +17,80 @@ Admission Challan
 {% endblock %}
 
 {% block body %}
-{% include 'pages/generic-challan-upload.html' with dropzone_id="paid_challan_admission_dropzone" %}
+
+
+    <div class="kt-grid__item kt-grid__item--fluid kt-grid kt-grid--hor kt-wrapper" id="kt_wrapper">
+
+    <div class="kt-content  kt-grid__item kt-grid__item--fluid kt-grid kt-grid--hor" id="kt_content">
+
+        <!-- begin:: Subheader -->
+        <div class="kt-subheader   kt-grid__item" id="kt_subheader">
+            <div class="kt-container  kt-container--fluid ">
+                <div class="kt-subheader__main">
+
+
+                    <span class="kt-subheader__separator kt-hidden"></span>
+
+                </div>
+
+            </div>
+        </div>
+        <!-- end:: Subheader -->
+
+        <!-- begin:: Content -->
+        <div class="kt-container  kt-container--fluid  kt-grid__item kt-grid__item--fluid">
+
+
+
+                <div class="kt-portlet">
+			<div class="kt-portlet__head">
+				<div class="kt-portlet__head-label">
+					<h3 class="kt-portlet__head-title">
+						Admission Challan
+
+
+					</h3>
+                     <hr/>
+
+				</div>
+
+			</div>
+			<!--begin::Form-->
+
+				<div class="kt-portlet__body">
+					<div class="kt-section kt-section--first">
+
+
+                       {% if status == -1 %}
+
+                            you have not applied for admission
+
+                     <hr/>
+                    {% else %}
+                         {% include 'pages/generic-challan-upload.html' with dropzone_id="paid_challan_admission_dropzone" %}
+    {% endif %}
+
+
+
+		            </div>
+	            </div>
+
+
+			<!--end::Form-->
+		</div>
+
+
+        </div>
+        <!-- end:: Content -->
+    </div>
+    <!-- end:: Footer -->
+</div>
+
+
+
+
+
+
+
 {% endblock %}
+

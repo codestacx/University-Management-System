@@ -103,6 +103,7 @@ Admission Application
         <div class="kt-container  kt-container--fluid  kt-grid__item kt-grid__item--fluid">
             <div class="kt-portlet">
                 <div class="kt-portlet__body kt-portlet__body--fit">
+                {% if status == 0 %}
                     <div class="kt-grid kt-wizard-v1 kt-wizard-v1--white" id="kt_wizard_v1"
                         data-ktwizard-state="step-first">
                         <div class="kt-grid__item">
@@ -291,6 +292,11 @@ Admission Application
                             <!--end: Form Wizard Form-->
                         </div>
                     </div>
+                {% else %}
+                <div class="alert alert-warning">
+                You are eligible for admission only after the entry test
+                </div>
+                {% endif %}
                 </div>
             </div>
         </div>

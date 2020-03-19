@@ -7,17 +7,32 @@
 {% endblock %}
 
 {% block body %}
+
     <div class="kt-grid__item kt-grid__item--fluid kt-grid kt-grid--hor kt-wrapper" id="kt_wrapper">
         <!-- begin:: Header Menu -->
         <!-- Uncomment this to display the close button of the panel
            <button class="kt-header-menu-wrapper-close" id="kt_header_menu_mobile_close_btn"><i class="la la-close"></i></button>
            -->
         <div class="kt-content  kt-grid__item kt-grid__item--fluid kt-grid kt-grid--hor" id="kt_content">
+
+        <div class="kt-container  kt-container--fluid  kt-grid__item kt-grid__item--fluid">
+
+           {% if obj.status in list %}
+
+
+
+                    <div class="alert alert-warning">
+                    {{ obj.message }}
+                    </div>
+
+
+
+            {% else %}
+
         <div style="text-align:right; margin-right:140px; margin-bottom:40px;" >
            <button type="button" class="btn btn-dark btn-icon"><i class="fa fa-print"></i></button>
         </div>
-        <div class="kt-container  kt-container--fluid  kt-grid__item kt-grid__item--fluid">
-           <canvas id="challan-form-canvas"></canvas>
+            <canvas id="challan-form-canvas"></canvas>
            <script src="{% static 'js/pdf.js' %}"></script>
            <script>
               var url = '{% static "pdf/entry-test-slip.pdf" %}';
@@ -62,5 +77,6 @@
                   console.error(reason);
               });
            </script>
+        {% endif %}
         </div>
 {% endblock %}
