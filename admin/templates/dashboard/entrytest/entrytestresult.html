@@ -3,13 +3,14 @@
 {% load static %}
 
 {% block title %}
-Entry Test Result
+Upload Result | Entry Test
 {% endblock %}
 
 {% block scripts %}
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+<script src="{% static 'js/custom.js' %}" type="text/javascript"></script>
 <script>
     function submitdata(check = false) {
         if (check !== true) {
@@ -135,7 +136,7 @@ Entry Test Result
                 for (var i = 0; i < data.length; i++) {
                     var id = data[i].candidate_id;
                     var testid = data[i].testid
-                    html += '<tr>';
+                    html += '<tr class="candidate-row">';
                     html += '<td>' + data[i].candidate_id + '</td>';
                     html += '<td>' + data[i].name + '</td>';
                     html += '<td>' + data[i].cnic + '</td>';
@@ -163,8 +164,18 @@ Entry Test Result
 </script>
 <script>
     fetchall()
-</script>
 
+    $(document).ready(function () {
+        filter('#filter', '.candidate-row', function (row, filterVal) {
+            return (
+                (row.find('td:nth(0)').html() != filterVal) && // ID
+                (row.find('td:nth(1)').html().indexOf(filterVal) === -1) && // Name
+                (row.find('td:nth(2)').html().indexOf(filterVal) === -1) // CNIC
+                (row.find('td:nth(3)').html().indexOf(filterVal) === -1) // Program
+            )
+        })
+    })
+</script>
 {% endblock %}
 
 {% block body %}
@@ -198,7 +209,7 @@ Entry Test Result
 
     <div class="kt-content  kt-grid__item kt-grid__item--fluid kt-grid kt-grid--hor" id="kt_content">
         <!-- begin:: Subheader -->
-        <div class="kt-subheader   kt-grid__item" id="kt_subheader">
+        <div class="kt-subheader kt-grid__item" id="kt_subheader">
             <div class="kt-container  kt-container--fluid ">
                 <div class="kt-subheader__main">
                     <span class="kt-subheader__separator kt-hidden"></span>
@@ -216,7 +227,6 @@ Entry Test Result
                             Entry Test Result
                         </h3>
                         <hr />
-
                     </div>
                     <div style="float:right;">
 
@@ -268,9 +278,12 @@ Entry Test Result
                 <!--end::Form-->
             </div>
 
-            <div class="kt-section">
+            <div class="kt-portlet">
+                <div class="kt-portlet__body">
+                    <div class="form-group">
+                        <input type="text" class="form-control" placeholder="Filter by name, ID or CNIC" id="filter" />
+                    </div>
 
-                <div class="kt-section__content">
                     <table class="table">
                         <thead class="thead-light">
                             <tr>
@@ -288,13 +301,11 @@ Entry Test Result
                     </table>
                 </div>
             </div>
+
             <div class="kt-portlet">
-
                 <div class="kt-portlet__body kt-portlet__body--fit">
-
                     {% if messages %}
                     {% for message in messages %}
-
                     <div class="alert alert-info">
                         {{ message }}
                     </div>

@@ -5,6 +5,11 @@ from candidates.models.User import User
 from candidates.models.Rejection import Rejection
 from admin.Controllers.AuthController import require_login
 
+
+@require_login
+def dashboard(request):
+    return render(request, 'dashboard/dashboard.html')
+
 @require_login
 def verify_candidate_profile(request):
     if request.method == 'POST':
@@ -12,7 +17,7 @@ def verify_candidate_profile(request):
         return HttpResponse(str(id))
     elif request.method == 'GET':
         candidates = CandidateProfile.objects.all()
-        return render(request, 'dashboard/candidates/index.html', {'candidates':candidates})
+        return render(request, 'dashboard/candidates/verify_candidate_profiles.html', {'candidates':candidates})
 
 
 def rejection_reason(request):
