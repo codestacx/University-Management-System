@@ -134,7 +134,7 @@ div#notes {
 						<h3 class="kt-login__title">Sign Up</h3>
 						<div class="kt-login__desc">Verify Your email address</div>
 					</div>
-					<form ... onkeydown="return event.key != 'Enter';" class="kt-form"action="{% url 'signup' %}" method="post">
+					<form ... onkeydown="return event.key != 'Enter';" class="kt-form" action="{% url 'signup' %}" method="post">
                         {% csrf_token %}
 						<div class="input-group">
 							<input class="form-control" name="mail" id="email" required type="email" placeholder="Email"  style="display: inline;">
