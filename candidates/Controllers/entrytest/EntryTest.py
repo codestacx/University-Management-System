@@ -50,35 +50,6 @@ def entry_test_application(request):
 
         return render(request, "pages/entrytest/entry_test_application.html", context=context)
 
-
-def generate_sitting_plan(request):
-    # get halls and slots
-    halls = Hall.objects.all()
-    slots = Slot.objects.all()
-    candidate = User.objects.get(id=request.session['user_id'])
-
-    # check if candidate's sitting plan already generated
-    if PlanInfo.objects.filter(candidate=candidate).exists():
-        return HttpResponse(f"{candidate} already entered in sitting plan db")
-
-    for slot in slots:
-        for hall in halls:
-            seats = PlanInfo.objects.filter(slot=slot.slot_id, hall=hall.hall_id)
-            last_seat_number = None
-
-            # no entry for this (slot, hall)
-            if len(seats) == 0:
-                last_seat_number = 0
-            else:
-                last_seat_number = seats.reverse()[0].seat_number
-
-            if len(seats) < slot.seat_limits:
-                x = PlanInfo.objects.create(candidate=candidate, slot=slot, hall=hall, seat_number=last_seat_number+1)
-                return HttpResponse(f"Entered with seat number: {last_seat_number+1}")
-    
-    return HttpResponse("Something went wrong. Probably no space left for u.")
-
-
 def checkForNext(step,candidate_id):
     obj = {}
     try:
@@ -113,7 +84,7 @@ def adjust_test_schedule(request):
     user_id = request.session['user_id']
     obj = checkForNext(0, user_id)
     if obj['status'] ==2:
-        #challan is approved get plan info
+        # challan is approved get plan info
         # get the info from parent table for requested candidate
         try:
             plan_info = PlanInfo.objects.get(candidate_id=candidate_id)

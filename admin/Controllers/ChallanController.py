@@ -4,6 +4,7 @@ from django.core import serializers
 from candidates.models.EntryTest import *
 from candidates.models.CandidateProfile import CandidateProfile
 from candidates.models.PriorityDegree import *
+from candidates.models.SittingPlan import *
 from admin.Controllers.AuthController import require_login
 import json
 
@@ -43,6 +44,7 @@ def verifyEntryTestChallan(request):
             status = AppliedCandidate.objects.filter(candidate_id=id).update(challan_status = 1)
             if status:
                 msg = "Challan Approved Successfully"
+                generate_sitting_plan(request.POST['id'])
             else:
                 msg = "Sorry something goes wrong ..."
             return HttpResponse(json.dumps({
@@ -75,6 +77,34 @@ def verifyEntryTestChallan(request):
             return HttpResponse(json.dumps(objects),content_type='application/json',status=200)
     return HttpResponse('working')
 
+
+# TODO: if there are no halls and slots uploaded, break the application
+def generate_sitting_plan(candidate_id):
+    # get halls and slots
+    halls = Hall.objects.all()
+    slots = Slot.objects.all()
+    candidate = User.objects.get(id=candidate_id)
+
+    # check if candidate's sitting plan already generated
+    if PlanInfo.objects.filter(candidate=candidate).exists():
+        return -2
+
+    for slot in slots:
+        for hall in halls:
+            seats = PlanInfo.objects.filter(slot=slot.slot_id, hall=hall.hall_id)
+            last_seat_number = None
+
+            # no entry for this (slot, hall)
+            if len(seats) == 0:
+                last_seat_number = 0
+            else:
+                last_seat_number = seats.reverse()[0].seat_number
+
+            if len(seats) < slot.seat_limits:
+                x = PlanInfo.objects.create(candidate=candidate, slot=slot, hall=hall, seat_number=last_seat_number+1)
+                return last_seat_number+1
+    
+    return -1
 
 @require_login
 def admissionChallan(request):
