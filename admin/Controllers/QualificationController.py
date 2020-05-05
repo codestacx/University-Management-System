@@ -93,7 +93,8 @@ def verifyQualification(request):
         "`candidates_candidateprofile`.`lastname` as lastname," 
         "`candidates_candidateprofile`.`cnic` as cnic ,"
         " `candidates_candidateprofile`.`temporary_address` as taddress,"
-        " `candidates_candidateprofile`.`permanent_address` as paddress from `candidates_candidateprofile` INNER JOIN `candidates_degreepriorities` ON"
+        " `candidates_candidateprofile`.`permanent_address` as paddress from `candidates_candidateprofile` "
+        "INNER JOIN `candidates_degreepriorities` ON"
                 "`candidates_degreepriorities`.`candidate_id` = `candidates_candidateprofile`.`candidate_id`"
                 "WHERE"
                 "`candidates_degreepriorities`.`form_status`=1")
