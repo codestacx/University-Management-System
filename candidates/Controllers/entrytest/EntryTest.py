@@ -9,10 +9,9 @@ from candidates.models.SittingPlan import *
 from candidates.models.EntryTest import *
 from candidates.models.WizardSession import WizardSession
 
-import io
-from reportlab.pdfgen import canvas
-from xhtml2pdf import pisa
+from weasyprint import HTML, CSS
 import json
+from datetime import date
 from django.contrib import messages
 
 
@@ -152,13 +151,25 @@ def get_challan_pdf(request, name):
     template_src = 'pdf_templates/challan.html'
 
     template = get_template(template_src)
-    html = template.render({'name': name})
-    result = io.BytesIO()
-    pdf = pisa.pisaDocument(io.BytesIO(html.encode("ISO-8859-1")), result)
+    html = template.render({
+        'name': name,
+        'date': date.today(),
+        'challan_number': 'hardcoded123',
+        'deadline': 'hardcoded-date',
+        'department': 'PUCIT',
+        'cnic': '36603-8827996-9',
+        'fee': '500',
+        'total': '500',
+        'total_in_words': 'Five Hundred Only'
+        })
 
-    if not pdf.err:
-        return HttpResponse(result.getvalue(), content_type='application/pdf')
-    return 'lolz'
+    html = HTML(string=html)
+    css = CSS(string='@page { size: A4 landscape; margin: 1cm auto; }')
+    pdf = html.write_pdf(stylesheets=[css])
+
+    if pdf:
+        return HttpResponse(pdf, content_type='application/pdf')
+    return HttpResponse('lolz')
 
 
 def upload_challan(request):
