@@ -20,7 +20,7 @@ def index(request):
 
             if request.POST.get('next') is not '':
                 return redirect(request.POST['next'])
-            return redirect('verify_candidate_profile')
+            return redirect('admin_dashboard')
         except User.DoesNotExist:
             return HttpResponse('failed')
     elif request.method == 'GET':

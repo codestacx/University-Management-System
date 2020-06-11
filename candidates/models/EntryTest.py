@@ -13,11 +13,7 @@ class AppliedCandidate(models.Model):
     class Meta:
         app_label = 'candidates'
 
-
-
-
 #model contains meta data of tests
-
 class TestTypes(models.Model):
     test_id = models.AutoField(primary_key=True)
     degree = models.ForeignKey(Degree,on_delete=models.CASCADE)
@@ -35,6 +31,3 @@ class EntryTestResult(models.Model):
 
     class Meta:
         app_label = 'candidates'
-
-
-

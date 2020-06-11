@@ -2,38 +2,51 @@
 
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-        <meta charset="utf-8" />
-        <title>{% block title %}{% endblock %} | PUCIT - Admissions</title>
-        <meta name="description" content="Updates and statistics" />
-        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <meta charset="utf-8" />
+    <title>{% block title %}{% endblock %} | PUCIT - Admissions</title>
+    <meta name="description" content="Updates and statistics" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
 
-        <!--begin::Fonts -->
-        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700|Roboto:300,400,500,600,700">
-        
-        <!--begin::Page Vendors Styles(used by this page) -->
-        <link href="{% static 'themes/metronic/theme/default/demo1/dist/assets/plugins/custom/fullcalendar/fullcalendar.bundle.css' %}" rel="stylesheet" type="text/css" />
-        {% block styles %}{% endblock %}
-        <!--end::Page Vendors Styles -->
-        
-        <!--begin::Global Theme Styles(used by all pages) -->
-        <link href="{% static 'themes/metronic/theme/default/demo1/dist/assets/plugins/global/plugins.bundle.css' %}" rel="stylesheet" type="text/css" />
-        <link href="{% static 'themes/metronic/theme/default/demo1/dist/assets/css/style.bundle.css' %}" rel="stylesheet" type="text/css" />
-        <!--end::Global Theme Styles -->
+    <!--begin::Fonts -->
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700|Roboto:300,400,500,600,700">
 
-        <!--begin::Layout Skins(used by all pages) -->
-        <link href="{% static 'themes/metronic/theme/default/demo1/dist/assets/css/skins/header/base/light.css' %}" rel="stylesheet" type="text/css" />
-        <link href="{% static 'themes/metronic/theme/default/demo1/dist/assets/css/skins/header/menu/light.css' %}" rel="stylesheet" type="text/css" />
-        <link href="{% static 'themes/metronic/theme/default/demo1/dist/assets/css/skins/brand/dark.css' %}" rel="stylesheet" type="text/css" />
-        <link href="{% static 'themes/metronic/theme/default/demo1/dist/assets/css/skins/aside/dark.css' %}" rel="stylesheet" type="text/css" />        <!--end::Layout Skins -->
-        <link href="{% static 'css/custom.css' %}" rel="stylesheet" type="text/css" />
-        <!--end::Layout Skins -->
+    <!--begin::Page Vendors Styles(used by this page) -->
+    <link
+        href="{% static 'themes/metronic/theme/default/demo1/dist/assets/plugins/custom/fullcalendar/fullcalendar.bundle.css' %}"
+        rel="stylesheet" type="text/css" />
+    {% block styles %}{% endblock %}
+    <!--end::Page Vendors Styles -->
 
-        <link rel="shortcut icon" href="{% static 'images/PUCIT-Logo.png' %}" />
+    <!--begin::Global Theme Styles(used by all pages) -->
+    <link href="{% static 'themes/metronic/theme/default/demo1/dist/assets/plugins/global/plugins.bundle.css' %}"
+        rel="stylesheet" type="text/css" />
+    <link href="{% static 'themes/metronic/theme/default/demo1/dist/assets/css/style.bundle.css' %}" rel="stylesheet"
+        type="text/css" />
+    <!--end::Global Theme Styles -->
+
+    <!--begin::Layout Skins(used by all pages) -->
+    <link href="{% static 'themes/metronic/theme/default/demo1/dist/assets/css/skins/header/base/light.css' %}"
+        rel="stylesheet" type="text/css" />
+    <link href="{% static 'themes/metronic/theme/default/demo1/dist/assets/css/skins/header/menu/light.css' %}"
+        rel="stylesheet" type="text/css" />
+    <link href="{% static 'themes/metronic/theme/default/demo1/dist/assets/css/skins/brand/dark.css' %}"
+        rel="stylesheet" type="text/css" />
+    <link href="{% static 'themes/metronic/theme/default/demo1/dist/assets/css/skins/aside/dark.css' %}"
+        rel="stylesheet" type="text/css" />
+    <!--end::Layout Skins -->
+    <link href="{% static 'css/custom.css' %}" rel="stylesheet" type="text/css" />
+    <!--end::Layout Skins -->
+
+    <link rel="shortcut icon" href="{% static 'images/PUCIT-Logo.png' %}" />
 </head>
 
 <!-- begin::Body -->
-<body class="kt-quick-panel--right kt-demo-panel--right kt-offcanvas-panel--right kt-header--fixed kt-header-mobile--fixed kt-subheader--enabled kt-subheader--fixed kt-subheader--solid kt-aside--enabled kt-aside--fixed kt-page--loading">
+
+<body
+    class="kt-quick-panel--right kt-demo-panel--right kt-offcanvas-panel--right kt-header--fixed kt-header-mobile--fixed kt-subheader--enabled kt-subheader--fixed kt-subheader--solid kt-aside--enabled kt-aside--fixed kt-page--loading">
 
     <!-- begin:: Page -->
     <!-- begin:: Header Mobile -->
@@ -44,19 +57,22 @@
             </a>
         </div>
         <div class="kt-header-mobile__toolbar">
-            <button class="kt-header-mobile__toggler kt-header-mobile__toggler--left" id="kt_aside_mobile_toggler"><span></span></button>
+            <button class="kt-header-mobile__toggler kt-header-mobile__toggler--left"
+                id="kt_aside_mobile_toggler"><span></span></button>
 
             <button class="kt-header-mobile__toggler" id="kt_header_mobile_toggler"><span></span></button>
 
-            <button class="kt-header-mobile__topbar-toggler" id="kt_header_mobile_topbar_toggler"><i class="flaticon-more"></i></button>
+            <button class="kt-header-mobile__topbar-toggler" id="kt_header_mobile_topbar_toggler"><i
+                    class="flaticon-more"></i></button>
         </div>
     </div>
     <!-- end:: Header Mobile -->
 
-
-{#    {% if request.session.isComplete != 0 %}#}
-                {% include "components/sidebar.html" %}
-{#    {% endif %}#}
+    {% if request.session.user_logged %}
+        {% include "components/sidebar.html" %}
+    {% else %}
+        {% include "components/admin-sidebar.html" %}
+    {% endif %}
 
     {% include "components/menu-bar.html" %}
 
@@ -99,20 +115,26 @@
     <!-- end::Global Config -->
 
     <!--begin::Global Theme Bundle(used by all pages) -->
-        <script src="{% static 'themes/metronic/theme/default/demo1/dist/assets/plugins/global/plugins.bundle.js' %}" type="text/javascript"></script>
-        <script src="{% static 'themes/metronic/theme/default/demo1/dist/assets/js/scripts.bundle.js' %}" type="text/javascript"></script>
+    <script src="{% static 'themes/metronic/theme/default/demo1/dist/assets/plugins/global/plugins.bundle.js' %}"
+        type="text/javascript"></script>
+    <script src="{% static 'themes/metronic/theme/default/demo1/dist/assets/js/scripts.bundle.js' %}"
+        type="text/javascript"></script>
     <!--end::Global Theme Bundle -->
 
     <!--begin::Page Vendors(used by this page) -->
-        <script src="{% static 'themes/metronic/theme/default/demo1/dist/assets/plugins/custom/fullcalendar/fullcalendar.bundle.js' %}" type="text/javascript"></script>
-        <!--script src="http://maps.google.com/maps/api/js?key=AIzaSyBTGnKT7dt597vo9QgeQ7BFhvSRP4eiMSM" type="text/javascript"></script-->
-        <!--script src="{% static 'themes/metronic/theme/default/demo1/dist/assets/plugins/custom/gmaps/gmaps.js' %}" type="text/javascript"></script-->
+    <script
+        src="{% static 'themes/metronic/theme/default/demo1/dist/assets/plugins/custom/fullcalendar/fullcalendar.bundle.js' %}"
+        type="text/javascript"></script>
+    <!--script src="http://maps.google.com/maps/api/js?key=AIzaSyBTGnKT7dt597vo9QgeQ7BFhvSRP4eiMSM" type="text/javascript"></script-->
+    <!--script src="{% static 'themes/metronic/theme/default/demo1/dist/assets/plugins/custom/gmaps/gmaps.js' %}" type="text/javascript"></script-->
     <!--end::Page Vendors -->
 
     <!--begin::Page Scripts(used by this page) -->
-        <script src="{% static 'themes/metronic/theme/default/demo1/dist/assets/js/pages/dashboard.js' %}" type="text/javascript"></script>
-        {% block scripts %}{% endblock %}
+    <script src="{% static 'themes/metronic/theme/default/demo1/dist/assets/js/pages/dashboard.js' %}"
+        type="text/javascript"></script>
+    {% block scripts %}{% endblock %}
     <!--end::Page Scripts -->
 </body>
 <!-- end::Body -->
+
 </html>

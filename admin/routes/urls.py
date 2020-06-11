@@ -7,8 +7,11 @@ from admin.Controllers import EntryTestController
 from admin.Controllers import QualificationController
 urlpatterns = [
 
+    path('', CandidateController.dashboard, name='admin_dashboard'),
 
-    path('login/', AuthController.index, name='admin_login'),
+    # Authentication
+    path('login', AuthController.index, name='admin_login'),
+
     path('signout', AuthController.logout, name='admin_logout'),
 
     # entry test
