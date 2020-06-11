@@ -24,7 +24,7 @@ def verify_candidate_profile(request):
                                       "`candidates_user`.`active`,`candidates_user`.`id` FROM `candidates_user` "
                                       "INNER JOIN `candidates_candidateprofile` ON "
                                       "`candidates_candidateprofile`.`candidate_id`=`candidates_user`.`id`")
-        return render(request, 'dashboard/candidates/index.html', {'candidates':candidates})
+        return render(request, 'dashboard/candidates/verify_candidate_profiles.html', {'candidates':candidates})
 
 
 def deactivate_candidate(request,id):

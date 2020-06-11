@@ -1,5 +1,5 @@
 from django.http import HttpResponse
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect,reverse
 from candidates.models.PriorityDegree import *
 from candidates.models.EntryTest import *
 from candidates.models.Degree import *

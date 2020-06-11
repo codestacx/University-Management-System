@@ -10,7 +10,7 @@ urlpatterns = [
     path('', CandidateController.dashboard, name='admin_dashboard'),
 
     # Authentication
-    path('login', AuthController.index, name='admin_login'),
+    path('login/', AuthController.index, name='admin_login'),
 
     path('signout', AuthController.logout, name='admin_logout'),
 
