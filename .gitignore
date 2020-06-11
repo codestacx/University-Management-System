@@ -22,3 +22,6 @@ db.sqlite3
 ### Project specific ###
 candidates/migrations/
 AMS/local_settings.py
+*.png
+*.jpg
+*.jpeg
