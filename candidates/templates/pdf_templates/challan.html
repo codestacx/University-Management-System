@@ -4,19 +4,450 @@
         <title>Challan Form</title>
 
         <style>
-            h1, h2 {
+            body {
+                font-family: serif;
+                font-size: 12px;
+                margin: 0;
+                width: 11.69in;
+            }
+            .text-small {
+                font-size: 10px;
+            }
+            .highlight {
+                text-decoration: underline;
+            }
+            .center {
+                text-align: center;
+            }
+            .line-break {
+                background-color: black;
+            }
+            .bordered > td {
+                border: 1px solid black;
+            }
+            .same-height-cells td {
+                height: 1em;
+            }
+            #inner-table {
+                width: 100%;
+            }
+            #inner-table tbody td {
+                padding: 3px;
+            }
+            #inner-table tbody td:nth-child(2) {
                 text-align: center;
             }
         </style>
     </head>
 
     <body>
-        <h1>PUCIT Entrance Test</h1>
-        <h2>Challan Form</h2>
-        <table>
-            <tr>
-                <td>Name: {{ name }}</td>
-                <td>Challan #: 11223344</td>
+        <table style="width:90%; margin: auto;">
+            <tr class='bordered'>
+                <td>
+                    <table>
+                        <tr>
+                            <td>
+                                <tr class='center'>
+                                    <td>1</td>
+                                </tr>
+                                <tr class='center'>
+                                    <td>Depositor's Copy</td>
+                                </tr>
+                                <tr class='center'>
+                                    <td>Habib Bank Limited</td>
+                                </tr>
+                                <tr>
+                                    <td>Dated: <span class='highlight'>{{ date }}</span> &nbsp; Challan No. <span class='highlight'>{{ challan_number }}</span></td>
+                                </tr>
+                                <tr class='center'>
+                                    <td>Credit: Admission Income</td>
+                                </tr>
+                                <tr class='center'>
+                                    <td>Account No: 00427991775503</td>
+                                </tr>
+                                <tr>
+                                    <td>Name: <span class='highlight'>{{ name }}</span></td>
+                                </tr>
+                                <tr>
+                                    <td>Challan Form Deposit Deadline: <span class='highlight'>{{ deadline }}</span></td>
+                                </tr>
+                            </td>
+                        </tr>
+                        <tr><td class='line-break'></td></tr>
+                        <tr>
+                            <td>
+                                <tr>
+                                    <td>Department: <span class='highlight'>{{ department }}</span></td>
+                                </tr>
+                                <tr>
+                                    <td>Session: <span class='highlight'>{{ session }}</span></td>
+                                </tr>
+                                <tr>
+                                    <td>Program: <span class='highlight'>{{ program }}</span></td>
+                                </tr>
+                                <tr>
+                                    <td>CNIC: <span class='highlight'>{{ cnic }}</span></td>
+                                </tr>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <table id='inner-table' class='same-height-cells'>
+                                    <colgroup>
+                                        <col width='70%' />
+                                        <col />
+                                    </colgroup>
+                                    <thead>
+                                        <tr>
+                                            <td></td>
+                                            <td>Rs.</td>
+                                        </tr>
+                                    </thead>
+                                    <tr class='bordered'>
+                                        <td>Entry Test Fee</td>
+                                        <td>{{ fee }}</td>
+                                    </tr>
+                                    <tr class='bordered'>
+                                        <td></td>
+                                        <td></td>
+                                    </tr>
+                                    <tr class='bordered'>
+                                        <td></td>
+                                        <td></td>
+                                    </tr>
+                                    <tr class='bordered'>
+                                        <td></td>
+                                        <td></td>
+                                    </tr>
+                                    <tr class='bordered'>
+                                        <td></td>
+                                        <td></td>
+                                    </tr>
+                                    <tr class='bordered'>
+                                        <td></td>
+                                        <td></td>
+                                    </tr>
+                                    <tr class='bordered'>
+                                        <td></td>
+                                        <td></td>
+                                    </tr>
+                                    <tr class='bordered'>
+                                        <td></td>
+                                        <td></td>
+                                    </tr>
+                                    <tr class='bordered'>
+                                        <td></td>
+                                        <td></td>
+                                    </tr>
+                                    <tr class='bordered'>
+                                        <td></td>
+                                        <td></td>
+                                    </tr>
+                                    <tr class='bordered'>
+                                        <td></td>
+                                        <td></td>
+                                    </tr>
+                                    <tr class='bordered'>
+                                        <td>Total Rs.</td>
+                                        <td>{{ total }}</td>
+                                    </tr>
+                                    <tr class='bordered'>
+                                        <td colspan="2">Total (Rs. in Words) {{ total_in_words }}</td>
+                                    </tr>
+                                </table>
+                            </td>
+                        </tr>
+                        <tr class='text-small'>
+                            <td>
+                                <table>
+                                    <tr>
+                                        <td>Officer __________________________________ CASHIER</td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            The enterance test fee is neither refundable nor transferable.
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            Note: This voucher can be deposited in any HBL branch throughout Pakistan.
+                                        </td>
+                                    </tr>
+                                </table>
+                            </td>
+                        </tr>
+                    </table>
+                </td>
+                <td>
+                    <table>
+                        <tr>
+                            <td>
+                                <tr class='center'>
+                                    <td>1</td>
+                                </tr>
+                                <tr class='center'>
+                                    <td>Depositor's Copy</td>
+                                </tr>
+                                <tr class='center'>
+                                    <td>Habib Bank Limited</td>
+                                </tr>
+                                <tr>
+                                    <td>Dated: <span class='highlight'>{{ date }}</span> &nbsp; Challan No. <span class='highlight'>{{ challan_number }}</span></td>
+                                </tr>
+                                <tr class='center'>
+                                    <td>Credit: Admission Income</td>
+                                </tr>
+                                <tr class='center'>
+                                    <td>Account No: 00427991775503</td>
+                                </tr>
+                                <tr>
+                                    <td>Name: <span class='highlight'>{{ name }}</span></td>
+                                </tr>
+                                <tr>
+                                    <td>Challan Form Deposit Deadline: <span class='highlight'>{{ deadline }}</span></td>
+                                </tr>
+                            </td>
+                        </tr>
+                        <tr><td class='line-break'></td></tr>
+                        <tr>
+                            <td>
+                                <tr>
+                                    <td>Department: <span class='highlight'>{{ department }}</span></td>
+                                </tr>
+                                <tr>
+                                    <td>Session: <span class='highlight'>{{ session }}</span></td>
+                                </tr>
+                                <tr>
+                                    <td>Program: <span class='highlight'>{{ program }}</span></td>
+                                </tr>
+                                <tr>
+                                    <td>CNIC: <span class='highlight'>{{ cnic }}</span></td>
+                                </tr>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <table id='inner-table' class='same-height-cells'>
+                                    <colgroup>
+                                        <col width='70%' />
+                                        <col />
+                                    </colgroup>
+                                    <thead>
+                                        <tr>
+                                            <td></td>
+                                            <td>Rs.</td>
+                                        </tr>
+                                    </thead>
+                                    <tr class='bordered'>
+                                        <td>Entry Test Fee</td>
+                                        <td>{{ fee }}</td>
+                                    </tr>
+                                    <tr class='bordered'>
+                                        <td></td>
+                                        <td></td>
+                                    </tr>
+                                    <tr class='bordered'>
+                                        <td></td>
+                                        <td></td>
+                                    </tr>
+                                    <tr class='bordered'>
+                                        <td></td>
+                                        <td></td>
+                                    </tr>
+                                    <tr class='bordered'>
+                                        <td></td>
+                                        <td></td>
+                                    </tr>
+                                    <tr class='bordered'>
+                                        <td></td>
+                                        <td></td>
+                                    </tr>
+                                    <tr class='bordered'>
+                                        <td></td>
+                                        <td></td>
+                                    </tr>
+                                    <tr class='bordered'>
+                                        <td></td>
+                                        <td></td>
+                                    </tr>
+                                    <tr class='bordered'>
+                                        <td></td>
+                                        <td></td>
+                                    </tr>
+                                    <tr class='bordered'>
+                                        <td></td>
+                                        <td></td>
+                                    </tr>
+                                    <tr class='bordered'>
+                                        <td></td>
+                                        <td></td>
+                                    </tr>
+                                    <tr class='bordered'>
+                                        <td>Total Rs.</td>
+                                        <td>{{ total }}</td>
+                                    </tr>
+                                    <tr class='bordered'>
+                                        <td colspan="2">Total (Rs. in Words) {{ total_in_words }}</td>
+                                    </tr>
+                                </table>
+                            </td>
+                        </tr>
+                        <tr class='text-small'>
+                            <td>
+                                <table>
+                                    <tr>
+                                        <td>Officer __________________________________ CASHIER</td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            The enterance test fee is neither refundable nor transferable.
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            Note: This voucher can be deposited in any HBL branch throughout Pakistan.
+                                        </td>
+                                    </tr>
+                                </table>
+                            </td>
+                        </tr>
+                    </table>
+                </td>
+                <td>
+                    <table>
+                        <tr>
+                            <td>
+                                <tr class='center'>
+                                    <td>1</td>
+                                </tr>
+                                <tr class='center'>
+                                    <td>Depositor's Copy</td>
+                                </tr>
+                                <tr class='center'>
+                                    <td>Habib Bank Limited</td>
+                                </tr>
+                                <tr>
+                                    <td>Dated: <span class='highlight'>{{ date }}</span> &nbsp; Challan No. <span class='highlight'>{{ challan_number }}</span></td>
+                                </tr>
+                                <tr class='center'>
+                                    <td>Credit: Admission Income</td>
+                                </tr>
+                                <tr class='center'>
+                                    <td>Account No: 00427991775503</td>
+                                </tr>
+                                <tr>
+                                    <td>Name: <span class='highlight'>{{ name }}</span></td>
+                                </tr>
+                                <tr>
+                                    <td>Challan Form Deposit Deadline: <span class='highlight'>{{ deadline }}</span></td>
+                                </tr>
+                            </td>
+                        </tr>
+                        <tr><td class='line-break'></td></tr>
+                        <tr>
+                            <td>
+                                <tr>
+                                    <td>Department: <span class='highlight'>{{ department }}</span></td>
+                                </tr>
+                                <tr>
+                                    <td>Session: <span class='highlight'>{{ session }}</span></td>
+                                </tr>
+                                <tr>
+                                    <td>Program: <span class='highlight'>{{ program }}</span></td>
+                                </tr>
+                                <tr>
+                                    <td>CNIC: <span class='highlight'>{{ cnic }}</span></td>
+                                </tr>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <table id='inner-table' class='same-height-cells'>
+                                    <colgroup>
+                                        <col width='70%' />
+                                        <col />
+                                    </colgroup>
+                                    <thead>
+                                        <tr>
+                                            <td></td>
+                                            <td>Rs.</td>
+                                        </tr>
+                                    </thead>
+                                    <tr class='bordered'>
+                                        <td>Entry Test Fee</td>
+                                        <td>{{ fee }}</td>
+                                    </tr>
+                                    <tr class='bordered'>
+                                        <td></td>
+                                        <td></td>
+                                    </tr>
+                                    <tr class='bordered'>
+                                        <td></td>
+                                        <td></td>
+                                    </tr>
+                                    <tr class='bordered'>
+                                        <td></td>
+                                        <td></td>
+                                    </tr>
+                                    <tr class='bordered'>
+                                        <td></td>
+                                        <td></td>
+                                    </tr>
+                                    <tr class='bordered'>
+                                        <td></td>
+                                        <td></td>
+                                    </tr>
+                                    <tr class='bordered'>
+                                        <td></td>
+                                        <td></td>
+                                    </tr>
+                                    <tr class='bordered'>
+                                        <td></td>
+                                        <td></td>
+                                    </tr>
+                                    <tr class='bordered'>
+                                        <td></td>
+                                        <td></td>
+                                    </tr>
+                                    <tr class='bordered'>
+                                        <td></td>
+                                        <td></td>
+                                    </tr>
+                                    <tr class='bordered'>
+                                        <td></td>
+                                        <td></td>
+                                    </tr>
+                                    <tr class='bordered'>
+                                        <td>Total Rs.</td>
+                                        <td>{{ total }}</td>
+                                    </tr>
+                                    <tr class='bordered'>
+                                        <td colspan="2">Total (Rs. in Words) {{ total_in_words }}</td>
+                                    </tr>
+                                </table>
+                            </td>
+                        </tr>
+                        <tr class='text-small'>
+                            <td>
+                                <table>
+                                    <tr>
+                                        <td>Officer __________________________________ CASHIER</td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            The enterance test fee is neither refundable nor transferable.
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            Note: This voucher can be deposited in any HBL branch throughout Pakistan.
+                                        </td>
+                                    </tr>
+                                </table>
+                            </td>
+                        </tr>
+                    </table>
+                </td>
             </tr>
         </table>
     </body>

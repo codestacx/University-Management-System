@@ -6,6 +6,12 @@ from candidates.models.Rejection import Rejection
 from admin.Controllers.AuthController import require_login
 from django.shortcuts import reverse
 from django.contrib import messages
+
+
+@require_login
+def dashboard(request):
+    return render(request, 'dashboard/dashboard.html')
+
 @require_login
 def verify_candidate_profile(request):
     if request.method == 'POST':

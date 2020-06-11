@@ -6,7 +6,10 @@ from admin.Controllers import ChallanController
 from admin.Controllers import EntryTestController
 from admin.Controllers import QualificationController
 urlpatterns = [
-    path('login/', AuthController.index, name='admin_login'),
+    path('', CandidateController.dashboard, name='admin_dashboard'),
+
+    # Authentication
+    path('login', AuthController.index, name='admin_login'),
     path('signout', AuthController.logout, name='admin_logout'),
 
     # entry test
