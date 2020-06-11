@@ -7,6 +7,12 @@ class PrioriyDegree(models.Model):
     class Meta:
         app_label = 'candidates'
 
+class PrioriyDegreeMphill(models.Model):
+    name = models.CharField(max_length=50)
+
+    class Meta:
+        app_label = 'candidates'
+
 class DegreePriorities(models.Model):
     priority_id = models.AutoField(primary_key=True)
     candidate = models.ForeignKey(User,on_delete=models.CASCADE)

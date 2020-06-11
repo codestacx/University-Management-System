@@ -5,6 +5,7 @@ from admin.Controllers import SittingPlan
 from admin.Controllers import ChallanController
 from admin.Controllers import EntryTestController
 from admin.Controllers import QualificationController
+from admin.Controllers import MeritListController
 urlpatterns = [
 
     path('', CandidateController.dashboard, name='admin_dashboard'),
@@ -29,6 +30,10 @@ urlpatterns = [
     path('entrytest-challan-rejection-reason', CandidateController.rejection_reason, name='entrytest_challan_rejection_reason'),
     path('entrytestresult', EntryTestController.result, name='entrytestresult'),
     path('markresult', EntryTestController.uploadResult, name='markresult'),
+
+    #merit lists
+
+    path('meritlist/bachelor',MeritListController.meritlists_bachelor,name='meritlists_bachelor'),
 
     # admissions
     path('admission_challan', ChallanController.admissionChallan, name='admission_challan'),
