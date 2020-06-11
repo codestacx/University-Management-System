@@ -9,6 +9,7 @@ class User(models.Model):
     created_at = models.DateField(default=tz.now)
     updated_at = models.DateField(default=tz.now)
     isComplete = models.IntegerField('iscomplete', default=0)
+    active = models.IntegerField(default=1)
     
     class Meta:
         app_label = 'candidates'
