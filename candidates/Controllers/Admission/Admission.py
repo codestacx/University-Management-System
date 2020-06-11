@@ -118,7 +118,7 @@ def index(request):
                               criteria_id=DegreeCriteria.objects.filter(requirement='Mphill', degree_id=degree_id)[0].degree_criteria_id)
             )
 
-        return HttpResponse(json.dumps({'status':200}))
+        #return HttpResponse(json.dumps({'status':200}))
         status = Qualification.objects.bulk_create(objects)
         QualificationStatus.objects.create(candidate_id = user_id)
         #make an entry in merit list model with status pending
