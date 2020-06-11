@@ -3,6 +3,7 @@ from django.http import HttpResponse
 #import all models
 from candidates.models.User import User
 #flash messages
+from django.shortcuts import reverse
 from django.contrib import messages
 from django.db import connection
 # Login Controller
@@ -17,6 +18,9 @@ def login(request):
 
         try:
             user = User.objects.get(email=email,password=password,role=role)
+            if user.active == 0:
+                messages.error(request,'Your Profile is deactivated by administration')
+                return redirect(reverse('login'))
             request.session['user_logged'] = True
             request.session['user_id'] = user.id
             request.session['user_email'] = user.email

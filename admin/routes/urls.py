@@ -14,6 +14,10 @@ urlpatterns = [
 
     # entry test
     path('verify-candidate-profiles', CandidateController.verify_candidate_profile, name="verify_candidate_profile"),
+
+    path('candidate/deactivate/<int:id>',CandidateController.deactivate_candidate,name='deactivate_candidate'),
+    path('candidate/activate/<int:id>',CandidateController.activate_candidate,name='activate_candidate'),
+
     path('upload_hall', SittingPlan.uploadHall, name="upload_hall"),
     path('get-halls', SittingPlan.get_halls, name='get_halls'),
     path('upload_slot', SittingPlan.uploadSlot, name='upload_slot'),

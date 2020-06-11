@@ -3,8 +3,12 @@
 {% load static %}
 
 {% block title %}
+
 Entry Test Challan
 {% endblock %}
+
+
+
 
 {% block scripts %}
 <script src="{% static 'themes/metronic/theme/default/demo1/dist/assets/js/pages/crud/file-upload/dropzonejs.js' %}"
@@ -17,5 +21,7 @@ Entry Test Challan
 {% endblock %}
 
 {% block body %}
+
+
 {% include 'pages/generic-challan-upload.html' with dropzone_id="paid_challan_entrytest_dropzone" %}
 {% endblock %}

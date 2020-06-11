@@ -2,6 +2,7 @@ from django.shortcuts import render
 from django.http import FileResponse, HttpResponse
 from django.template.loader import get_template
 
+from django.shortcuts import redirect, reverse
 from candidates.models.User import User
 from candidates.models.Degree import Degree
 from candidates.models.CandidateProfile import CandidateProfile
@@ -41,13 +42,20 @@ def entry_test_application(request):
                 return HttpResponse('failed')
 
     else:
-        context = {}
-        context['degrees'] = Degree.objects.raw(
-            "SELECT * FROM `candidates_degree` GROUP BY degree_level")
-        context['current_user'] = CandidateProfile.objects.get(
-            candidate_id=request.session['user_id'])
 
-        return render(request, "pages/entrytest/entry_test_application.html", context=context)
+        id = request.session['user_id']
+        try:
+            AppliedCandidate.objects.get(candidate_id=id)
+            messages.info(request,'Your application is already submitted. Please Upload Challan form')
+            return redirect(reverse('upload_challan_entrytest'))
+        except AppliedCandidate.DoesNotExist:
+            context = {}
+            context['degrees'] = Degree.objects.raw(
+                "SELECT * FROM `candidates_degree` GROUP BY degree_level")
+            context['current_user'] = CandidateProfile.objects.get(
+                candidate_id=request.session['user_id'])
+
+            return render(request, "pages/entrytest/entry_test_application.html", context=context)
 
 def checkForNext(step,candidate_id):
     obj = {}

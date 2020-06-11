@@ -8,16 +8,20 @@ from candidates.models.MeritList import *
 from django.contrib import messages
 import string
 
+import json
 
 # TODO: fix multiple insertions
 def index(request):
     user_id = request.session['user_id']
     if request.method == 'POST':
         priorities_list = request.POST.getlist('priority_unit[]')
+
         program_list = request.POST.getlist('program_unit[]')
+
         zipped = zip(priorities_list, program_list)
 
         zipped_list = list(zipped)
+
         res = sorted(zipped_list, key=lambda x: x[0])
         num2alpha = dict(zip(range(1, 12), string.ascii_lowercase))
         # save priorities
@@ -28,9 +32,12 @@ def index(request):
             setattr(d, field, y)
         d.save()
 
+
+
         objects = []
         degree_id = request.POST['degree_id']
         degree_level = request.POST['degree_level']
+
         matric_institute = request.POST['matric_institute']
         matric_total_marks = request.POST['matric_total_marks']
         matric_obtained_marks = request.POST['matric_obtained_marks']
@@ -46,6 +53,8 @@ def index(request):
                           criteria_id=DegreeCriteria.objects.filter(requirement='Matric', degree_id=degree_id)[0].degree_criteria_id)
         )
 
+
+
         inter_institute = request.POST['inter_institute']
         inter_total_marks = request.POST['inter_total_marks']
         inter_obtained_marks = request.POST['inter_obtained_marks']
@@ -58,9 +67,10 @@ def index(request):
                           candidate_id=user_id,
                           degree_id=degree_id,
                           passing_year=passing_year,
-                          criteria_id=DegreeCriteria.objects.filter(requirement='Intermediate', degree_id=degree_id)[0].degree_criteria_id)
+                          criteria_id=DegreeCriteria.objects.filter(requirement='Interemediate', degree_id=degree_id)[0].degree_criteria_id)
         )
 
+       # return HttpResponse(json.dumps({'status': len(objects)}))
         if degree_level == 'MPhill':
             bs_institute = request.POST['bs_institute']
             bs_total_marks = 4
@@ -108,6 +118,7 @@ def index(request):
                               criteria_id=DegreeCriteria.objects.filter(requirement='Mphill', degree_id=degree_id)[0].degree_criteria_id)
             )
 
+        #return HttpResponse(json.dumps({'status':200}))
         status = Qualification.objects.bulk_create(objects)
         QualificationStatus.objects.create(candidate_id = user_id)
         #make an entry in merit list model with status pending
