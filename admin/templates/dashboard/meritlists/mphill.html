@@ -10,29 +10,6 @@ Candidates List
 {% endblock %}
 
 {% block scripts %}
-    <script>
-    function f(id){
-        	var totalMatric=1100;
-  	var matric=975;
-  	var inter=1009;
-  	var puTest=30;
-        var interFull=1100; //1179/1375=60.02
-  		var marksEarned=+1/4*matric+ +inter;
-  		var TotalMarks=+1/4*totalMatric+ +interFull;
-  		var partA=70*(marksEarned/TotalMarks);
-
-      var puTestTotal=140;
-      var partB=30*(puTest/puTestTotal);
-      var agregate1=+partA + +partB;
-      var year=2019;
-      var result = (agregate1-2*(2019-(year))).toFixed(4);
-      document.getElementById(id).innerText = result
-        alert(id)
-     // alert(result)
-    }
-
-    f()
-    </script>
 <script src="{% static 'themes/metronic/theme/default/demo1/dist/assets/plugins/global/plugins.bundle.js' %}"
     type="text/javascript"></script>
 <script src="{% static 'themes/metronic/theme/default/demo1/dist/assets/js/scripts.bundle.js' %}"
@@ -89,6 +66,7 @@ Candidates List
                                 <th>Full Name </th>
                                 <th> Matric   </th>
                                 <th> Intermediate </th>
+                                <th> Bachelor</th>
                                 <th> Entry Test </th>
                                 <th>Overall Merit</th>
 
@@ -103,6 +81,7 @@ Candidates List
 
                                 <td>{{ candidate.matric }}</td>
                                <td>{{ candidate.intermediate }}</td>
+                                <td>{{ candidate.bs }}</td>
                              <td>{{ candidate.entry }}</td>
                                  <td> {{ candidate.aggregate }} %</td>
 

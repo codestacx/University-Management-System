@@ -1,9 +1,3 @@
-$('.sortable').sortable();
-
-$('#sortable1, #sortable2').sortable({
-    connectWith: '.connected'
-});
-
 function makeChallanPDF(name, canvasID) {
     var url = `http://localhost:8000/get-challan-pdf/${name}`;
 
@@ -27,8 +21,8 @@ function makeChallanPDF(name, canvasID) {
             var canvas = document.getElementById(canvasID);
             var context = canvas.getContext('2d');
 
-            var scale = canvas.width / page.getViewport({scale: 1.0}).width;
-            var viewport = page.getViewport({scale: scale * 2});
+            var scale = canvas.width / page.getViewport({ scale: 1.0 }).width;
+            var viewport = page.getViewport({ scale: scale * 2 });
 
             canvas.height = viewport.height;
             canvas.width = viewport.width;
@@ -47,4 +41,26 @@ function makeChallanPDF(name, canvasID) {
         // PDF loading error
         console.error(reason);
     });
+}
+
+function filter(inputSelector = '#filter', tableRowSelector = '.to-filter-row', comparator) {
+    const toFilterRows = $(tableRowSelector)
+
+    $(inputSelector).on('input change', function (e) {
+        const filterVal = e.target.value
+
+        toFilterRows.removeClass('hidden')
+
+        if (filterVal === '') {
+            return
+        }
+
+        const filtered = toFilterRows.toArray().filter((row, index) => {
+            return comparator($(row), filterVal)
+        })
+
+        filtered.forEach(function (row, index) {
+            $(row).addClass('hidden')
+        })
+    })
 }

@@ -1,6 +1,8 @@
 from django.http import HttpResponse
 from django.shortcuts import render,redirect
 from candidates.models.EntryTest import *
+from candidates.models.MeritList import *
+from candidates.models.Degree import *
 from admin.Controllers.AuthController import require_login
 import json
 
@@ -8,6 +10,9 @@ import json
 @require_login
 def result(request):
     if request.method == 'POST':
+
+
+
         queryset = AppliedCandidate.objects.raw(
             "SELECT `candidates_appliedcandidate`.`id`, `candidates_appliedcandidate`.`candidate_id`,"
             "`candidates_candidateprofile`.`firstname` as firstname, `candidates_candidateprofile`.`lastname` as lastname,"
@@ -30,6 +35,7 @@ def result(request):
             objects.append(obj)
         return HttpResponse(json.dumps(objects), content_type='application/json', status=200)
     else:
+        data = Qualification.objects.filter(candidate_id=10).all()
         return render(request,'dashboard/entrytest/entrytestresult.html')
 
 def uploadResult(request):
@@ -63,6 +69,7 @@ def uploadResult(request):
             marks = request.POST['marks']
             testid=request.POST['testid']
             status = EntryTestResult.objects.create(obtained_marks = marks,test_id=testid,candidate_id=id)
+            #Agreegat.objects.create(candidate_id=c)
             obj = {}
             if status:
                 obj['status'] = True
@@ -70,3 +77,6 @@ def uploadResult(request):
                 obj['status'] = False
             return HttpResponse(json.dumps(obj),content_type='application/json',status=200)
     return HttpResponse('page not available')
+
+
+

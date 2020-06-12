@@ -34,7 +34,10 @@ urlpatterns = [
     #merit lists
 
     path('meritlist/bachelor',MeritListController.meritlists_bachelor,name='meritlists_bachelor'),
+    path('meritlist/mphill',MeritListController.meritlists_mphill,name='meritlists_mphill'),
+    path('meritlist/phd', MeritListController.meritlists_phd, name='meritlists_phd'),
 
+    path('calculator',MeritListController.calculator,name='calculator'),
     # admissions
     path('admission_challan', ChallanController.admissionChallan, name='admission_challan'),
     path('verify_adchallan', ChallanController.verifyAdmissionChallan, name='verify_adchallan'),

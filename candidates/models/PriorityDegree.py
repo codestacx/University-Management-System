@@ -3,6 +3,7 @@ from candidates.models.User import User
 
 class PrioriyDegree(models.Model):
     name = models.CharField(max_length=50)
+    check = models.IntegerField(default=0)
 
     class Meta:
         app_label = 'candidates'
