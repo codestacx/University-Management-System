@@ -8,6 +8,10 @@ class MeritList(models.Model):
     class Meta:
         app_label='candidates'
 
+class Agreegat(models.Model):
+    total = models.CharField(max_length=100)
+    candidate = models.ForeignKey(User,on_delete=models.CASCADE)
+
 class SelectedMeritPrograms(models.Model):
     meritlist = models.ForeignKey(MeritList,on_delete=models.CASCADE)
     selected_program = models.ForeignKey(PrioriyDegree,on_delete=models.CASCADE)

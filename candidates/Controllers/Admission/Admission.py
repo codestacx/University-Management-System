@@ -124,6 +124,18 @@ def index(request):
         #make an entry in merit list model with status pending
         MeritList.objects.create(candidate_id = user_id)
 
+        user = User.objects.get(id=user_id)
+        data = Qualification.objects.filter(candidate_id=user_id).all()
+        matric = (data[0].obtained_marks)
+        intermediate = data[1].obtained_marks
+        marks = EntryTestResult.objects.get(candidate_id=user_id).obtained_marks
+
+        r = (((0.35 * float(matric)) / 1100) * 100) + (((0.35 * float(intermediate)) / 1100) * 100) + (
+                ((0.30 * float(marks)) / 140) * 100)
+        result = round(r, 2)
+
+        Agreegat.objects.create(total=result, candidate_id=user_id)
+
         return HttpResponse(str(len(objects)))
     try:
 
@@ -133,13 +145,21 @@ def index(request):
 
         degree_id = AppliedCandidate.objects.get(
             candidate_id=user_id).degree_id
+
         degree_level = Degree.objects.get(degree_id=degree_id).degree_level
         degree_criteria = DegreeCriteria.objects.filter(
             degree_id=degree_id).all()
-        degrees = PrioriyDegree.objects.all()
+
+        degrees = []
         priorities = []
-        for i in range(1, 13):
-            priorities.append(i)
+        if degree_id ==1:
+            degrees=PrioriyDegree.objects.filter(check=0).all()
+            for i in range(1, 13):
+                priorities.append(i)
+        else:
+            degrees = PrioriyDegree.objects.filter(check=1).all()
+            for i in range(1,3):
+                priorities.append(i)
         return render(request, 'pages/admission/admission-application.html',
                       {'degree_id': degree_id,
                        'degree_level': degree_level,
