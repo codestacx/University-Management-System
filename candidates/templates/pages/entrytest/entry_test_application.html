@@ -17,7 +17,7 @@ Entry Test Application
 <script src="{% static 'js/custom.js' %}" type="text/javascript"></script>
 
 <script>
-    makeChallanPDF('{{current_user.firstname}} {{current_user.lastname}}', 'challan-form-canvas')
+    makeChallanPDF('challan-form-canvas')
 
     $(document).ready(function () {
         // wizard session handling

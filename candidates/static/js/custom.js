@@ -1,6 +1,14 @@
-function makeChallanPDF(name, canvasID) {
-    var url = `http://localhost:8000/get-challan-pdf/${name}`;
+function makeChallanPDF(canvasID) {
+    const url = `http://localhost:8000/get-challan-pdf`
+    makePDF(url, canvasID)
+}
 
+function makeRegistrationSlipPDF(canvasID) {
+    const url = `http://localhost:8000/get-registration-slip-pdf`
+    makePDF(url, canvasID)
+}
+
+function makePDF(url, canvasID) {
     // Loaded via <script> tag, create shortcut to access PDF.js exports.
     var pdfjsLib = window['pdfjs-dist/build/pdf'];
 
@@ -40,7 +48,7 @@ function makeChallanPDF(name, canvasID) {
     }, function (reason) {
         // PDF loading error
         console.error(reason);
-    });
+    })
 }
 
 function filter(inputSelector = '#filter', tableRowSelector = '.to-filter-row', comparator) {

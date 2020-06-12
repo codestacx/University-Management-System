@@ -44,7 +44,12 @@ def verifyEntryTestChallan(request):
             status = AppliedCandidate.objects.filter(candidate_id=id).update(challan_status = 1)
             if status:
                 msg = "Challan Approved Successfully"
-                generate_sitting_plan(request.POST['id'])
+                
+                rv = generate_sitting_plan(request.POST['id'])
+                if rv == -1:
+                    msg = "No seat available"
+                elif rv == -2:
+                    msg = "Seat already allocated"
             else:
                 msg = "Sorry something goes wrong ..."
             return HttpResponse(json.dumps({
@@ -91,7 +96,7 @@ def generate_sitting_plan(candidate_id):
 
     for slot in slots:
         for hall in halls:
-            seats = PlanInfo.objects.filter(slot=slot.slot_id, hall=hall.hall_id)
+            seats = PlanInfo.objects.filter(slot=slot.slot_id, hall=hall.hall_id).order_by('seat_number')
             last_seat_number = None
 
             # no entry for this (slot, hall)

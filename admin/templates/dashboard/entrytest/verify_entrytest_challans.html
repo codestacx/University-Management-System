@@ -85,6 +85,9 @@ Verify Paid Challans | Entry Test
                 Swal.fire(actionDetails[actionId][0], `${data.message}.`, actionDetails[actionId][1])
                 reset()
                 fetchall()
+            },
+            error: function(err) {
+                Swal.fire('Error', err, 'error')
             }
         })
     }
