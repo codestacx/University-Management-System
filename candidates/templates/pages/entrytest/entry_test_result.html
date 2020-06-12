@@ -61,9 +61,11 @@
                                         </p>
                                     </div>
                                         </div>
+                                {% if obj.status == 2 %}
                                     <div class="kt-callout__action">
-                                        <a href="#" class="btn btn-custom btn-bold btn-upper btn-font-sm  btn-success">Calculate Merit</a>
+                                        <a href="{% url 'merit_calculator' %}" class="btn btn-custom btn-bold btn-upper btn-font-sm  btn-success">Calculate Merit</a>
                                     </div>
+                                {% endif %}
                                 </div>
                             </div>
                         </div>

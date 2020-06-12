@@ -39,6 +39,7 @@ urlpatterns = [
     path("wizard-session", EntryTest.wizard_session, name='wizard_session'),
     path('upload-challan-entrytest', EntryTest.upload_challan, name='upload_challan_entrytest'),
 
+    path('merit/calculator',EntryTest.merit_calculator,name='merit_calculator'),
     # admission routes
     path('apply-admission', Admission.index, name='apply_admission'),
     path('upload-challan-admission', Admission.upload_challan, name='upload_challan_admission'),

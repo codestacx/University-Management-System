@@ -301,3 +301,7 @@ def wizard_session(request):
                 ws = WizardSession.objects.get(
                     user_id=request.session['user_id'])
                 return HttpResponse(ws.data)
+
+
+def merit_calculator(request):
+    return render(request,'pages/entrytest/calculator.html')
