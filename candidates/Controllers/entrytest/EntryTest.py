@@ -12,7 +12,7 @@ from candidates.models.WizardSession import WizardSession
 
 from weasyprint import HTML, CSS
 import json
-from datetime import date
+from datetime import date, datetime, timedelta
 from django.contrib import messages
 
 
@@ -60,16 +60,16 @@ def entry_test_application(request):
 def checkForNext(step,candidate_id):
     obj = {}
     try:
-        result = AppliedCandidate.objects.get(candidate_id =candidate_id)
+        result = AppliedCandidate.objects.get(candidate_id=candidate_id)
         #check if he has uploaded challan
         if result.paid_challan_copy == '':
             obj['status'] = 0
-            obj['message'] ='Please upload Paid Challan copy'
+            obj['message'] = 'Please upload Paid Challan copy'
         if result.challan_status == 0:
-            obj['status'] = 1;
+            obj['status'] = 1
             obj['message'] = 'Your challan is still pending. Wait untill it gets approved'
         else:
-            obj['status'] =2
+            obj['status'] = 2
             obj['message']='Challan has been approved successfully'
     except AppliedCandidate.DoesNotExist:
         obj['status'] = -1
@@ -81,7 +81,7 @@ def checkForNext(step,candidate_id):
 
 def registeration_slip(request):
     user_id = request.session['user_id']
-    obj = checkForNext(0,user_id)
+    obj = checkForNext(0, user_id)
     return render(request, "pages/entrytest/registeration_slip.html",{'obj':obj,'list':[1,0,-1]})
 
 
@@ -155,12 +155,18 @@ def entry_test_result(request):
 
 
 
-def get_challan_pdf(request, name):
+def get_challan_pdf(request):
     template_src = 'pdf_templates/challan.html'
+
+    candidate = None
+    if request.session['user_id']:
+        candidate = CandidateProfile.objects.get(candidate=request.session['user_id'])
+    else:
+        return HttpResponse(status=401)
 
     template = get_template(template_src)
     html = template.render({
-        'name': name,
+        'name': candidate.name,
         'date': date.today(),
         'challan_number': 'hardcoded123',
         'deadline': 'hardcoded-date',
@@ -173,6 +179,55 @@ def get_challan_pdf(request, name):
 
     html = HTML(string=html)
     css = CSS(string='@page { size: A4 landscape; margin: 1cm auto; }')
+    pdf = html.write_pdf(stylesheets=[css])
+
+    if pdf:
+        return HttpResponse(pdf, content_type='application/pdf')
+    return HttpResponse('lolz')
+
+
+def get_registration_slip_pdf(request):
+    template_src = 'pdf_templates/registration-slip.html'
+
+    candidate = None
+    if request.session['user_id']:
+        candidate = CandidateProfile.objects.get(candidate=request.session['user_id'])
+    else:
+        return HttpResponse(status=401)
+
+    applied_candid = AppliedCandidate.objects.get(candidate_id=candidate.id)
+    program = Degree.objects.get(degree_id=applied_candid.degree_id).degree_name
+    candid_plan = PlanInfo.objects.get(candidate=candidate.id)
+    hall = candid_plan.hall
+    slot = candid_plan.slot
+    
+    reporting_time = slot.start_time
+    now = datetime.now()
+    delta = timedelta(minutes=-15)
+    t = now.time()
+    reporting_time = (datetime.combine(date(1,1,1), reporting_time) + delta).time()
+    
+    seat_number = candid_plan.seat_number
+
+    template = get_template(template_src)
+    html = template.render({
+        'name': candidate.firstname + ' ' + candidate.lastname,
+        'program': program,
+        'session': 'Fall 2020-hardcoded',
+        'roll_no': applied_candid.id,
+        'form_id': 'hardcoded-123',
+        'father_name': candidate.firstname + "'s father",
+        'cnic': candidate.cnic,
+        'image': candidate.image,
+        'test_date': '04 August 1997',
+        'reporting_time': reporting_time,
+        'test_center': hall.title,
+        'seat': seat_number
+        })
+
+    #return HttpResponse(html)
+    html = HTML(string=html, base_url=request.build_absolute_uri())
+    css = CSS(string='@page { size: A4 portrait; margin: 1cm 0.25cm; }')
     pdf = html.write_pdf(stylesheets=[css])
 
     if pdf:

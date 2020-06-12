@@ -34,7 +34,8 @@ urlpatterns = [
     path("registeration-slip", EntryTest.registeration_slip, name='registeration_slip'),
     path("adjust-test-schedule", EntryTest.adjust_test_schedule, name='adjust_test_schedule'),
     path("entry-test-result", EntryTest.entry_test_result, name='entry_test_result'),
-    path("get-challan-pdf/<str:name>", EntryTest.get_challan_pdf, name='get_challan_pdf'),
+    path("get-challan-pdf", EntryTest.get_challan_pdf, name='get_challan_pdf'),
+    path("get-registration-slip-pdf", EntryTest.get_registration_slip_pdf, name='get_registration_slip_pdf'),
     path("wizard-session", EntryTest.wizard_session, name='wizard_session'),
     path('upload-challan-entrytest', EntryTest.upload_challan, name='upload_challan_entrytest'),
 

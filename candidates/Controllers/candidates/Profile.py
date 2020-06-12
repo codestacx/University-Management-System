@@ -18,7 +18,7 @@ def personalInfo(request):
         isUpdate = request.POST['status']
 
         if isUpdate == '1':
-            old_picture = request.POST['old_picture'];
+            old_picture = request.POST['old_picture']
             status = CandidateProfile.updateUser(firstname=firstname,
                                                    lastname=lastname,
                                                    phone=contact,

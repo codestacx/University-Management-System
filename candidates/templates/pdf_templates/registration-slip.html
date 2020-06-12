@@ -1,0 +1,113 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Registration Slip</title>
+        <link rel="stylesheet" media="screen" href="https://fontlibrary.org/face/nafees-nastaleeq" type="text/css"/> 
+        <style>
+            body {
+                font-family: serif;
+                font-size: 12px;
+                margin: 0;
+                width: 210mm;
+            }
+            .text-small {
+                font-size: 10px;
+            }
+            .highlight {
+                text-decoration: underline;
+            }
+            .center {
+                text-align: center;
+            }
+            .line-break {
+                background-color: black;
+            }
+            .key-val {
+                margin-left: 15px;
+            }
+            .key-val:first-of-type {
+                margin-left: 0;
+            }
+            .key-val > h4 {
+                font-size: 14px;
+                font-weight: 400;
+                margin: 0;
+            }
+            .key-val > h3 {
+                font-size: 14px;
+                margin: 0;
+                margin-top: 10px;
+            }
+        </style>
+    </head>
+
+    <body>
+        <h1 class="center">Punjab University College of Information Technology</h1>
+        <h2 class="center">University of the Punjab, Lahore</h2>
+
+        <h1 class="center">Entrance Test Roll No. Slip</h1>
+        <h4 class="center">For {{ program }} programs (Session {{ session }})</h4>
+
+        <h3 class="center">Roll No.</h3>
+        <h2 class="center">{{ roll_no }}</h2>
+
+        <div style="display: flex; justify-content: center; align-items: center;">
+            <img src="media/{{ image }}" style="width: 35mm; height: 45mm;" />
+            
+            <ul style="list-style: none;">
+                <li>Form ID: {{ form_id }}</li>
+                <li>Name: {{ name }}</li>
+                <li>Father's Name: {{ father_name }}</li>
+                <li>CNIC/Form B: {{ cnic }}</li>
+            </ul>
+        </div>
+
+        <div style="display: flex; justify-content: space-around; margin-top: 20px;">
+            <div class="key-val">
+                <h4>Reporting Time</h4>
+                <h3>{{ reporting_time }}</h3>
+            </div>
+            <div class="key-val">
+                <h4>Test Center</h4>
+                <h3>{{ test_center }}</h3>
+            </div>
+            <div class="key-val">
+                <h4>Seat</h4>
+                <h3>{{ seat }}</h3>
+            </div>
+        </div>
+
+        <div style="margin: auto; margin-top: 20px; width: 85%;">
+            <h3>Note:</h3>
+            <ul style="margin-left: 0;">
+                <li>It is <strong style="text-decoration: underline;">COMPULSORY to bring this entrance test roll no. slip and one of the following identities to appear in the test</strong>:
+                    <ul>
+                        <li>Original CNIC</li>
+                        <li>Passport</li>
+                        <li>Driving License</li>
+                        <li>Secondary school certificate with picture</li>
+                    </ul>
+                </li>
+                <li>Only original identity is acceptable. Photocopies are <strong style="text-decoration: underline;">NOT ACCEPTABLE</strong>.</li>
+                <li>Mobile phones, handbags, calculators, gadgets, etc are <strong style="text-decoration: underline;">NOT ALLOWED</strong>.</li>
+                <li>Keep visiting <span style="text-decoration: underline;">www.pucit.edu.pk</span> or <span style="text-decoration: underline;">www.pu.edu.pk/pucit</span> for updates.</li>
+                <li>For further queries you may contact UAN: 111-923-923 ext (149, 161) or send an e-mail at: <span style="text-decoration: underline;">info@pucit.edu.pk</span></li>
+            </ul>
+        </div>
+
+        <img src="{% static 'images/urdu.png' %}" style="margin: auto; margin-top: 20px; width: 85%;" />
+        <!-- <div style="margin: auto; margin-top: 20px; width: 85%; font-size: 16px;font-family: 'NafeesRegular';" dir="rtl">
+            <h3>نوٹ:</h3>
+            <ul style="line-height: 28px;">
+                <li>امتحانی مرکز میں یہ رول نمبر سلپ اور ایک تصویری دستاویز لانا ضروری ہے جس سے آپ کی شناخت کی جاسکے۔</li>
+                <li>ممکنہ تصویری دستاویز: شناختی کارڈ، پاسپورٹ، ڈرایوینگ لائسنس یا میٹریک کی تصویر والی سند۔</li>
+                <li>صرف اصل تصویری دستاویز ہی قابل قبول ہوگا اور فوٹوکاپی کی بنیاد پر امتحان دینے کی اجازت نہیں دی جائے گی۔</li>
+                <li>فارم ب یا سکول/کالج کارڈ قابل قبول نا ہوگا۔</li>
+                <li>امتحانی مرکز میں موبائل فون، کیلکولیٹر، بیگ، اسلحہ یا کسی بھی قسم کے امدادی مواد کی بلکل اجازت نہیں۔</li>
+            </ul>
+        </div> -->
+        
+        <p class="center" style="margin-top: 40px;">This is a PUCIT Entrance Test System generated slip. No signature is required.</p>
+    </body>
+</html>

@@ -3,80 +3,37 @@
 {% load static %}
 
 {% block title %}
-    Get Registeration Slip
+Get Registeration Slip
+{% endblock %}
+
+{% block scripts %}
+<script src="{% static 'js/pdf.js' %}" type="text/javascript"></script>
+<script src="{% static 'js/custom.js' %}" type="text/javascript"></script>
+<script>
+    makeRegistrationSlipPDF('challan-form-canvas')
+</script>
 {% endblock %}
 
 {% block body %}
-
-    <div class="kt-grid__item kt-grid__item--fluid kt-grid kt-grid--hor kt-wrapper" id="kt_wrapper">
-        <!-- begin:: Header Menu -->
-        <!-- Uncomment this to display the close button of the panel
+<div class="kt-grid__item kt-grid__item--fluid kt-grid kt-grid--hor kt-wrapper" id="kt_wrapper">
+    <!-- begin:: Header Menu -->
+    <!-- Uncomment this to display the close button of the panel
            <button class="kt-header-menu-wrapper-close" id="kt_header_menu_mobile_close_btn"><i class="la la-close"></i></button>
            -->
-        <div class="kt-content  kt-grid__item kt-grid__item--fluid kt-grid kt-grid--hor" id="kt_content">
+    <div class="kt-content  kt-grid__item kt-grid__item--fluid kt-grid kt-grid--hor" id="kt_content">
 
         <div class="kt-container  kt-container--fluid  kt-grid__item kt-grid__item--fluid">
 
-           {% if obj.status in list %}
-
-
-
-                    <div class="alert alert-warning">
-                    {{ obj.message }}
-                    </div>
-
-
-
+            {% if obj.status in list %}
+            <div class="alert alert-warning">
+                {{ obj.message }}
+            </div>
             {% else %}
 
-        <div style="text-align:right; margin-right:140px; margin-bottom:40px;" >
-           <button type="button" class="btn btn-dark btn-icon"><i class="fa fa-print"></i></button>
-        </div>
+            <div style="text-align:right; margin-right:140px; margin-bottom:40px;">
+                <button type="button" class="btn btn-dark btn-icon"><i class="fa fa-print"></i></button>
+            </div>
             <canvas id="challan-form-canvas"></canvas>
-           <script src="{% static 'js/pdf.js' %}"></script>
-           <script>
-              var url = '{% static "pdf/entry-test-slip.pdf" %}';
-              
-              // Loaded via <script> tag, create shortcut to access PDF.js exports.
-              var pdfjsLib = window['pdfjs-dist/build/pdf'];
-              
-              // The workerSrc property shall be specified.
-              pdfjsLib.GlobalWorkerOptions.workerSrc = '{% static "js/pdf.worker.js" %}';
-              
-              // Asynchronous download of PDF
-              var loadingTask = pdfjsLib.getDocument(url);
-              loadingTask.promise.then(function(pdf) {
-                  console.log('PDF loaded');
-                  
-                  // Fetch the first page
-                  var pageNumber = 1;
-                  pdf.getPage(pageNumber).then(function(page) {
-                      console.log('Page loaded');
-                      
-                      var scale = 1.5;
-                      var viewport = page.getViewport({scale: scale});
-              
-                      // Prepare canvas using PDF page dimensions
-                      var canvas = document.getElementById('challan-form-canvas');
-                      var context = canvas.getContext('2d');
-                      canvas.height = viewport.height;
-                      canvas.width = viewport.width;
-              
-                      // Render PDF page into canvas context
-                      var renderContext = {
-                      canvasContext: context,
-                      viewport: viewport
-                      };
-                      var renderTask = page.render(renderContext);
-                      renderTask.promise.then(function () {
-                      console.log('Page rendered');
-                      });
-                  });
-              }, function (reason) {
-                  // PDF loading error
-                  console.error(reason);
-              });
-           </script>
-        {% endif %}
+            {% endif %}
         </div>
 {% endblock %}
